@@ -173,7 +173,7 @@ export default function WorkforcePage() {
   ];
 
   return (
-    <main>
+    <main className="booking-page">
       {/* Hero */}
       <section className="platform-hero">
         <div className="container platform-hero-grid">

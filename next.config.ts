@@ -7,6 +7,28 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "www.marajogroup.com" },
     ],
   },
+  async redirects() {
+    return [
+      { source: "/marajo-tower.html", destination: "/properties/marajo-tower", permanent: true },
+      { source: "/salcedo-towers.html", destination: "/properties/salcedo-towers", permanent: true },
+      { source: "/mrj-center.html", destination: "/properties/mrj-center", permanent: true },
+      { source: "/ceo-flats.html", destination: "/properties/ceo-flats", permanent: true },
+      { source: "/hightown-quarters-burgos.html", destination: "/properties/hightown-quarters-burgos", permanent: true },
+      { source: "/muro-siargao.html", destination: "/properties/muro-siargao", permanent: true },
+      { source: "/marajo-town-center.html", destination: "/properties/marajo-town-center", permanent: true },
+      { source: "/hightown-quarters-palma.html", destination: "/properties/hightown-quarters-palma", permanent: true },
+      { source: "/space-solutions.html", destination: "/properties/space-solutions", permanent: true },
+      { source: "/parking.html", destination: "/parking", permanent: true },
+      { source: "/workforce.html", destination: "/workforce", permanent: true },
+      { source: "/facilities.html", destination: "/facilities", permanent: true },
+      { source: "/court.html", destination: "/facilities", permanent: true },
+      { source: "/about.html", destination: "/about", permanent: true },
+      { source: "/contact.html", destination: "/contact", permanent: true },
+      { source: "/news.html", destination: "/news", permanent: true },
+      { source: "/gallery.html", destination: "/gallery", permanent: true },
+      { source: "/search.html", destination: "/search", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -132,24 +132,13 @@ export default function AdminDashboardPage() {
 
       <div style={{ display: "flex", minHeight: "calc(100vh - 82px)" }}>
         <aside style={sidebarStyle}>
-          <div>
-            <div
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: 12,
-                background: "#16a34a",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#fff",
-                fontWeight: 800,
-                fontSize: 18,
-              }}
-            >
-              MG
-            </div>
-            <div style={{ marginTop: 14 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <img
+              src="/assets/logo.png"
+              alt="Marajo Group"
+              style={{ height: 44, width: "auto", objectFit: "contain" }}
+            />
+            <div>
               <div style={{ fontSize: 16, fontWeight: 700, color: "#0f172a" }}>Marajo Group</div>
               <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>Staff Portal</div>
             </div>

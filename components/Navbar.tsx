@@ -82,14 +82,18 @@ export default function Navbar() {
             </Link>
           ))}
 
-          <div className={`nav-dropdown${dropdownOpen ? " open" : ""}`}>
+          <div
+            className={`nav-dropdown${dropdownOpen ? " open" : ""}`}
+            onMouseEnter={() => setDropdownOpen(true)}
+            onMouseLeave={() => setDropdownOpen(false)}
+          >
             <button
               type="button"
               className={`nav-link nav-dropdown-toggle${isServiceActive ? " active" : ""}`}
               aria-haspopup="true"
               aria-expanded={dropdownOpen}
               onClick={() => setDropdownOpen((o) => !o)}
-              onBlur={() => setTimeout(() => setDropdownOpen(false), 150)}
+              onFocus={() => setDropdownOpen(true)}
             >
               Services
               <svg className="dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -97,10 +101,10 @@ export default function Navbar() {
               </svg>
             </button>
             {dropdownOpen && (
-              <ul className="nav-dropdown-menu" role="menu">
+              <ul className="nav-dropdown-menu" role="menu" onClick={() => setDropdownOpen(false)}>
                 {SERVICE_LINKS.map((l) => (
                   <li role="none" key={l.href}>
-                    <Link className="nav-dropdown-item" href={l.href} role="menuitem">
+                    <Link className="nav-dropdown-item" href={l.href} role="menuitem" onClick={() => setDropdownOpen(false)}>
                       {l.label}
                     </Link>
                   </li>

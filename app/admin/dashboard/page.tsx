@@ -18,6 +18,53 @@ type Tab =
   | "notifications"
   | "profile";
 
+const ADMIN_NAV_ITEMS: Array<{ id: Tab; label: string }> = [
+  { id: "overview", label: "Overview" },
+  { id: "units", label: "Units" },
+  { id: "leads", label: "Leads" },
+  { id: "parking", label: "Parking" },
+  { id: "facilities", label: "Court Bookings" },
+  { id: "workers", label: "Workers" },
+  { id: "calendar", label: "Calendar" },
+  { id: "appointments", label: "Appointments" },
+  { id: "contacts", label: "Contacts" },
+  { id: "tasks", label: "Tasks" },
+  { id: "notifications", label: "Notifications" },
+  { id: "profile", label: "Profile" },
+];
+
+const sidebarStyle: React.CSSProperties = {
+  minWidth: 260,
+  borderRight: "1px solid #e5e7eb",
+  background: "#ffffff",
+  padding: 24,
+  display: "flex",
+  flexDirection: "column",
+  gap: 24,
+};
+
+const sidebarItemStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: 12,
+  width: "100%",
+  border: "none",
+  background: "transparent",
+  textAlign: "left",
+  fontSize: 14,
+  color: "#475569",
+  padding: "12px 14px",
+  borderRadius: 10,
+  cursor: "pointer",
+};
+
+const sidebarItemActiveStyle: React.CSSProperties = {
+  ...sidebarItemStyle,
+  background: "#ecfdf5",
+  color: "#065f46",
+  fontWeight: 700,
+};
+
 export default function AdminDashboardPage() {
   const router = useRouter();
   const [staff, setStaff] = useState<Staff | null>(null);
@@ -48,32 +95,34 @@ export default function AdminDashboardPage() {
   if (!staff) return null;
 
   return (
-    <div>
+    <div style={{ minHeight: "100vh", background: "#f3f4f6", color: "#111827" }}>
       <header
         style={{
-          background: "#0f0f1e",
+          background: "#0f172a",
           color: "#fff",
-          padding: "16px 28px",
+          padding: "20px 30px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          borderBottom: "1px solid #111827",
         }}
       >
         <div>
-          <div style={{ fontSize: 16, fontWeight: 700 }}>Marajo Group — Staff Portal</div>
-          <div style={{ fontSize: 12, color: "#9ca3af" }}>
+          <div style={{ fontSize: 18, fontWeight: 700 }}>Marajo Group — Staff Portal</div>
+          <div style={{ fontSize: 13, color: "#cbd5e1", marginTop: 4 }}>
             Signed in as {staff.name} ({staff.role})
           </div>
         </div>
+
         <button
           onClick={handleLogout}
           style={{
             background: "transparent",
-            border: "1px solid #4b5563",
-            color: "#e5e7eb",
-            borderRadius: 8,
-            padding: "8px 16px",
-            fontSize: 13,
+            border: "1px solid rgba(255,255,255,.3)",
+            color: "#fff",
+            borderRadius: 10,
+            padding: "10px 18px",
+            fontSize: 14,
             cursor: "pointer",
           }}
         >
@@ -81,58 +130,105 @@ export default function AdminDashboardPage() {
         </button>
       </header>
 
-      <nav style={{ display: "flex", gap: 4, padding: "0 28px", background: "#fff", borderBottom: "1px solid #e5e7eb", overflowX: "auto" }}>
-        {(
-          [
-            "overview",
-            "units",
-            "leads",
-            "parking",
-            "facilities",
-            "workers",
-            "calendar",
-            "appointments",
-            "contacts",
-            "tasks",
-            "notifications",
-            "profile",
-          ] as Tab[]
-        ).map((t) => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            style={{
-              padding: "14px 18px",
-              border: "none",
-              background: "transparent",
-              borderBottom: tab === t ? "2px solid #16a34a" : "2px solid transparent",
-              color: tab === t ? "#16a34a" : "#374151",
-              fontWeight: 600,
-              fontSize: 14,
-              cursor: "pointer",
-              textTransform: "capitalize",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {t === "facilities" ? "Court Bookings" : t}
-          </button>
-        ))}
-      </nav>
+      <div style={{ display: "flex", minHeight: "calc(100vh - 82px)" }}>
+        <aside style={sidebarStyle}>
+          <div>
+            <div
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 12,
+                background: "#16a34a",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#fff",
+                fontWeight: 800,
+                fontSize: 18,
+              }}
+            >
+              MG
+            </div>
+            <div style={{ marginTop: 14 }}>
+              <div style={{ fontSize: 16, fontWeight: 700, color: "#0f172a" }}>Marajo Group</div>
+              <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>Staff Portal</div>
+            </div>
+          </div>
 
-      <main style={{ padding: 28 }}>
-        {tab === "overview" && <OverviewTab />}
-        {tab === "units" && <UnitsTab />}
-        {tab === "leads" && <LeadsTab />}
-        {tab === "parking" && <ParkingTab />}
-        {tab === "facilities" && <FacilitiesTab />}
-        {tab === "workers" && <WorkersTab />}
-        {tab === "calendar" && <CalendarTab />}
-        {tab === "appointments" && <AppointmentsTab />}
-        {tab === "contacts" && <ContactsTab />}
-        {tab === "tasks" && <TasksTab />}
-        {tab === "notifications" && <NotificationsTab />}
-        {tab === "profile" && <ProfileTab staff={staff} />}
-      </main>
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 12 }}>
+              Main
+            </div>
+            <div style={{ display: "grid", gap: 6 }}>
+              {ADMIN_NAV_ITEMS.slice(0, 8).map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setTab(item.id)}
+                  style={item.id === tab ? sidebarItemActiveStyle : sidebarItemStyle}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 12 }}>
+              Tools
+            </div>
+            <div style={{ display: "grid", gap: 6 }}>
+              {ADMIN_NAV_ITEMS.slice(8).map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setTab(item.id)}
+                  style={item.id === tab ? sidebarItemActiveStyle : sidebarItemStyle}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </aside>
+
+        <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+          <div style={{ padding: "24px 28px", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
+              <div>
+                <h1 style={{ fontSize: 26, margin: 0, fontWeight: 700 }}>{ADMIN_NAV_ITEMS.find((item) => item.id === tab)?.label}</h1>
+                <p style={{ margin: "8px 0 0", color: "#64748b", fontSize: 14 }}>
+                  {tab === "overview" && "Sales pipeline summary and portal activity."}
+                  {tab === "units" && "Manage assigned units across all buildings."}
+                  {tab === "leads" && "Track leads, inquiries, and status updates."}
+                  {tab === "parking" && "Manage parking reservations and occupancy."}
+                  {tab === "facilities" && "Handle court bookings and facility schedules."}
+                  {tab === "workers" && "Manage workforce approvals and assignments."}
+                  {tab === "calendar" && "View appointments and reservation dates."}
+                  {tab === "appointments" && "Schedule and update client visits."}
+                  {tab === "contacts" && "Keep contact records and inquiries organized."}
+                  {tab === "tasks" && "Track pending tasks and follow-ups."}
+                  {tab === "notifications" && "Review system alerts and messages."}
+                  {tab === "profile" && "Update your staff profile and credentials."}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <main style={{ padding: 28, flex: 1 }}>
+            {tab === "overview" && <OverviewTab />}
+            {tab === "units" && <UnitsTab />}
+            {tab === "leads" && <LeadsTab />}
+            {tab === "parking" && <ParkingTab />}
+            {tab === "facilities" && <FacilitiesTab />}
+            {tab === "workers" && <WorkersTab />}
+            {tab === "calendar" && <CalendarTab />}
+            {tab === "appointments" && <AppointmentsTab />}
+            {tab === "contacts" && <ContactsTab />}
+            {tab === "tasks" && <TasksTab />}
+            {tab === "notifications" && <NotificationsTab />}
+            {tab === "profile" && <ProfileTab staff={staff} />}
+          </main>
+        </div>
+      </div>
     </div>
   );
 }

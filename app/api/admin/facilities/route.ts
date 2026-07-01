@@ -16,19 +16,19 @@ export async function GET(req: NextRequest) {
   if (action === "analytics") {
     const total = await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM court_bookings");
     const today = await db.queryOne<{ c: number }>(
-      "SELECT COUNT(*) c FROM court_bookings WHERE booking_date = CURDATE()"
+      "SELECT COUNT(*) c FROM court_bookings WHERE booking_date = CURRENT_DATE"
     );
     const upcoming = await db.queryOne<{ c: number }>(
-      "SELECT COUNT(*) c FROM court_bookings WHERE booking_date >= CURDATE() AND booking_status NOT IN ('cancelled')"
+      "SELECT COUNT(*) c FROM court_bookings WHERE booking_date >= CURRENT_DATE AND booking_status NOT IN ('cancelled')"
     );
     const cancelled = await db.queryOne<{ c: number }>(
       "SELECT COUNT(*) c FROM court_bookings WHERE booking_status = 'cancelled'"
     );
     const revToday = await db.queryOne<{ t: number }>(
-      "SELECT COALESCE(SUM(total_amount),0) t FROM court_bookings WHERE payment_status='paid' AND DATE(created_at)=CURDATE()"
+      "SELECT COALESCE(SUM(total_amount),0) t FROM court_bookings WHERE payment_status='paid' AND created_at::date = CURRENT_DATE"
     );
     const revWeek = await db.queryOne<{ t: number }>(
-      "SELECT COALESCE(SUM(total_amount),0) t FROM court_bookings WHERE payment_status='paid' AND YEARWEEK(created_at,1)=YEARWEEK(CURDATE(),1)"
+      "SELECT COALESCE(SUM(total_amount),0) t FROM court_bookings WHERE payment_status='paid' AND created_at >= date_trunc('week', CURRENT_DATE) AND created_at < date_trunc('week', CURRENT_DATE) + INTERVAL '1 week'"
     );
 
     return NextResponse.json({

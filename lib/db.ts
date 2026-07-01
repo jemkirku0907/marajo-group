@@ -6,7 +6,7 @@ declare global {
 }
 
 type DbConnection = PoolClient & {
-  execute(sql: string, params?: any[]): Promise<{ insertId: number; affectedRows: number }>;
+  execute(sql: string, params?: any[]): Promise<any>;
   beginTransaction(): Promise<void>;
   commit(): Promise<void>;
   rollback(): Promise<void>;
@@ -22,16 +22,21 @@ function createConnection(client: PoolClient): DbConnection {
   const wrapped = client as DbConnection;
 
   wrapped.execute = async (sql: string, params: any[] = []) => {
+    const normalized = sql.trim().toUpperCase();
     const isInsert = sql.trim().toUpperCase().startsWith("INSERT");
     const finalSql =
       isInsert && !sql.toUpperCase().includes("RETURNING")
         ? `${sql} RETURNING id`
         : sql;
     const result = await client.query(convertParams(finalSql), params);
-    return {
+    const meta = {
       insertId: isInsert ? (result.rows[0]?.id ?? 0) : 0,
       affectedRows: result.rowCount ?? 0,
     };
+    if (normalized.startsWith("SELECT") || normalized.startsWith("WITH")) {
+      return [result.rows, []];
+    }
+    return [meta, []];
   };
 
   wrapped.beginTransaction = async () => {
@@ -51,18 +56,8 @@ function createConnection(client: PoolClient): DbConnection {
 
 export function getPool(): Pool {
   if (!global._marajoPool) {
-    // Convert direct database URL to connection pooler for serverless (Vercel)
-    let connString = process.env.DATABASE_URL || "";
-    if (connString.includes("db.oeurruejbzoaukpscldb.supabase.co")) {
-      // Replace direct connection with pooler for Vercel serverless
-      connString = connString.replace(
-        "db.oeurruejbzoaukpscldb.supabase.co:5432",
-        "aws-0-ap-northeast-1.pooler.supabase.com:6543"
-      );
-    }
-    
     global._marajoPool = new Pool({
-      connectionString: connString,
+      connectionString: process.env.DATABASE_URL || "",
       ssl: { rejectUnauthorized: false },
       max: 10,
     });

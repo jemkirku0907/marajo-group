@@ -82,7 +82,7 @@ export default function Navbar() {
             </Link>
           ))}
 
-          <div className="nav-dropdown">
+          <div className={`nav-dropdown${dropdownOpen ? " open" : ""}`}>
             <button
               type="button"
               className={`nav-link nav-dropdown-toggle${isServiceActive ? " active" : ""}`}

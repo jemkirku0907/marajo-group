@@ -3,7 +3,7 @@ import { requireAdmin } from "@/lib/staffAuth";
 import { db } from "@/lib/db";
 
 async function tableExists(table: string): Promise<boolean> {
-  const rows = await db.query("SHOW TABLES LIKE ?", [table]);
+  const rows = await db.query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = ?", [table]);
   return rows.length > 0;
 }
 
@@ -34,28 +34,28 @@ export async function GET(req: NextRequest) {
 
     const total = await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM parking_reservations");
     const today = await db.queryOne<{ c: number }>(
-      "SELECT COUNT(*) c FROM parking_reservations WHERE reservation_date = CURDATE()"
+      "SELECT COUNT(*) c FROM parking_reservations WHERE reservation_date = CURRENT_DATE"
     );
     const upcoming = await db.queryOne<{ c: number }>(
-      "SELECT COUNT(*) c FROM parking_reservations WHERE reservation_date >= CURDATE() AND reservation_status NOT IN ('cancelled')"
+      "SELECT COUNT(*) c FROM parking_reservations WHERE reservation_date >= CURRENT_DATE AND reservation_status NOT IN ('cancelled')"
     );
     const cancelled = await db.queryOne<{ c: number }>(
       "SELECT COUNT(*) c FROM parking_reservations WHERE reservation_status = 'cancelled'"
     );
     const revToday = await db.queryOne<{ t: number }>(
-      "SELECT COALESCE(SUM(amount),0) t FROM payments WHERE payment_status='paid' AND DATE(payment_date)=CURDATE()"
+      "SELECT COALESCE(SUM(amount),0) t FROM payments WHERE payment_status='paid' AND payment_date::date = CURRENT_DATE"
     );
     const revWeek = await db.queryOne<{ t: number }>(
-      "SELECT COALESCE(SUM(amount),0) t FROM payments WHERE payment_status='paid' AND YEARWEEK(payment_date,1)=YEARWEEK(CURDATE(),1)"
+      "SELECT COALESCE(SUM(amount),0) t FROM payments WHERE payment_status='paid' AND payment_date >= date_trunc('week', CURRENT_DATE) AND payment_date < date_trunc('week', CURRENT_DATE) + INTERVAL '1 week'"
     );
     const revMonth = await db.queryOne<{ t: number }>(
-      "SELECT COALESCE(SUM(amount),0) t FROM payments WHERE payment_status='paid' AND MONTH(payment_date)=MONTH(CURDATE()) AND YEAR(payment_date)=YEAR(CURDATE())"
+      "SELECT COALESCE(SUM(amount),0) t FROM payments WHERE payment_status='paid' AND payment_date >= date_trunc('month', CURRENT_DATE) AND payment_date < date_trunc('month', CURRENT_DATE) + INTERVAL '1 month'"
     );
     const cap = await db.queryOne<{ cap: number; used: number }>(
       "SELECT COALESCE(SUM(total_capacity),0) cap, COALESCE(SUM(occupied_slots+reserved_slots),0) used FROM parking_facilities"
     );
     const peak = await db.query<{ hr: number; total: number }>(
-      "SELECT HOUR(entry_time) hr, COUNT(*) total FROM parking_reservations GROUP BY HOUR(entry_time) ORDER BY total DESC LIMIT 5"
+      "SELECT EXTRACT(HOUR FROM entry_time)::int hr, COUNT(*) total FROM parking_reservations GROUP BY EXTRACT(HOUR FROM entry_time) ORDER BY total DESC LIMIT 5"
     );
 
     return NextResponse.json({

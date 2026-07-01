@@ -51,8 +51,18 @@ function createConnection(client: PoolClient): DbConnection {
 
 export function getPool(): Pool {
   if (!global._marajoPool) {
+    // Convert direct database URL to connection pooler for serverless (Vercel)
+    let connString = process.env.DATABASE_URL || "";
+    if (connString.includes("db.oeurruejbzoaukpscldb.supabase.co")) {
+      // Replace direct connection with pooler for Vercel serverless
+      connString = connString.replace(
+        "db.oeurruejbzoaukpscldb.supabase.co:5432",
+        "aws-0-ap-northeast-1.pooler.supabase.com:6543"
+      );
+    }
+    
     global._marajoPool = new Pool({
-      connectionString: process.env.DATABASE_URL,
+      connectionString: connString,
       ssl: { rejectUnauthorized: false },
       max: 10,
     });

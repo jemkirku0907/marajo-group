@@ -13,6 +13,7 @@ export default function AuthModal() {
   const [siteKey, setSiteKey] = useState("");
   const [turnstileToken, setTurnstileToken] = useState("");
   const widgetRef = useRef<HTMLDivElement>(null);
+  const [registerStep, setRegisterStep] = useState<"captcha" | "form">("form");
 
   useEffect(() => setMode(modalMode), [modalMode]);
 
@@ -27,6 +28,15 @@ export default function AuthModal() {
       })
       .catch(() => {});
   }, [isModalOpen]);
+
+  useEffect(() => {
+    // if registering and turnstile is enabled, start at captcha step
+    if (modalMode === "register" && turnstileEnabled) {
+      setRegisterStep("captcha");
+    } else {
+      setRegisterStep("form");
+    }
+  }, [modalMode, turnstileEnabled]);
 
   useEffect(() => {
     if (!turnstileEnabled || !siteKey || !widgetRef.current) return;
@@ -44,7 +54,11 @@ export default function AuthModal() {
       widgetRef.current.innerHTML = "";
       (window as any).turnstile?.render(widgetRef.current, {
         sitekey: siteKey,
-        callback: (token: string) => setTurnstileToken(token),
+        callback: (token: string) => {
+          setTurnstileToken(token);
+          // when token is acquired during registration, advance to form
+          if (modalMode === "register") setRegisterStep("form");
+        },
       });
     }
   }, [turnstileEnabled, siteKey, mode, isModalOpen]);
@@ -87,7 +101,24 @@ export default function AuthModal() {
 
         {error && <div className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="space-y-3">
+        {/* If registering and Turnstile is enabled, require captcha first */}
+        {mode === "register" && turnstileEnabled && registerStep === "captcha" ? (
+          <div>
+            <p className="mb-3 text-sm text-gray-600">Please complete the security check to continue.</p>
+            <div ref={widgetRef} />
+            <div className="mt-4 flex justify-end">
+              <button
+                type="button"
+                disabled={!turnstileToken}
+                onClick={() => setRegisterStep("form")}
+                className="rounded-md bg-[#1a1a2e] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-3">
           {mode === "register" && (
             <div className="grid grid-cols-2 gap-3">
               <input
@@ -130,7 +161,9 @@ export default function AuthModal() {
             onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
 
-          {turnstileEnabled && <div ref={widgetRef} />}
+            {/* show inline widget for login or when captcha isn't required prior to form */}
+            {turnstileEnabled && mode === "login" && <div ref={widgetRef} />}
+            {turnstileEnabled && mode === "register" && registerStep === "form" && <div ref={widgetRef} />}
 
           <button
             type="submit"

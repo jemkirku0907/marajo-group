@@ -1,0 +1,40 @@
+/* Marajo Group Design Tokens
+   Premium corporate palette for the official brand system.
+   Strict 70% white / 20% black / 10% green-lime distribution.
+*/
+:root {
+  --brand-green: #38A000;
+  --brand-lime: #C7DC2E;
+  --neutral-ink: #0D0D0D;
+  --neutral-white: #FFFFFF;
+
+  --bg-base: var(--neutral-white);
+  --surface: #F7F8FB;
+  --surface-soft: #EFF2F5;
+  --text-primary: var(--neutral-ink);
+  --text-muted: #4B5563;
+  --accent: var(--brand-green);
+  --accent-soft: rgba(199, 220, 46, 0.16);
+  --border-muted: rgba(13, 13, 13, 0.08);
+  --shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+/* Small utility examples */
+.bg-brand { background-color: var(--brand-green); color: var(--neutral-white); }
+.text-accent { color: var(--brand-green); }
+.btn-gold {
+  background: var(--brand-green);
+  color: var(--neutral-white);
+  border: 1px solid rgba(56, 160, 0, 0.1);
+  border-radius: 999px;
+  padding: 0.8rem 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.btn-outline-gold {
+  background: transparent;
+  color: var(--brand-green);
+  border: 1px solid var(--brand-green);
+  border-radius: 999px;
+  padding: 0.6rem 1.2rem;
+}

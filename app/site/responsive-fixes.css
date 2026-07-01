@@ -1,0 +1,752 @@
+/* ============================================================
+   MARAJO GROUP — RESPONSIVE FIXES
+   Loaded after style.css and platform.css.
+   Fixes layout issues across all pages and screen sizes.
+   ============================================================ */
+
+/* ── 0. Global overflow prevention ──────────────────────────── */
+/*
+ * DO NOT set overflow-x on html or body — any overflow value (hidden, clip, auto)
+ * on these elements changes the scroll container and breaks position:sticky on
+ * the site header, both on localhost (XAMPP/Apache) and in production.
+ *
+ * Horizontal scroll is prevented instead by the site-wrapper below.
+ */
+html {
+  /* no overflow — browser default lets body be the scroll container */
+}
+body {
+  /* no overflow — keeps body as the scroll container so sticky works */
+}
+
+/* Clip horizontal overflow on a wrapper BELOW the sticky header so the header
+   is never inside a clipped container */
+.home-page,
+main {
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── 1. Container — prevent edge overflow on tiny screens ────── */
+.container {
+  padding-left: max(1rem, env(safe-area-inset-left, 1rem));
+  padding-right: max(1rem, env(safe-area-inset-right, 1rem));
+}
+
+/* ── 2. Section — remove border-radius on mobile (prevents clipping) */
+@media (max-width: 600px) {
+  .section {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+}
+
+/* ── 3. Hero — fix text overflow on small screens ─────────────── */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: clamp(2rem, 9vw, 3.5rem);
+    word-break: break-word;
+    hyphens: auto;
+  }
+
+  .hero-content {
+    padding: 0 0.25rem;
+  }
+
+  .hero-copy {
+    font-size: 0.95rem;
+  }
+}
+
+/* ── 4. Navbar — fix layout at intermediate widths ─────────────── */
+@media (max-width: 900px) {
+  .container.navbar {
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.75rem;
+  }
+
+  /* Push the hamburger to the far right */
+  .nav-toggle {
+    margin-left: auto;
+  }
+}
+
+/* ── 5. Footer grid — proper wrapping ─────────────────────────── */
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-bottom .container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* ── 6. Services grid — fix 4-col collapse ─────────────────────── */
+@media (max-width: 600px) {
+  .services-section .services-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 7. Home hero grid — fix media overflow ───────────────────── */
+@media (max-width: 600px) {
+  .home-hero-grid {
+    gap: 1.5rem;
+  }
+
+  .home-hero-media .hero-feature-panel {
+    width: calc(100% - 2rem);
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+}
+
+/* ── 8. Home mosaic — fix bottom rows cutting off on mobile ──── */
+@media (max-width: 400px) {
+  .home-mosaic-grid {
+    grid-template-rows: repeat(4, 200px);
+  }
+}
+
+/* ── 9. Tables — make ALL tables horizontally scrollable ─────── */
+.table-wrap,
+.platform-section .platform-table,
+.platform-panel .platform-table {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Wrap bare tables in platform sections */
+.platform-table {
+  min-width: 480px;
+}
+
+/* ── 10. Forms — stack on mobile ──────────────────────────────── */
+@media (max-width: 480px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid .field-full {
+    grid-column: 1;
+  }
+
+  .contact-card::before {
+    left: 1rem;
+    right: 1rem;
+  }
+}
+
+/* ── 11. Split grid — ensure proper collapse ──────────────────── */
+@media (max-width: 768px) {
+  .split-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .split-grid img {
+    min-height: 260px;
+  }
+
+  .map-contact-grid,
+  .map-parking-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 12. Info grid — 2-col on tablet, 1-col on mobile ──────────── */
+@media (max-width: 768px) {
+  .info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 13. Download grid ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .download-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .download-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 14. News/Journal grid ────────────────────────────────────── */
+@media (max-width: 768px) {
+  .journal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 15. Timeline section ────────────────────────────────────── */
+@media (max-width: 768px) {
+  .timeline-section .timeline,
+  .home-timeline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .timeline-section .timeline,
+  .home-timeline {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 16. Gallery grid ────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .gallery-grid,
+  .gallery-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 17. Gallery filter bar — horizontal scroll on mobile ────── */
+@media (max-width: 480px) {
+  .gallery-filter-bar,
+  .gallery-filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+    justify-content: flex-start;
+  }
+
+  .gallery-filter,
+  .filter-btn {
+    flex-shrink: 0;
+  }
+}
+
+/* ── 18. Property card grid ─────────────────────────────────── */
+@media (max-width: 480px) {
+  .card-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── 19. Home CTA grid ─────────────────────────────────────── */
+@media (max-width: 600px) {
+  .home-cta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-cta .section-actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .home-cta .section-actions .btn-primary,
+  .home-cta .section-actions .btn-outline {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
+
+/* ── 20. Contact info section ────────────────────────────────── */
+@media (max-width: 600px) {
+  .contact-section .split-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 21. Platform page hero ──────────────────────────────────── */
+@media (max-width: 480px) {
+  .platform-hero {
+    padding: 2.5rem 0 2rem;
+  }
+
+  .platform-hero h1 {
+    font-size: clamp(1.4rem, 6vw, 2rem);
+  }
+
+  .platform-status-strip {
+    font-size: 0.85rem;
+  }
+
+  .platform-panel {
+    padding: 1.25rem;
+  }
+
+  .platform-grid {
+    gap: 1.25rem;
+  }
+}
+
+/* ── 22. Slot board — ensure wrap ────────────────────────────── */
+.slot-board {
+  flex-wrap: wrap;
+}
+
+.slot-tile {
+  min-width: 64px;
+  flex-shrink: 0;
+}
+
+/* ── 23. Fee box — readable on narrow screens ────────────────── */
+@media (max-width: 360px) {
+  .fee-box > div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
+
+/* ── 24. Navigation dropdown — z-index fix ────────────────────── */
+.nav-dropdown-menu {
+  z-index: 1600;
+}
+
+/* ── 25. Sticky contact button — safe area inset ─────────────── */
+@media (max-width: 560px) {
+  .sticky-contact {
+    bottom: max(1.25rem, env(safe-area-inset-bottom, 1.25rem));
+    right: max(1rem, env(safe-area-inset-right, 1rem));
+  }
+}
+
+/* ── 26. Modal — full-width on mobile ────────────────────────── */
+@media (max-width: 480px) {
+  .modal-backdrop {
+    padding: 0.5rem;
+    align-items: flex-end;
+  }
+
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .lead-modal {
+    width: 100%;
+    max-height: 90vh;
+  }
+}
+
+/* ── 27. Card hover — reduce on touch devices ────────────────── */
+@media (hover: none) {
+  .property-card:hover,
+  .feature-card:hover,
+  .news-card:hover,
+  .space-card:hover,
+  .download-card:hover,
+  .contact-card:hover,
+  .gallery-card:hover {
+    transform: none;
+    box-shadow: var(--shadow);
+  }
+
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .btn-outline:hover {
+    transform: none;
+  }
+
+  .interactive-card:hover {
+    transform: none;
+  }
+}
+
+/* ── 28. Breadcrumb — don't break on mobile ──────────────────── */
+@media (max-width: 480px) {
+  .breadcrumb {
+    font-size: 0.82rem;
+  }
+}
+
+/* ── 29. Property controls — stack on mobile ─────────────────── */
+@media (max-width: 480px) {
+  .property-controls {
+    gap: 0.875rem;
+  }
+
+  .property-search-wrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .property-sort {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .property-sort select {
+    min-width: 0;
+    flex: 1;
+  }
+}
+
+/* ── 30. Section padding — reduce on mobile ──────────────────── */
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 48px 0;
+  }
+}
+
+/* ── 31. Home check list ──────────────────────────────────────── */
+@media (max-width: 480px) {
+  .home-check-list li {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .home-check-list .check-icon {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* ── 32. Home feature row — full collapse ─────────────────────── */
+@media (max-width: 768px) {
+  .home-feature-row,
+  .home-feature-row-reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .home-feature-row-reverse img,
+  .home-feature-row-reverse > div {
+    order: initial;
+  }
+}
+
+/* ── 33. Home stat strip ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  .home-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 1.75rem;
+  }
+
+  .home-stat-grid > div {
+    padding: 0 1rem;
+  }
+
+  .home-stat-grid > div:nth-child(odd) {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .home-stat-grid > div:nth-child(even) {
+    border-left: 1px solid var(--border-muted);
+  }
+}
+
+/* ── 34. About — feature split ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .feature-split,
+  .feature-split-reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-photo {
+    min-height: 280px;
+    aspect-ratio: 16 / 9;
+  }
+
+  .photo-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+
+  .photo-grid img:first-child {
+    grid-row: auto;
+  }
+}
+
+/* ── 35. Journal — responsive cards ─────────────────────────── */
+@media (max-width: 768px) {
+  .journal-featured {
+    grid-template-columns: 1fr;
+  }
+
+  .journal-featured-img {
+    height: 220px;
+  }
+
+  .journal-featured-body {
+    padding: 1.5rem;
+  }
+}
+
+/* ── 36. CSR section ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .csr-section > .container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+
+/* ── 37. Home scroll cue — hide on very small screens ──────── */
+@media (max-width: 360px) {
+  .home-scroll-cue {
+    display: none;
+  }
+}
+
+/* ── 38. Typography — base font size on tiny screens ──────── */
+@media (max-width: 320px) {
+  html {
+    font-size: 14px;
+  }
+
+  .section-title h2,
+  .section-title h1 {
+    font-size: clamp(1.6rem, 8vw, 2.2rem);
+  }
+}
+
+
+/* ============================================================
+   PATCH 2 — Nav, Dashboard, Platform Pages
+   ============================================================ */
+
+/* ── Nav: prevent active underline on button elements ───────── */
+button.nav-link.active::after,
+button.nav-dropdown-toggle.active::after {
+  display: none;
+}
+
+/* ── Nav: desktop navbar align like contact ──────────────────── */
+@media (min-width: 901px) {
+  .navbar {
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .nav-links {
+    gap: 1.25rem;
+  }
+
+  /* theme toggle in header-actions — subtle, matches contact page feel */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+}
+
+/* ── Dashboard: parking/workforce stats → proper padding + overflow ── */
+#parking .stats-grid,
+#workforce .stats-grid {
+  margin-bottom: 1.5rem;
+}
+
+/* Panel: overflow handled by CSS on specific tables, not the panel itself */
+
+/* ── Dashboard: content-grid responsive ─────────────────────── */
+@media (max-width: 1024px) {
+  .content-grid.two-col {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-grid.two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Dashboard: section-heading responsive ─────────────────── */
+@media (max-width: 600px) {
+  .section-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .section-heading > div:last-child,
+  .section-heading > a:last-child {
+    align-self: flex-start;
+  }
+}
+
+/* ── Dashboard: stats-grid better collapse ──────────────────── */
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Dashboard: two-col (all sections) ──────────────────────── */
+@media (max-width: 768px) {
+  .dashboard-main .two-col {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* ── Dashboard: parking reservation table — scrollable ─────── */
+#parking-reservation-table,
+#workers-roster-table,
+#bookings-table,
+#job-postings-table {
+  min-width: 640px;
+}
+
+/* Panel: let overflow be visible for dropdowns/tooltips */
+
+/* ── Platform pages (parking.html / workforce.html) ─────────── */
+
+/* Hero: collapse to single column and hide preview image on mobile */
+@media (max-width: 768px) {
+  .platform-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  /* Explicitly hide preview panel on mobile — status strip is inside it */
+  .platform-preview {
+    display: none !important;
+  }
+
+  /* Ensure hero text column takes full width */
+  .platform-hero-grid > div:first-child {
+    width: 100%;
+  }
+
+  /* Hero text padding */
+  .platform-hero {
+    padding: 2.5rem 0 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .platform-hero-grid {
+    gap: 1.5rem;
+  }
+
+  .platform-hero h1 {
+    font-size: 1.45rem;
+  }
+
+  /* Hero actions: full-width buttons stacked */
+  .platform-hero-actions {
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .platform-hero-actions .btn-primary,
+  .platform-hero-actions .btn-secondary {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+/* Platform grid — MUST be 1 column on mobile */
+@media (max-width: 768px) {
+  .platform-section .platform-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem;
+  }
+}
+
+/* Platform form — MUST stack on mobile */
+@media (max-width: 768px) {
+  .platform-form.two-col {
+    grid-template-columns: 1fr !important;
+  }
+
+  .platform-field.full {
+    grid-column: 1 !important;
+  }
+}
+
+/* Platform panel — tighter padding on mobile */
+@media (max-width: 480px) {
+  .platform-panel {
+    padding: 1.25rem 1rem;
+    gap: 1rem;
+  }
+
+  .platform-section {
+    padding: 2.5rem 0 3rem;
+  }
+}
+
+/* Platform table — horizontal scroll */
+.platform-panel .platform-table {
+  min-width: 400px;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Status strip — stay 3-col but reduce padding */
+@media (max-width: 380px) {
+  .platform-status-strip strong {
+    font-size: 1rem;
+  }
+
+  .platform-status-strip span {
+    font-size: 0.65rem;
+  }
+
+  .platform-status-strip > div {
+    padding: 0.65rem 0.2rem;
+  }
+}
+
+/* Fee box — stays readable */
+@media (max-width: 480px) {
+  .fee-box > div {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Slot board — wraps correctly */
+@media (max-width: 480px) {
+  .slot-board {
+    gap: 0.5rem;
+  }
+
+  .slot-tile {
+    min-width: 56px;
+    padding: 0.5rem 0.6rem;
+  }
+}

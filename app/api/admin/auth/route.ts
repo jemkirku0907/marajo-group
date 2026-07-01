@@ -7,6 +7,7 @@ import {
   clearStaffLoginFailures,
   STAFF_COOKIE,
 } from "@/lib/staffAuth";
+import { turnstileEnabled, turnstileSiteKey, verifyTurnstileToken } from "@/lib/turnstile";
 
 function getClientIp(req: NextRequest): string {
   return req.headers.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
@@ -23,6 +24,14 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       success: true,
       staff: { id: staff.staff_id, name: staff.name, role: staff.role, role_code: staff.role_code },
+    });
+  }
+
+  if (action === "turnstile-site-key" || action === "security-config") {
+    return NextResponse.json({
+      success: true,
+      turnstile_enabled: turnstileEnabled(),
+      site_key: turnstileSiteKey(),
     });
   }
 
@@ -47,6 +56,13 @@ export async function POST(req: NextRequest) {
 
     if (!email || !password) {
       return NextResponse.json({ success: false, message: "Please enter both email and password." }, { status: 400 });
+    }
+
+    if (!(await verifyTurnstileToken(data.turnstile_token, ip))) {
+      return NextResponse.json(
+        { success: false, message: "Please complete the security check and try again." },
+        { status: 400 }
+      );
     }
 
     const result = await loginStaff(email, password);

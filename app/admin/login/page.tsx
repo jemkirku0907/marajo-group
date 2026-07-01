@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function AdminLoginPage() {
@@ -9,6 +9,42 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [turnstileEnabled, setTurnstileEnabled] = useState(false);
+  const [siteKey, setSiteKey] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const widgetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/auth?action=turnstile-site-key")
+      .then((res) => res.json())
+      .then((data) => {
+        setTurnstileEnabled(!!data.turnstile_enabled);
+        setSiteKey(data.site_key || "");
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!turnstileEnabled || !siteKey || !widgetRef.current) return;
+    if (!(window as any).turnstile) {
+      const script = document.createElement("script");
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+      script.async = true;
+      script.onload = renderWidget;
+      document.body.appendChild(script);
+    } else {
+      renderWidget();
+    }
+
+    function renderWidget() {
+      if (!widgetRef.current) return;
+      widgetRef.current.innerHTML = "";
+      (window as any).turnstile?.render(widgetRef.current, {
+        sitekey: siteKey,
+        callback: (token: string) => setTurnstileToken(token),
+      });
+    }
+  }, [turnstileEnabled, siteKey]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -18,7 +54,7 @@ export default function AdminLoginPage() {
       const res = await fetch("/api/admin/auth?action=login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, turnstile_token: turnstileToken }),
       });
       const data = await res.json();
       if (!data.success) {
@@ -106,6 +142,9 @@ export default function AdminLoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             style={inputStyle}
           />
+
+          {turnstileEnabled && <div ref={widgetRef} style={{ marginBottom: 18 }} />}
+
           <button
             type="submit"
             disabled={loading}

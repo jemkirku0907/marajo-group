@@ -254,7 +254,7 @@ export default function AdminDashboardPage() {
           </div>
 
           <main key={tab} className="admin-dashboard-main">
-            {tab === "overview" && <OverviewTab />}
+            {tab === "overview" && <OverviewTab onNavigate={handleTabChange} />}
             {tab === "units" && <UnitsTab />}
             {tab === "leads" && <LeadsTab />}
             {tab === "parking" && <ParkingTab />}
@@ -1130,7 +1130,62 @@ const actionBtn: React.CSSProperties = {
 
 /* ───────────────────── Overview tab ───────────────────── */
 
-function OverviewTab() {
+function formatOverviewDate(value?: string) {
+  if (!value) return "-";
+  return new Date(value).toLocaleDateString();
+}
+
+function MiniBarChart({ title, data }: { title: string; data: Array<{ label: string; c: number | string }> }) {
+  const max = Math.max(1, ...data.map((item) => Number(item.c || 0)));
+  const rows = data.length ? data : [{ label: "No data", c: 0 }];
+  return (
+    <div style={cardStyle}>
+      <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 14 }}>{title}</h3>
+      <div className="overview-bar-chart">
+        {rows.map((item, index) => {
+          const value = Number(item.c || 0);
+          return (
+            <div key={`${item.label}-${index}`} className="overview-bar-row">
+              <span>{item.label}</span>
+              <div className="overview-bar-track">
+                <div className="overview-bar-fill" style={{ width: `${Math.max(5, (value / max) * 100)}%` }} />
+              </div>
+              <strong>{value}</strong>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function StatusSummary({ title, rows, total }: { title: string; rows: Array<{ status: string; c: number | string }>; total: number }) {
+  const denominator = Math.max(1, total);
+  const visibleRows = rows.length ? rows : [{ status: "No data", c: 0 }];
+  return (
+    <div style={cardStyle}>
+      <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 14 }}>{title}</h3>
+      <div className="overview-status-stack">
+        {visibleRows.map((row) => {
+          const value = Number(row.c || 0);
+          return (
+            <div key={row.status} className="overview-status-row">
+              <div>
+                <strong>{String(row.status || "unknown").replace(/_/g, " ")}</strong>
+                <span>{value} total</span>
+              </div>
+              <div className="overview-progress-track">
+                <div className="overview-progress-fill" style={{ width: `${Math.min(100, (value / denominator) * 100)}%` }} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function OverviewTab({ onNavigate }: { onNavigate: (tab: Tab) => void }) {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -1145,6 +1200,171 @@ function OverviewTab() {
   if (!data?.success) return <p>Unable to load overview.</p>;
 
   const s = data.stats;
+  const now = new Date();
+  const hour = now.getHours();
+  const greeting = hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
+  const statCards = [
+    ["Total Users", s.total_users],
+    ["Active Users", s.active_users],
+    ["Staff Members", s.staff_members],
+    ["Available Workers", s.available_workers],
+    ["Active Bookings", s.active_bookings],
+    ["Pending Bookings", s.pending_bookings],
+    ["Completed Bookings", s.completed_bookings],
+    ["Cancelled Bookings", s.cancelled_bookings],
+    ["Total Properties", s.total_properties],
+    ["Available Units", s.available_units],
+    ["Occupied Units", s.occupied_units],
+    ["Contact Messages", s.total_contacts],
+    ["News Articles", s.news_articles],
+    ["Reviews", s.reviews],
+  ];
+
+  return (
+    <div className="overview-dashboard">
+      <section className="overview-hero">
+        <div>
+          <p className="overview-kicker">{now.toLocaleDateString()} - {now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
+          <h2>{greeting}, Admin</h2>
+          <p>Live Marajo Group operations snapshot across leads, bookings, workforce, contacts, and properties.</p>
+        </div>
+        <div className="overview-system-card">
+          <span>System Status</span>
+          <strong>Operational</strong>
+          <small>{s.unread_notifications || 0} unread notifications</small>
+        </div>
+      </section>
+
+      <div className="overview-quick-actions">
+        <button onClick={() => onNavigate("units")} style={actionBtn}>Add Property</button>
+        <button onClick={() => onNavigate("facilities")} style={actionBtn}>View Bookings</button>
+        <button onClick={() => onNavigate("workers")} style={actionBtn}>Assign Worker</button>
+        <button onClick={() => onNavigate("contacts")} style={actionBtn}>View Messages</button>
+        <button onClick={() => onNavigate("notifications")} style={actionBtn}>Notifications</button>
+      </div>
+
+      <div className="overview-stat-grid">
+        {statCards.map(([label, value]) => (
+          <StatCard key={String(label)} label={String(label)} value={value ?? 0} />
+        ))}
+      </div>
+
+      <div className="overview-grid-two">
+        <div style={cardStyle}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 12 }}>Recent Bookings</h3>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Customer</th>
+                <th style={thStyle}>Type</th>
+                <th style={thStyle}>Date</th>
+                <th style={thStyle}>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(data.recent_bookings || []).map((b: any) => (
+                <tr key={`${b.source}-${b.id}`}>
+                  <td style={tdStyle}>{b.customer_name}</td>
+                  <td style={tdStyle}>{b.source}</td>
+                  <td style={tdStyle}>{formatOverviewDate(b.booking_date || b.created_at)}</td>
+                  <td style={tdStyle}><span style={statusPillStyle(b.status)}>{b.status}</span></td>
+                </tr>
+              ))}
+              {(!data.recent_bookings || data.recent_bookings.length === 0) && (
+                <tr>
+                  <td style={tdStyle} colSpan={4}>No recent bookings.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        <div style={cardStyle}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 12 }}>Recent Users</h3>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Name</th>
+                <th style={thStyle}>Email</th>
+                <th style={thStyle}>Registered</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(data.recent_users || []).map((u: any) => (
+                <tr key={u.id}>
+                  <td style={tdStyle}>
+                    <span className="overview-user-avatar">{u.first_name?.charAt(0) || u.email?.charAt(0) || "U"}</span>
+                    {[u.first_name, u.last_name].filter(Boolean).join(" ") || "User"}
+                  </td>
+                  <td style={tdStyle}>{u.email}</td>
+                  <td style={tdStyle}>{formatOverviewDate(u.created_at)}</td>
+                </tr>
+              ))}
+              {(!data.recent_users || data.recent_users.length === 0) && (
+                <tr>
+                  <td style={tdStyle} colSpan={3}>No recent users.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="overview-grid-three">
+        <StatusSummary title="Worker Status" rows={data.worker_status || []} total={s.total_workers || 0} />
+        <StatusSummary title="Property Summary" rows={data.property_status || []} total={s.total_units || 0} />
+        <MiniBarChart title="Monthly Bookings" data={data.charts?.monthly_bookings || []} />
+      </div>
+
+      <div className="overview-grid-three">
+        <MiniBarChart title="Monthly Users" data={data.charts?.monthly_users || []} />
+        <MiniBarChart title="Contact Inquiries" data={data.charts?.monthly_inquiries || []} />
+        <div style={cardStyle}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 12 }}>Recent Contact Messages</h3>
+          <div className="overview-list">
+            {(data.recent_contacts || []).map((c: any) => (
+              <div key={c.id} className="overview-list-item">
+                <strong>{c.name}</strong>
+                <span>{c.property_interest || c.unit_interest || "General inquiry"}</span>
+                <small>{c.email || "No email"} - {formatOverviewDate(c.last_inquiry_at || c.created_at)}</small>
+              </div>
+            ))}
+            {(!data.recent_contacts || data.recent_contacts.length === 0) && <p>No recent contact messages.</p>}
+          </div>
+        </div>
+      </div>
+
+      <div className="overview-grid-two">
+        <div style={cardStyle}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 12 }}>Recent Activity</h3>
+          <div className="overview-timeline">
+            {(data.activity || []).map((item: any, index: number) => (
+              <div key={`${item.type}-${index}`} className="overview-timeline-item">
+                <span>{item.type}</span>
+                <strong>{item.title}</strong>
+                <small>{item.detail}</small>
+              </div>
+            ))}
+            {(!data.activity || data.activity.length === 0) && <p>No recent activity.</p>}
+          </div>
+        </div>
+
+        <div style={cardStyle}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 12 }}>Notifications</h3>
+          <div className="overview-list">
+            {(data.notifications || []).map((n: any) => (
+              <div key={n.id} className="overview-list-item">
+                <strong>{n.title}</strong>
+                <span>{n.message}</span>
+                <small>{n.is_read ? "Read" : "Unread"} - {formatOverviewDate(n.created_at)}</small>
+              </div>
+            ))}
+            {(!data.notifications || data.notifications.length === 0) && <p>No notifications.</p>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div>

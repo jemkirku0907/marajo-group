@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Properties",
+  title: {
+    default: "Properties | Marajo Group",
+    template: "%s | Marajo Group",
+  },
   description: "Browse Marajo Group residential, commercial, office, mixed-use, and hospitality properties.",
 };
 

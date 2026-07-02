@@ -12,6 +12,7 @@ export default function AuthModal() {
   const [turnstileEnabled, setTurnstileEnabled] = useState(false);
   const [siteKey, setSiteKey] = useState("");
   const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileError, setTurnstileError] = useState("");
   const widgetRef = useRef<HTMLDivElement>(null);
   const [registerStep, setRegisterStep] = useState<"captcha" | "form">("form");
 
@@ -20,6 +21,8 @@ export default function AuthModal() {
   useEffect(() => {
     if (!isModalOpen) return;
     setError("");
+    setTurnstileError("");
+    setTurnstileToken("");
     fetch("/api/auth?action=turnstile-site-key")
       .then((r) => r.json())
       .then((d) => {
@@ -45,6 +48,9 @@ export default function AuthModal() {
       script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
       script.async = true;
       script.onload = renderWidget;
+      script.onerror = () => {
+        setTurnstileError("Security check could not load. Please refresh and try again.");
+      };
       document.body.appendChild(script);
     } else {
       renderWidget();
@@ -55,9 +61,19 @@ export default function AuthModal() {
       (window as any).turnstile?.render(widgetRef.current, {
         sitekey: siteKey,
         callback: (token: string) => {
+          setTurnstileError("");
           setTurnstileToken(token);
           // when token is acquired during registration, advance to form
           if (modalMode === "register") setRegisterStep("form");
+        },
+        "expired-callback": () => setTurnstileToken(""),
+        "error-callback": () => {
+          setTurnstileToken("");
+          setTurnstileError("Security check is unavailable for this domain. Please refresh after the site owner updates the Cloudflare Turnstile domain settings.");
+        },
+        "timeout-callback": () => {
+          setTurnstileToken("");
+          setTurnstileError("Security check timed out. Please refresh and try again.");
         },
       });
     }
@@ -68,6 +84,10 @@ export default function AuthModal() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    if (turnstileEnabled && !turnstileToken) {
+      setError(turnstileError || "Please complete the security check and try again.");
+      return;
+    }
     setBusy(true);
     try {
       const action = mode === "login" ? "login" : "register";
@@ -99,13 +119,14 @@ export default function AuthModal() {
           </button>
         </div>
 
-        {error && <div className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
+        {error && <div className="mb-4 rounded-md px-3 py-2 text-sm theme-error-panel">{error}</div>}
 
         {/* If registering and Turnstile is enabled, require captcha first */}
         {mode === "register" && turnstileEnabled && registerStep === "captcha" ? (
           <div>
             <p className="mb-3 text-sm theme-muted">Please complete the security check to continue.</p>
             <div ref={widgetRef} />
+            {turnstileError && <p className="mt-2 text-sm theme-error-text">{turnstileError}</p>}
             <div className="mt-4 flex justify-end">
               <button
                 type="button"
@@ -164,10 +185,11 @@ export default function AuthModal() {
             {/* show inline widget for login or when captcha isn't required prior to form */}
             {turnstileEnabled && mode === "login" && <div ref={widgetRef} />}
             {turnstileEnabled && mode === "register" && registerStep === "form" && <div ref={widgetRef} />}
+            {turnstileError && <p className="text-sm theme-error-text">{turnstileError}</p>}
 
           <button
             type="submit"
-            disabled={busy}
+            disabled={busy || (turnstileEnabled && !turnstileToken)}
             className="w-full rounded-md py-2.5 text-sm font-semibold text-white disabled:opacity-60 theme-primary-button"
           >
             {busy ? "Please wait…" : mode === "login" ? "Log In" : "Create Account"}

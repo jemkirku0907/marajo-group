@@ -13,6 +13,7 @@ export default function AdminLoginPage() {
   const [turnstileEnabled, setTurnstileEnabled] = useState(false);
   const [siteKey, setSiteKey] = useState("");
   const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileError, setTurnstileError] = useState("");
   const widgetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,6 +34,9 @@ export default function AdminLoginPage() {
       script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
       script.async = true;
       script.onload = renderWidget;
+      script.onerror = () => {
+        setTurnstileError("Security check could not load. Please refresh and try again.");
+      };
       document.body.appendChild(script);
     } else {
       renderWidget();
@@ -43,7 +47,19 @@ export default function AdminLoginPage() {
       widgetRef.current.innerHTML = "";
       (window as any).turnstile?.render(widgetRef.current, {
         sitekey: siteKey,
-        callback: (token: string) => setTurnstileToken(token),
+        callback: (token: string) => {
+          setTurnstileError("");
+          setTurnstileToken(token);
+        },
+        "expired-callback": () => setTurnstileToken(""),
+        "error-callback": () => {
+          setTurnstileToken("");
+          setTurnstileError("Security check is unavailable for this domain. Please refresh after the site owner updates the Cloudflare Turnstile domain settings.");
+        },
+        "timeout-callback": () => {
+          setTurnstileToken("");
+          setTurnstileError("Security check timed out. Please refresh and try again.");
+        },
       });
     }
   }, [turnstileEnabled, siteKey]);
@@ -51,6 +67,10 @@ export default function AdminLoginPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    if (turnstileEnabled && !turnstileToken) {
+      setError(turnstileError || "Please complete the security check and try again.");
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch("/api/admin/auth?action=login", {
@@ -113,9 +133,9 @@ export default function AdminLoginPage() {
         {error && (
           <div
             style={{
-              background: "#fef2f2",
-              border: "1px solid #fecaca",
-              color: "#b91c1c",
+              background: "var(--danger-soft, #fef2f2)",
+              border: "1px solid var(--danger-border, #fecaca)",
+              color: "var(--danger, #b91c1c)",
               fontSize: 13,
               padding: "10px 14px",
               borderRadius: 8,
@@ -151,11 +171,16 @@ export default function AdminLoginPage() {
             style={inputStyle}
           />
 
-          {turnstileEnabled && <div ref={widgetRef} style={{ marginBottom: 18 }} />}
+          {turnstileEnabled && <div ref={widgetRef} style={{ marginBottom: turnstileError ? 8 : 18 }} />}
+          {turnstileError && (
+            <p style={{ color: "var(--danger, #b91c1c)", fontSize: 13, marginBottom: 18 }}>
+              {turnstileError}
+            </p>
+          )}
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || (turnstileEnabled && !turnstileToken)}
             style={{
               width: "100%",
               padding: 12,

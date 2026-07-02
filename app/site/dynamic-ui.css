@@ -112,6 +112,26 @@
   color: var(--text-muted);
 }
 
+.theme-error-panel {
+  background: var(--danger-soft, #fef2f2);
+  border: 1px solid var(--danger-border, #fecaca);
+  color: var(--danger, #b91c1c);
+}
+
+.theme-error-text {
+  color: var(--danger, #b91c1c);
+}
+
+.theme-dark .theme-error-panel {
+  background: rgba(127, 29, 29, 0.24);
+  border-color: rgba(248, 113, 113, 0.38);
+  color: #fecaca;
+}
+
+.theme-dark .theme-error-text {
+  color: #fecaca;
+}
+
 .theme-border-b {
   border-bottom: 1px solid var(--border-muted);
 }

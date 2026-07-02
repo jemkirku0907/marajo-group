@@ -100,7 +100,7 @@ export default function PropertiesPage() {
 
         <div className="card-grid">
           {filtered.map((p) => (
-            <article key={p.slug} className="property-card gallery-item in-view">
+            <Link key={p.slug} href={`/properties/${p.slug}`} className="property-card property-card-link gallery-item in-view" aria-label={`View details for ${p.name}`}>
               <div className="property-image">
                 <Image src={p.image} alt={p.name} width={700} height={500} />
                 <button className="favorite-btn" type="button" aria-label={`Save ${p.name}`}>
@@ -123,11 +123,11 @@ export default function PropertiesPage() {
                     Location<span>{p.location}</span>
                   </span>
                 </div>
-                <Link href={`/properties/${p.slug}`} className="btn-link">
+                <span className="btn-link">
                   View Details
-                </Link>
+                </span>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
         {filtered.length === 0 && <div className="no-results">No properties match your search.</div>}

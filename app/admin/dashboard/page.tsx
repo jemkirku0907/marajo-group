@@ -184,7 +184,7 @@ export default function AdminDashboardPage() {
         </aside>
 
         <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
-          <div style={{ padding: "24px 28px", background: "var(--surface)", borderBottom: "1px solid var(--border-muted)" }}>
+          <div style={{ padding: "16px 28px", background: "var(--surface)", borderBottom: "1px solid var(--border-muted)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
               <div>
                 <h1 style={{ fontSize: 26, margin: 0, fontWeight: 700, color: "var(--heading-color)" }}>{ADMIN_NAV_ITEMS.find((item) => item.id === tab)?.label}</h1>
@@ -224,7 +224,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          <main style={{ padding: 28, flex: 1 }}>
+          <main style={{ padding: "20px 28px 28px", flex: 1 }}>
             {tab === "overview" && <OverviewTab />}
             {tab === "units" && <UnitsTab />}
             {tab === "leads" && <LeadsTab />}
@@ -1178,11 +1178,7 @@ function UnitsTab() {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-        <div>
-          <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>Units</h2>
-          <p style={{ color: "#6b7280", fontSize: 13 }}>Manage assigned units across all buildings.</p>
-        </div>
+      <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", marginBottom: 18 }}>
         <button onClick={() => setShowForm((v) => !v)} style={actionBtn}>
           {showForm ? "Cancel" : "+ Add Unit"}
         </button>
@@ -1294,11 +1290,7 @@ function CalendarTab() {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-        <div>
-          <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>Calendar</h2>
-          <p style={{ color: "#6b7280", fontSize: 13 }}>Schedule overview — appointments &amp; parking reservations.</p>
-        </div>
+      <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", marginBottom: 18 }}>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
           <button onClick={() => shiftMonth(-1)} style={actionBtn}>‹ Prev</button>
           <span style={{ fontWeight: 600 }}>{month}</span>

@@ -213,7 +213,7 @@
 
 .admin-dashboard-main {
   flex: 1;
-  padding: 20px 28px 28px;
+  padding: 32px 28px 28px;
   overflow-x: hidden;
 }
 
@@ -261,8 +261,8 @@ body.is-admin-route {
   margin-top: 0 !important;
 }
 
-body:has(.admin-dashboard-shell) main,
-body:has(.admin-dashboard-shell) main > div {
+body:has(.admin-dashboard-shell) > main,
+body:has(.admin-dashboard-shell) > main > div {
   margin-top: 0 !important;
   padding-top: 0 !important;
 }
@@ -320,6 +320,6 @@ body:has(.admin-dashboard-shell) header[style*="display: none"] {
   }
 
   .admin-dashboard-main {
-    padding: 16px;
+    padding: 24px 16px 16px;
   }
 }

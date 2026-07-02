@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth, authHeaders } from "@/lib/AuthContext";
 
 type Slot = { id: number; slot_number: string; floor_level: number; slot_type: string };
+type Facility = { id: number; name: string; location: string };
 type DriverForm = {
   full_name: string;
   contact_number: string;
@@ -46,6 +47,8 @@ export default function ParkingPage() {
   const [date, setDate] = useState("");
   const [entry, setEntry] = useState("08:00");
   const [exit, setExit] = useState("17:00");
+  const [facilityId, setFacilityId] = useState<number>(0);
+  const [facilities, setFacilities] = useState<Facility[]>([]);
   const [slots, setSlots] = useState<Slot[] | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
 
@@ -63,6 +66,22 @@ export default function ParkingPage() {
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<any>(null);
 
+  useEffect(() => {
+    async function loadFacilities() {
+      try {
+        const res = await fetch("/api/parking?action=facilities");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.facilities)) {
+          setFacilities(data.facilities);
+          setFacilityId(data.facilities[0]?.id || 0);
+        }
+      } catch (error) {
+        console.error("Failed to load parking facilities:", error);
+      }
+    }
+    loadFacilities();
+  }, []);
+
   const hours = calcHoursPreview(entry, exit);
   const fee = previewFee(hours);
 
@@ -76,9 +95,14 @@ export default function ParkingPage() {
     setAvailError("");
     setBusy(true);
     try {
+      const effectiveFacilityId = facilityId || facilities[0]?.id;
+      if (!effectiveFacilityId) {
+        setAvailError("Please select a parking facility.");
+        return;
+      }
       const params = new URLSearchParams({
         action: "availability",
-        facility_id: "1",
+        facility_id: String(effectiveFacilityId),
         reservation_date: date,
         entry_time: entry,
         exit_time: exit,
@@ -89,6 +113,9 @@ export default function ParkingPage() {
         setAvailError(data.message || "Could not check availability.");
         return;
       }
+      setSlots(data.available_slots);
+      setSelectedSlot(null);
+      goTo(1);
       setSlots(data.available_slots);
       setSelectedSlot(null);
       goTo(1);
@@ -112,11 +139,16 @@ export default function ParkingPage() {
     setReserveError("");
     setBusy(true);
     try {
+      const effectiveFacilityId = facilityId || facilities[0]?.id;
+      if (!effectiveFacilityId) {
+        setReserveError("Please select a parking facility.");
+        return;
+      }
       const res = await fetch("/api/parking?action=reserve", {
         method: "POST",
         headers: { "Content-Type": "application/json", ...authHeaders(token) },
         body: JSON.stringify({
-          facility_id: 1,
+          facility_id: effectiveFacilityId,
           slot_id: selectedSlot.id,
           reservation_date: date,
           entry_time: entry,
@@ -261,8 +293,21 @@ export default function ParkingPage() {
                         <div className="form-field">
                           <label className="form-label" htmlFor="facility_id">Parking Facility</label>
                           <div className="form-input-wrap">
-                            <select id="facility_id" name="facility_id" defaultValue="1">
-                              <option value="1">Marajo Tower Parking</option>
+                            <select
+                              id="facility_id"
+                              name="facility_id"
+                              value={facilityId || ""}
+                              onChange={(e) => setFacilityId(Number(e.target.value))}
+                            >
+                              {facilities.length > 0 ? (
+                                facilities.map((facility) => (
+                                  <option key={facility.id} value={facility.id}>
+                                    {facility.name}
+                                  </option>
+                                ))
+                              ) : (
+                                <option value="">Loading facilities…</option>
+                              )}
                             </select>
                           </div>
                         </div>

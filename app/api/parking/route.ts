@@ -20,6 +20,13 @@ async function getRate(facilityId: number, type: "hourly" | "daily", fallback: n
 
 export async function GET(req: NextRequest) {
   const action = req.nextUrl.searchParams.get("action");
+  if (action === "facilities") {
+    const facilities = await db.query<any>(
+      `SELECT id, name, location FROM parking_facilities WHERE is_active = '1' ORDER BY name`
+    );
+    return NextResponse.json({ success: true, facilities });
+  }
+
   if (action !== "availability") {
     return NextResponse.json({ success: false, message: "Parking endpoint not found: " + action }, { status: 404 });
   }
@@ -29,7 +36,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, message: "You must be logged in to check availability." }, { status: 401 });
   }
 
-  const facilityId = Number(req.nextUrl.searchParams.get("facility_id") || 1);
+  const facilityId = Number(req.nextUrl.searchParams.get("facility_id") || 0);
   const date = req.nextUrl.searchParams.get("reservation_date") || "";
   const entry = req.nextUrl.searchParams.get("entry_time") || "";
   const exit = req.nextUrl.searchParams.get("exit_time") || "";

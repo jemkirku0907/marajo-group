@@ -159,7 +159,7 @@ export default function AdminLoginPage() {
             style={{
               width: "100%",
               padding: 12,
-              background: loading ? "var(--accent-soft)" : "linear-gradient(135deg, var(--mg-green), var(--mg-green-bright))",
+              background: loading ? "var(--accent-soft)" : "#1f6e34",
               color: "#fff",
               border: "none",
               borderRadius: 8,

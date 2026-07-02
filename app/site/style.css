@@ -459,10 +459,10 @@ select {
   gap: 1rem;
 }
 .history-item {
-  border: 1px solid rgba(13,13,13,.1);
+  border: 1px solid var(--border-muted);
   border-radius: 18px;
   padding: 1rem 1rem 0.85rem;
-  background: #fff;
+  background: var(--surface);
 }
 .history-item-top {
   display: flex;
@@ -4589,7 +4589,7 @@ body.theme-dark {
 .btn-primary,
 .sticky-contact,
 button[type="submit"].btn-primary {
-  background: linear-gradient(135deg, var(--mg-green) 0%, var(--mg-green-bright) 100%);
+  background: #1f6e34;
   color: #ffffff;
   border-color: transparent;
   box-shadow: 0 14px 32px rgba(31, 110, 52, 0.24);
@@ -4598,7 +4598,7 @@ button[type="submit"].btn-primary {
 .btn-primary:hover,
 .sticky-contact:hover,
 button[type="submit"].btn-primary:hover {
-  background: linear-gradient(135deg, #174f27 0%, var(--mg-green) 100%);
+  background: #174f27;
   color: #ffffff;
   box-shadow: 0 18px 42px rgba(31, 110, 52, 0.3);
 }
@@ -4683,7 +4683,7 @@ a:hover {
 }
 
 .journal-tag {
-  background: linear-gradient(135deg, var(--mg-green), var(--mg-green-bright));
+  background: #1f6e34;
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
@@ -4691,7 +4691,7 @@ a:hover {
 .journal-tag--launch,
 .journal-tag--insight,
 .journal-tag--community {
-  background: linear-gradient(135deg, var(--mg-green), var(--mg-green-bright));
+  background: #1f6e34;
 }
 
 .journal-card-body h3,

@@ -91,10 +91,10 @@ export default function AuthModal() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-2xl">
+      <div className="w-full max-w-md rounded-xl border p-6 shadow-2xl theme-panel">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-gray-900">{mode === "login" ? "Log In" : "Create Account"}</h2>
-          <button onClick={closeModal} className="text-gray-400 hover:text-gray-600" aria-label="Close">
+          <h2 className="text-xl font-bold theme-heading">{mode === "login" ? "Log In" : "Create Account"}</h2>
+          <button onClick={closeModal} className="theme-muted" aria-label="Close">
             ✕
           </button>
         </div>
@@ -104,14 +104,14 @@ export default function AuthModal() {
         {/* If registering and Turnstile is enabled, require captcha first */}
         {mode === "register" && turnstileEnabled && registerStep === "captcha" ? (
           <div>
-            <p className="mb-3 text-sm text-gray-600">Please complete the security check to continue.</p>
+            <p className="mb-3 text-sm theme-muted">Please complete the security check to continue.</p>
             <div ref={widgetRef} />
             <div className="mt-4 flex justify-end">
               <button
                 type="button"
                 disabled={!turnstileToken}
                 onClick={() => setRegisterStep("form")}
-                className="rounded-md bg-[#1a1a2e] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+                className="rounded-md px-4 py-2 text-sm font-semibold text-white disabled:opacity-60 theme-primary-button"
               >
                 Continue
               </button>
@@ -123,13 +123,13 @@ export default function AuthModal() {
             <div className="grid grid-cols-2 gap-3">
               <input
                 placeholder="First name"
-                className="rounded-md border border-gray-300 px-3 py-2 text-sm"
+                className="rounded-md border px-3 py-2 text-sm theme-input"
                 value={form.first_name}
                 onChange={(e) => setForm({ ...form, first_name: e.target.value })}
               />
               <input
                 placeholder="Last name"
-                className="rounded-md border border-gray-300 px-3 py-2 text-sm"
+                className="rounded-md border px-3 py-2 text-sm theme-input"
                 value={form.last_name}
                 onChange={(e) => setForm({ ...form, last_name: e.target.value })}
               />
@@ -139,14 +139,14 @@ export default function AuthModal() {
             type="email"
             required
             placeholder="Email address"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            className="w-full rounded-md border px-3 py-2 text-sm theme-input"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
           {mode === "register" && (
             <input
               placeholder="Phone (optional)"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+              className="w-full rounded-md border px-3 py-2 text-sm theme-input"
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
             />
@@ -156,7 +156,7 @@ export default function AuthModal() {
             required
             minLength={8}
             placeholder="Password"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            className="w-full rounded-md border px-3 py-2 text-sm theme-input"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
@@ -168,25 +168,25 @@ export default function AuthModal() {
           <button
             type="submit"
             disabled={busy}
-            className="w-full rounded-md bg-[#1a1a2e] py-2.5 text-sm font-semibold text-white hover:bg-[#252548] disabled:opacity-60"
+            className="w-full rounded-md py-2.5 text-sm font-semibold text-white disabled:opacity-60 theme-primary-button"
           >
             {busy ? "Please wait…" : mode === "login" ? "Log In" : "Create Account"}
           </button>
         </form>
         )}
 
-        <p className="mt-4 text-center text-sm text-gray-600">
+        <p className="mt-4 text-center text-sm theme-muted">
           {mode === "login" ? (
             <>
               Don&apos;t have an account?{" "}
-              <button className="font-semibold text-[#1a1a2e] underline" onClick={() => openModal("register")}>
+              <button className="font-semibold theme-link underline" onClick={() => openModal("register")}>
                 Sign up
               </button>
             </>
           ) : (
             <>
               Already have an account?{" "}
-              <button className="font-semibold text-[#1a1a2e] underline" onClick={() => openModal("login")}>
+              <button className="font-semibold theme-link underline" onClick={() => openModal("login")}>
                 Log in
               </button>
             </>

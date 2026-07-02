@@ -172,6 +172,7 @@
   padding-top: 0 !important;
   background: var(--bg-base);
   color: var(--text-primary);
+  position: relative;
 }
 
 .admin-dashboard-sidebar {
@@ -181,6 +182,128 @@
   border-right: 1px solid var(--border-muted);
   background: var(--surface);
   padding: 24px;
+  transition: width 220ms ease, flex-basis 220ms ease, transform 220ms ease, padding 220ms ease;
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  z-index: 30;
+}
+
+.admin-dashboard-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.admin-dashboard-logo {
+  height: 48px;
+  width: 48px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.admin-dashboard-brand-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.admin-dashboard-brand-copy span {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.admin-sidebar-toggle {
+  margin-left: auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--border-muted);
+  background: var(--surface-soft);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.admin-sidebar-icon {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--mg-green);
+  font-size: 12px;
+  font-weight: 800;
+  flex: 0 0 auto;
+}
+
+.admin-sidebar-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-sidebar-profile {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--border-muted);
+  border-radius: 14px;
+  background: var(--surface-soft);
+}
+
+.admin-sidebar-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #1f6e34;
+  color: #fff;
+  font-weight: 800;
+  flex: 0 0 auto;
+}
+
+.admin-dashboard-shell.is-sidebar-collapsed .admin-dashboard-sidebar {
+  flex-basis: 92px;
+  width: 92px;
+  min-width: 92px;
+  padding: 22px 16px;
+  align-items: center;
+}
+
+.admin-dashboard-shell.is-sidebar-collapsed .admin-dashboard-brand-copy,
+.admin-dashboard-shell.is-sidebar-collapsed .admin-sidebar-label,
+.admin-dashboard-shell.is-sidebar-collapsed .admin-sidebar-section-label {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.admin-dashboard-shell.is-sidebar-collapsed .admin-dashboard-brand {
+  justify-content: center;
+}
+
+.admin-dashboard-shell.is-sidebar-collapsed .admin-sidebar-toggle {
+  position: absolute;
+  right: -16px;
+  top: 28px;
+  box-shadow: var(--shadow);
+}
+
+.admin-dashboard-shell.is-sidebar-collapsed .admin-dashboard-sidebar button[title] {
+  justify-content: center;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+.admin-dashboard-shell.is-sidebar-collapsed .admin-sidebar-profile {
+  padding: 10px;
+  justify-content: center;
 }
 
 .admin-dashboard-content {
@@ -215,6 +338,7 @@
   flex: 1;
   padding: 32px 28px 28px;
   overflow-x: hidden;
+  animation: dashboardFade 180ms ease;
 }
 
 .admin-dashboard-main *,
@@ -234,6 +358,22 @@
   justify-content: center;
   gap: 6px;
   min-height: 36px;
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+.admin-dashboard-main button:hover,
+.admin-dashboard-actions button:hover,
+.admin-sidebar-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.admin-dashboard-main button:disabled,
+.admin-dashboard-actions button:disabled {
+  cursor: not-allowed !important;
+  opacity: 0.62;
+  transform: none;
+  box-shadow: none;
 }
 
 .admin-dashboard-main tr td:last-child {
@@ -250,6 +390,79 @@
 .theme-dark .admin-dashboard-main textarea::placeholder {
   color: var(--text-muted);
   opacity: 0.85;
+}
+
+.admin-mobile-menu-button {
+  display: none;
+  margin-bottom: 12px;
+  border: 1px solid var(--border-muted);
+  background: var(--surface-soft);
+  color: var(--text-primary);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-weight: 700;
+}
+
+.admin-dashboard-backdrop {
+  display: none;
+}
+
+.dashboard-loading-shell {
+  min-height: 100vh;
+}
+
+.dashboard-skeleton-stack {
+  display: grid;
+  gap: 18px;
+}
+
+.dashboard-skeleton-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+}
+
+.dashboard-skeleton-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.dashboard-skeleton-table,
+.dashboard-skeleton-list {
+  display: grid;
+  gap: 12px;
+}
+
+.dashboard-skeleton-line {
+  display: block;
+  max-width: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--surface-soft), var(--accent-soft), var(--surface-soft));
+  background-size: 220% 100%;
+  animation: dashboardShimmer 1.25s ease-in-out infinite;
+}
+
+@keyframes dashboardShimmer {
+  0% {
+    background-position: 220% 0;
+  }
+  100% {
+    background-position: -220% 0;
+  }
+}
+
+@keyframes dashboardFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 body.is-admin-route {
@@ -282,23 +495,61 @@ body:has(.admin-dashboard-shell) header[style*="display: none"] {
   }
 
   .admin-dashboard-sidebar {
-    width: 100%;
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(84vw, 320px);
     min-width: 0;
-    border-right: 0;
-    border-bottom: 1px solid var(--border-muted);
-    padding: 18px;
+    transform: translateX(-105%);
+    border-right: 1px solid var(--border-muted);
+    border-bottom: 0;
+    padding: 20px;
+    overflow-y: auto;
   }
 
-  .admin-dashboard-sidebar > div:nth-child(n + 2) > div:last-child {
-    display: flex !important;
-    gap: 8px !important;
-    overflow-x: auto;
-    padding-bottom: 4px;
+  .admin-dashboard-shell.is-sidebar-open .admin-dashboard-sidebar {
+    transform: translateX(0);
   }
 
-  .admin-dashboard-sidebar button {
-    white-space: nowrap;
-    flex: 0 0 auto;
+  .admin-dashboard-shell.is-sidebar-collapsed .admin-dashboard-sidebar {
+    width: min(84vw, 320px);
+    min-width: 0;
+    flex-basis: auto;
+    align-items: stretch;
+    padding: 20px;
+  }
+
+  .admin-dashboard-shell.is-sidebar-collapsed .admin-dashboard-brand-copy,
+  .admin-dashboard-shell.is-sidebar-collapsed .admin-sidebar-label,
+  .admin-dashboard-shell.is-sidebar-collapsed .admin-sidebar-section-label {
+    opacity: 1;
+    pointer-events: auto;
+    position: static;
+  }
+
+  .admin-dashboard-shell.is-sidebar-collapsed .admin-sidebar-toggle {
+    position: static;
+  }
+
+  .admin-dashboard-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    border: 0;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.42);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+    z-index: 20;
+  }
+
+  .admin-dashboard-shell.is-sidebar-open .admin-dashboard-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .admin-mobile-menu-button {
+    display: inline-flex;
   }
 
   .admin-dashboard-header,

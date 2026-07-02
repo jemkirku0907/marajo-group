@@ -19,19 +19,19 @@ type Tab =
   | "notifications"
   | "profile";
 
-const ADMIN_NAV_ITEMS: Array<{ id: Tab; label: string }> = [
-  { id: "overview", label: "Overview" },
-  { id: "units", label: "Units" },
-  { id: "leads", label: "Leads" },
-  { id: "parking", label: "Parking" },
-  { id: "facilities", label: "Court Bookings" },
-  { id: "workers", label: "Workers" },
-  { id: "calendar", label: "Calendar" },
-  { id: "appointments", label: "Appointments" },
-  { id: "contacts", label: "Contacts" },
-  { id: "tasks", label: "Tasks" },
-  { id: "notifications", label: "Notifications" },
-  { id: "profile", label: "Profile" },
+const ADMIN_NAV_ITEMS: Array<{ id: Tab; label: string; icon: string }> = [
+  { id: "overview", label: "Overview", icon: "O" },
+  { id: "units", label: "Units", icon: "U" },
+  { id: "leads", label: "Leads", icon: "L" },
+  { id: "parking", label: "Parking", icon: "P" },
+  { id: "facilities", label: "Court Bookings", icon: "C" },
+  { id: "workers", label: "Workers", icon: "W" },
+  { id: "calendar", label: "Calendar", icon: "D" },
+  { id: "appointments", label: "Appointments", icon: "A" },
+  { id: "contacts", label: "Contacts", icon: "M" },
+  { id: "tasks", label: "Tasks", icon: "T" },
+  { id: "notifications", label: "Notifications", icon: "N" },
+  { id: "profile", label: "Profile", icon: "S" },
 ];
 
 const sidebarStyle: React.CSSProperties = {
@@ -68,6 +68,13 @@ export default function AdminDashboardPage() {
   const [staff, setStaff] = useState<Staff | null>(null);
   const [checking, setChecking] = useState(true);
   const [tab, setTab] = useState<Tab>("overview");
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem("marajo-admin-sidebar-collapsed");
+    setSidebarCollapsed(stored === "true");
+  }, []);
 
   useEffect(() => {
     fetch("/api/admin/auth?action=me")
@@ -87,8 +94,21 @@ export default function AdminDashboardPage() {
     router.replace("/admin/login");
   }
 
+  function toggleSidebar() {
+    setSidebarCollapsed((current) => {
+      const next = !current;
+      window.localStorage.setItem("marajo-admin-sidebar-collapsed", String(next));
+      return next;
+    });
+  }
+
+  function handleTabChange(nextTab: Tab) {
+    setTab(nextTab);
+    setMobileSidebarOpen(false);
+  }
+
   if (checking) {
-    return <div style={{ padding: 40, textAlign: "center", color: "var(--text-muted)" }}>Loading...</div>;
+    return <DashboardBootSkeleton />;
   }
   if (!staff) return null;
 
@@ -131,51 +151,62 @@ export default function AdminDashboardPage() {
         </button>
       </header>}
 
-      <div className="admin-dashboard-shell">
+      <div className={`admin-dashboard-shell ${sidebarCollapsed ? "is-sidebar-collapsed" : ""} ${mobileSidebarOpen ? "is-sidebar-open" : ""}`}>
+        <button className="admin-dashboard-backdrop" aria-label="Close sidebar" onClick={() => setMobileSidebarOpen(false)} />
         <aside className="admin-dashboard-sidebar" style={sidebarStyle}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <img
-              src="/assets/logo.png"
-              alt="Marajo Group"
-              style={{ height: 44, width: "auto", objectFit: "contain" }}
-            />
-            <div>
+          <div className="admin-dashboard-brand">
+            <img src="/assets/logo.png" alt="Marajo Group" className="admin-dashboard-logo" />
+            <div className="admin-dashboard-brand-copy">
               <div style={{ fontSize: 16, fontWeight: 700, color: "var(--heading-color)" }}>Marajo Group</div>
               <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 4 }}>Staff Portal</div>
             </div>
+            <button className="admin-sidebar-toggle" onClick={toggleSidebar} aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}>
+              {sidebarCollapsed ? ">" : "<"}
+            </button>
           </div>
 
           <div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 12 }}>
+            <div className="admin-sidebar-section-label" style={{ fontSize: 12, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 12 }}>
               Main
             </div>
             <div style={{ display: "grid", gap: 6 }}>
               {ADMIN_NAV_ITEMS.slice(0, 8).map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => setTab(item.id)}
+                  onClick={() => handleTabChange(item.id)}
+                  title={item.label}
                   style={item.id === tab ? sidebarItemActiveStyle : sidebarItemStyle}
                 >
-                  {item.label}
+                  <span className="admin-sidebar-icon">{item.icon}</span>
+                  <span className="admin-sidebar-label">{item.label}</span>
                 </button>
               ))}
             </div>
           </div>
 
           <div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 12 }}>
+            <div className="admin-sidebar-section-label" style={{ fontSize: 12, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 12 }}>
               Tools
             </div>
             <div style={{ display: "grid", gap: 6 }}>
               {ADMIN_NAV_ITEMS.slice(8).map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => setTab(item.id)}
+                  onClick={() => handleTabChange(item.id)}
+                  title={item.label}
                   style={item.id === tab ? sidebarItemActiveStyle : sidebarItemStyle}
                 >
-                  {item.label}
+                  <span className="admin-sidebar-icon">{item.icon}</span>
+                  <span className="admin-sidebar-label">{item.label}</span>
                 </button>
               ))}
+            </div>
+          </div>
+          <div className="admin-sidebar-profile">
+            <div className="admin-sidebar-avatar">{staff.name?.charAt(0) || "A"}</div>
+            <div className="admin-dashboard-brand-copy">
+              <strong>{staff.name}</strong>
+              <span>{staff.role}</span>
             </div>
           </div>
         </aside>
@@ -184,6 +215,7 @@ export default function AdminDashboardPage() {
           <div className="admin-dashboard-header">
             <div className="admin-dashboard-header-inner">
               <div>
+                <button className="admin-mobile-menu-button" onClick={() => setMobileSidebarOpen(true)} aria-label="Open sidebar">Menu</button>
                 <h1 style={{ fontSize: 26, margin: 0, fontWeight: 700, color: "var(--heading-color)" }}>{ADMIN_NAV_ITEMS.find((item) => item.id === tab)?.label}</h1>
                 <p style={{ margin: "8px 0 0", color: "var(--text-muted)", fontSize: 14 }}>
                   {tab === "overview" && "Sales pipeline summary and portal activity."}
@@ -221,7 +253,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          <main className="admin-dashboard-main">
+          <main key={tab} className="admin-dashboard-main">
             {tab === "overview" && <OverviewTab />}
             {tab === "units" && <UnitsTab />}
             {tab === "leads" && <LeadsTab />}
@@ -287,6 +319,99 @@ function StatCard({ label, value }: { label: string; value: string | number }) {
   );
 }
 
+function SkeletonLine({ width = "100%", height = 14 }: { width?: string; height?: number }) {
+  return <span className="dashboard-skeleton-line" style={{ width, height }} />;
+}
+
+function DashboardBootSkeleton() {
+  return (
+    <div className="admin-dashboard-shell dashboard-loading-shell">
+      <aside className="admin-dashboard-sidebar" style={sidebarStyle}>
+        <div className="admin-dashboard-brand">
+          <SkeletonLine width="48px" height={48} />
+          <div className="admin-dashboard-brand-copy" style={{ flex: 1 }}>
+            <SkeletonLine width="130px" height={16} />
+            <SkeletonLine width="86px" height={12} />
+          </div>
+        </div>
+        <div className="dashboard-skeleton-list">
+          {Array.from({ length: 9 }).map((_, index) => (
+            <SkeletonLine key={index} width="100%" height={42} />
+          ))}
+        </div>
+      </aside>
+      <div className="admin-dashboard-content">
+        <div className="admin-dashboard-header">
+          <SkeletonLine width="210px" height={32} />
+          <SkeletonLine width="340px" height={16} />
+        </div>
+        <main className="admin-dashboard-main">
+          <DashboardSkeleton variant="overview" />
+        </main>
+      </div>
+    </div>
+  );
+}
+
+function DashboardSkeleton({ variant = "table" }: { variant?: "overview" | "table" | "profile" | "list" | "calendar" }) {
+  if (variant === "profile") {
+    return (
+      <div className="dashboard-skeleton-stack" style={{ maxWidth: 520 }}>
+        <SkeletonLine width="190px" height={24} />
+        <div style={cardStyle}>
+          <SkeletonLine width="40%" height={18} />
+          <SkeletonLine width="100%" height={42} />
+          <SkeletonLine width="100%" height={42} />
+          <SkeletonLine width="140px" height={38} />
+        </div>
+        <div style={cardStyle}>
+          <SkeletonLine width="48%" height={18} />
+          <SkeletonLine width="100%" height={42} />
+          <SkeletonLine width="100%" height={42} />
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "calendar" || variant === "list") {
+    return (
+      <div className="dashboard-skeleton-stack">
+        <SkeletonLine width="220px" height={24} />
+        {Array.from({ length: variant === "calendar" ? 4 : 5 }).map((_, index) => (
+          <div key={index} style={cardStyle}>
+            <SkeletonLine width="32%" height={18} />
+            <SkeletonLine width="76%" height={14} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="dashboard-skeleton-stack">
+      <div className="dashboard-skeleton-stats">
+        {Array.from({ length: variant === "overview" ? 5 : 4 }).map((_, index) => (
+          <div key={index} style={cardStyle}>
+            <SkeletonLine width="52%" height={14} />
+            <SkeletonLine width="34%" height={28} />
+          </div>
+        ))}
+      </div>
+      <div style={cardStyle}>
+        <div className="dashboard-skeleton-toolbar">
+          <SkeletonLine width="220px" height={22} />
+          <SkeletonLine width="260px" height={42} />
+        </div>
+        <div className="dashboard-skeleton-table">
+          {Array.from({ length: 7 }).map((_, index) => (
+            <SkeletonLine key={index} width="100%" height={index === 0 ? 48 : 54} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ───────────────────── Leads tab ───────────────────── */
 
 const STATUS_OPTIONS = [
@@ -340,7 +465,7 @@ function LeadsTab() {
     return matchesStatus && matchesSearch;
   });
 
-  if (loading) return <p>Loading leads…</p>;
+  if (loading) return <DashboardSkeleton variant="table" />;
 
   const statusCounts = STATUS_OPTIONS.reduce<Record<string, number>>((acc, s) => {
     acc[s] = leads.filter((l) => l.status === s).length;
@@ -501,7 +626,7 @@ function LeadDrawer({ id, onClose, onChanged }: { id: number; onClose: () => voi
           </button>
         </div>
 
-        {loading && <p>Loading…</p>}
+        {loading && <DashboardSkeleton variant="profile" />}
 
         {!loading && data && (
           <>
@@ -590,7 +715,7 @@ function ParkingTab() {
     load();
   }
 
-  if (loading) return <p>Loading parking data…</p>;
+  if (loading) return <DashboardSkeleton variant="table" />;
 
   return (
     <div>
@@ -692,7 +817,7 @@ function FacilitiesTab() {
     load();
   }
 
-  if (loading) return <p>Loading court booking data…</p>;
+  if (loading) return <DashboardSkeleton variant="table" />;
 
   return (
     <div>
@@ -822,7 +947,7 @@ function WorkersTab() {
     return String(value).slice(0, 5);
   }
 
-  if (loading) return <p>Loading workforce data...</p>;
+  if (loading) return <DashboardSkeleton variant="table" />;
 
   return (
     <div>
@@ -1016,7 +1141,7 @@ function OverviewTab() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p>Loading overview…</p>;
+  if (loading) return <DashboardSkeleton variant="overview" />;
   if (!data?.success) return <p>Unable to load overview.</p>;
 
   const s = data.stats;
@@ -1192,7 +1317,7 @@ function UnitsTab() {
     load();
   }
 
-  if (loading) return <p>Loading units…</p>;
+  if (loading) return <DashboardSkeleton variant="table" />;
 
   return (
     <div>
@@ -1317,7 +1442,7 @@ function CalendarTab() {
       </div>
 
       {loading ? (
-        <p>Loading calendar…</p>
+        <DashboardSkeleton variant="calendar" />
       ) : dates.length === 0 ? (
         <div style={cardStyle}>No events scheduled this month.</div>
       ) : (
@@ -1415,7 +1540,7 @@ function AppointmentsTab() {
     load();
   }
 
-  if (loading) return <p>Loading appointments…</p>;
+  if (loading) return <DashboardSkeleton variant="table" />;
 
   return (
     <div>
@@ -1546,7 +1671,7 @@ function ContactsTab() {
     load();
   }
 
-  if (loading) return <p>Loading contacts…</p>;
+  if (loading) return <DashboardSkeleton variant="table" />;
 
   return (
     <div>
@@ -1679,7 +1804,7 @@ function TasksTab() {
     load();
   }
 
-  if (loading) return <p>Loading tasks…</p>;
+  if (loading) return <DashboardSkeleton variant="list" />;
 
   return (
     <div>
@@ -1782,7 +1907,7 @@ function NotificationsTab() {
     load();
   }
 
-  if (loading) return <p>Loading notifications…</p>;
+  if (loading) return <DashboardSkeleton variant="list" />;
 
   return (
     <div>
@@ -1888,7 +2013,7 @@ function ProfileTab({ staff }: { staff: Staff }) {
     }
   }
 
-  if (loading) return <p>Loading profile…</p>;
+  if (loading) return <DashboardSkeleton variant="profile" />;
 
   return (
     <div style={{ maxWidth: 480 }}>

@@ -97,10 +97,10 @@ export default function AdminDashboardPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg-base)", color: "var(--text-primary)" }}>
-      <div className="admin-theme-control" aria-label="Theme controls" style={{ display: "none" }}>
+      {false && <div className="admin-theme-control" aria-label="Theme controls" style={{ display: "none" }}>
         <ThemeController />
-      </div>
-      <header
+      </div>}
+      {false && <header
         style={{
           display: "none",
           background: "linear-gradient(135deg, var(--mg-green-deep), var(--mg-green))",
@@ -114,7 +114,7 @@ export default function AdminDashboardPage() {
         <div>
           <div style={{ fontSize: 18, fontWeight: 700 }}>Marajo Group — Staff Portal</div>
           <div style={{ fontSize: 13, color: "rgba(255,255,255,.78)", marginTop: 4 }}>
-            Signed in as {staff.name} ({staff.role})
+            Signed in
           </div>
         </div>
 
@@ -132,7 +132,7 @@ export default function AdminDashboardPage() {
         >
           Log out
         </button>
-      </header>
+      </header>}
 
       <div className="admin-dashboard-shell" style={{ display: "flex", minHeight: "100vh", marginTop: 0 }}>
         <aside style={sidebarStyle}>

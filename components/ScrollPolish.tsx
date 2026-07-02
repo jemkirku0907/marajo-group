@@ -22,6 +22,12 @@ export default function ScrollPolish() {
       if (prefersReducedMotion || !("IntersectionObserver" in window)) {
         revealEls.forEach((el) => el.classList.add("in-view"));
       } else {
+        revealEls.forEach((el) => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add("in-view");
+          }
+        });
         revealObserver = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
@@ -33,7 +39,9 @@ export default function ScrollPolish() {
           },
           { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
         );
-        revealEls.forEach((el) => revealObserver?.observe(el));
+        revealEls.forEach((el) => {
+          if (!el.classList.contains("in-view")) revealObserver?.observe(el);
+        });
       }
     }
 
@@ -126,7 +134,11 @@ export default function ScrollPolish() {
         },
         { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
       );
-      staggerParents.forEach((parent) => staggerObserver?.observe(parent));
+      staggerParents.forEach((parent) => {
+        const rect = parent.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) parent.classList.add("in-view");
+        else staggerObserver?.observe(parent);
+      });
     } else {
       document.querySelectorAll(staggerGroupSelectors.join(",")).forEach((child) => {
         child.classList.add("stagger-child", "in-view");

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import ThemeController from "@/components/ThemeController";
 
 type Staff = { id: number; name: string; role: string; role_code: string };
 type Tab =
@@ -35,8 +36,8 @@ const ADMIN_NAV_ITEMS: Array<{ id: Tab; label: string }> = [
 
 const sidebarStyle: React.CSSProperties = {
   minWidth: 260,
-  borderRight: "1px solid #e5e7eb",
-  background: "#ffffff",
+  borderRight: "1px solid var(--border-muted)",
+  background: "var(--surface)",
   padding: 24,
   display: "flex",
   flexDirection: "column",
@@ -52,7 +53,7 @@ const sidebarItemStyle: React.CSSProperties = {
   background: "transparent",
   textAlign: "left",
   fontSize: 14,
-  color: "#475569",
+  color: "var(--text-muted)",
   padding: "12px 14px",
   borderRadius: 10,
   cursor: "pointer",
@@ -60,8 +61,8 @@ const sidebarItemStyle: React.CSSProperties = {
 
 const sidebarItemActiveStyle: React.CSSProperties = {
   ...sidebarItemStyle,
-  background: "#ecfdf5",
-  color: "#065f46",
+  background: "var(--accent-soft)",
+  color: "var(--mg-green)",
   fontWeight: 700,
 };
 
@@ -90,26 +91,29 @@ export default function AdminDashboardPage() {
   }
 
   if (checking) {
-    return <div style={{ padding: 40, textAlign: "center", color: "#6b7280" }}>Loading…</div>;
+    return <div style={{ padding: 40, textAlign: "center", color: "var(--text-muted)" }}>Loading...</div>;
   }
   if (!staff) return null;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f3f4f6", color: "#111827" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg-base)", color: "var(--text-primary)" }}>
+      <div className="admin-theme-control" aria-label="Theme controls">
+        <ThemeController />
+      </div>
       <header
         style={{
-          background: "#0f172a",
+          background: "linear-gradient(135deg, var(--mg-green-deep), var(--mg-green))",
           color: "#fff",
           padding: "20px 30px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          borderBottom: "1px solid #111827",
+          borderBottom: "1px solid rgba(255,255,255,.12)",
         }}
       >
         <div>
           <div style={{ fontSize: 18, fontWeight: 700 }}>Marajo Group — Staff Portal</div>
-          <div style={{ fontSize: 13, color: "#cbd5e1", marginTop: 4 }}>
+          <div style={{ fontSize: 13, color: "rgba(255,255,255,.78)", marginTop: 4 }}>
             Signed in as {staff.name} ({staff.role})
           </div>
         </div>
@@ -139,7 +143,7 @@ export default function AdminDashboardPage() {
               style={{ height: 44, width: "auto", objectFit: "contain" }}
             />
             <div>
-              <div style={{ fontSize: 16, fontWeight: 700, color: "#0f172a" }}>Marajo Group</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: "var(--heading-color)" }}>Marajo Group</div>
               <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>Staff Portal</div>
             </div>
           </div>

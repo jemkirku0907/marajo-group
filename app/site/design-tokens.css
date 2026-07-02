@@ -3,7 +3,9 @@
    Strict 70% white / 20% black / 10% green-lime distribution.
 */
 :root {
-  --brand-green: #38A000;
+  --brand-green: #1f6e34;
+  --brand-green-bright: #38A000;
+  --brand-forest: #0b3e1c;
   --brand-lime: #C7DC2E;
   --neutral-ink: #0D0D0D;
   --neutral-white: #FFFFFF;
@@ -14,7 +16,8 @@
   --text-primary: var(--neutral-ink);
   --text-muted: #4B5563;
   --accent: var(--brand-green);
-  --accent-soft: rgba(199, 220, 46, 0.16);
+  --accent-soft: rgba(31, 110, 52, 0.12);
+  --accent-lime-soft: rgba(199, 220, 46, 0.18);
   --border-muted: rgba(13, 13, 13, 0.08);
   --shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
@@ -25,7 +28,7 @@
 .btn-gold {
   background: var(--brand-green);
   color: var(--neutral-white);
-  border: 1px solid rgba(56, 160, 0, 0.1);
+  border: 1px solid rgba(31, 110, 52, 0.16);
   border-radius: 999px;
   padding: 0.8rem 1.4rem;
   text-transform: uppercase;

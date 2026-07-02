@@ -4485,3 +4485,280 @@ body.theme-dark textarea::placeholder {
   background: #2A3D1A;
   color: #7DC241;
 }
+
+/* ==========================================================================
+   Marajo brand refinement + theme system
+   ========================================================================== */
+
+:root,
+.theme-light {
+  color-scheme: light;
+  --mg-green: #1f6e34;
+  --mg-green-deep: #0b3e1c;
+  --mg-green-bright: #38a000;
+  --mg-lime: #c7dc2e;
+  --mg-lime-soft: rgba(199, 220, 46, 0.2);
+  --bg-base: #f7fbf6;
+  --surface: #ffffff;
+  --surface-soft: #eef8ef;
+  --text-primary: #0d0d0d;
+  --text-muted: #475467;
+  --heading-color: #102015;
+  --accent: var(--mg-green);
+  --accent-soft: rgba(31, 110, 52, 0.12);
+  --border-muted: rgba(16, 32, 21, 0.1);
+  --header-border: rgba(31, 110, 52, 0.14);
+  --nav-bg: rgba(255, 255, 255, 0.94);
+  --footer-bg: linear-gradient(180deg, #0b3e1c 0%, #0f2718 100%);
+  --shadow: 0 18px 44px rgba(15, 45, 25, 0.1);
+  --shadow-lg: 0 28px 70px rgba(15, 45, 25, 0.16);
+}
+
+.theme-dark {
+  color-scheme: dark;
+  --mg-green: #7dc241;
+  --mg-green-deep: #0d1b10;
+  --mg-green-bright: #a8e47a;
+  --mg-lime: #d8ec49;
+  --mg-lime-soft: rgba(216, 236, 73, 0.14);
+  --bg-base: #081109;
+  --surface: #101b12;
+  --surface-soft: #152417;
+  --text-primary: #edf7e8;
+  --text-muted: #bdd3b5;
+  --heading-color: #f4fbef;
+  --accent: var(--mg-green);
+  --accent-soft: rgba(125, 194, 65, 0.18);
+  --border-muted: rgba(168, 228, 122, 0.16);
+  --header-border: rgba(168, 228, 122, 0.18);
+  --nav-bg: rgba(8, 17, 9, 0.94);
+  --footer-bg: linear-gradient(180deg, #071108 0%, #0d1b10 100%);
+  --shadow: 0 18px 46px rgba(0, 0, 0, 0.34);
+  --shadow-lg: 0 30px 80px rgba(0, 0, 0, 0.46);
+}
+
+body.theme-light,
+body.theme-dark {
+  background:
+    radial-gradient(circle at 12% 0%, var(--mg-lime-soft), transparent 28rem),
+    linear-gradient(180deg, var(--bg-base) 0%, var(--surface) 58%, var(--bg-base) 100%);
+  color: var(--text-primary);
+}
+
+.site-header {
+  box-shadow: 0 10px 30px rgba(15, 45, 25, 0.08);
+  backdrop-filter: saturate(160%) blur(18px);
+}
+
+.nav-link::after,
+.nav-dropdown-toggle::after {
+  background: linear-gradient(90deg, var(--mg-green), var(--mg-lime));
+}
+
+.theme-toggle {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-muted);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--mg-green);
+  box-shadow: 0 8px 20px rgba(15, 45, 25, 0.08);
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(31, 110, 52, 0.38);
+  background: var(--accent-soft);
+  color: var(--heading-color);
+  outline: none;
+}
+
+.admin-theme-control {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 30;
+}
+
+.btn-primary,
+.sticky-contact,
+button[type="submit"].btn-primary {
+  background: linear-gradient(135deg, var(--mg-green) 0%, var(--mg-green-bright) 100%);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 14px 32px rgba(31, 110, 52, 0.24);
+}
+
+.btn-primary:hover,
+.sticky-contact:hover,
+button[type="submit"].btn-primary:hover {
+  background: linear-gradient(135deg, #174f27 0%, var(--mg-green) 100%);
+  color: #ffffff;
+  box-shadow: 0 18px 42px rgba(31, 110, 52, 0.3);
+}
+
+.btn-secondary,
+.btn-outline {
+  border-color: rgba(31, 110, 52, 0.3);
+  color: var(--mg-green);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.theme-dark .btn-secondary,
+.theme-dark .btn-outline {
+  background: rgba(125, 194, 65, 0.1);
+  color: var(--mg-green-bright);
+}
+
+.section,
+.property-card,
+.journal-card,
+.journal-featured,
+.contact-card,
+.info-card,
+.feature-card,
+.service-card,
+.space-card,
+.booking-card,
+.account-card,
+.modal,
+.lead-modal,
+.nav-dropdown-menu {
+  background: var(--surface);
+  border-color: var(--border-muted);
+  color: var(--text-primary);
+}
+
+.property-card,
+.journal-card,
+.journal-featured,
+.booking-card,
+.account-card,
+.contact-card,
+.info-card,
+.feature-card,
+.service-card,
+.space-card {
+  box-shadow: var(--shadow);
+}
+
+.property-card:hover,
+.journal-card:hover,
+.journal-featured:hover,
+.service-card:hover,
+.feature-card:hover {
+  border-color: rgba(31, 110, 52, 0.28);
+  box-shadow: var(--shadow-lg);
+}
+
+.properties-page .property-card,
+.properties-page .gallery-item {
+  opacity: 1;
+  transform: none;
+}
+
+.property-card .btn-link,
+.journal-read-more,
+a:hover {
+  color: var(--mg-green);
+}
+
+.journal-hero-overlay {
+  background: linear-gradient(90deg, rgba(7, 29, 14, 0.88) 0%, rgba(11, 62, 28, 0.54) 58%, rgba(11, 62, 28, 0.12) 100%);
+}
+
+.journal-label {
+  color: var(--mg-lime);
+}
+
+.journal-featured,
+.journal-card {
+  border-top: 3px solid rgba(199, 220, 46, 0.65);
+}
+
+.journal-tag {
+  background: linear-gradient(135deg, var(--mg-green), var(--mg-green-bright));
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.journal-tag--launch,
+.journal-tag--insight,
+.journal-tag--community {
+  background: linear-gradient(135deg, var(--mg-green), var(--mg-green-bright));
+}
+
+.journal-card-body h3,
+.journal-featured-title,
+.section-title h1,
+.section-title h2,
+.property-card h3 {
+  color: var(--heading-color);
+}
+
+.journal-card-body p,
+.journal-featured-body p,
+.property-card p,
+.contact-card p,
+.info-card p,
+.text-muted {
+  color: var(--text-muted);
+}
+
+.form-control,
+input,
+select,
+textarea {
+  background: var(--surface);
+  color: var(--text-primary);
+  border-color: var(--border-muted);
+}
+
+.form-control:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: rgba(31, 110, 52, 0.56);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  outline: none;
+}
+
+.platform-table,
+.panel-table-wrap table,
+table {
+  color: var(--text-primary);
+}
+
+.platform-table th,
+table th {
+  background: var(--surface-soft);
+  color: var(--heading-color);
+}
+
+.platform-table td,
+table td {
+  border-color: var(--border-muted);
+}
+
+.account-modal {
+  padding-top: calc(var(--header-height, 88px) + 1rem);
+  align-items: flex-start;
+}
+
+.account-card {
+  max-height: calc(100vh - var(--header-height, 88px) - 2rem);
+  overflow: auto;
+}
+
+@media (max-width: 900px) {
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+  }
+}

@@ -6,6 +6,7 @@ import AuthModal from "@/components/AuthModal";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ScrollPolish from "@/components/ScrollPolish";
+import ThemeController from "@/components/ThemeController";
 
 export default function LayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -13,7 +14,7 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
 
   return (
     <>
-      {!isAdmin && <Navbar />}
+      {!isAdmin && <Navbar themeControl={<ThemeController />} />}
       <main className={isAdmin ? undefined : "flex-1"}>{children}</main>
       {!isAdmin && (
         <>

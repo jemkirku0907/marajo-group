@@ -30,7 +30,7 @@ function initials(name: string) {
     .join("");
 }
 
-export default function Navbar() {
+export default function Navbar({ themeControl }: { themeControl?: React.ReactNode }) {
   const { user, logout, openModal } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
@@ -126,6 +126,7 @@ export default function Navbar() {
         </form>
 
         <div className="header-actions">
+          {themeControl}
           {!user ? (
             <button type="button" onClick={() => openModal("login")} className="btn-primary">
               Log In

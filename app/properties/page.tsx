@@ -37,7 +37,7 @@ export default function PropertiesPage() {
   }, [category, query, sort]);
 
   return (
-    <section className="section properties-page reveal-on-scroll">
+    <section className="section properties-page">
       <div className="container">
         <div className="section-title">
           <span>Properties</span>

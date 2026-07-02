@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import ThemeController from "@/components/ThemeController";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -18,7 +19,8 @@ export default function AdminLoginPage() {
     fetch("/api/admin/auth?action=turnstile-site-key")
       .then((res) => res.json())
       .then((data) => {
-        setTurnstileEnabled(!!data.turnstile_enabled);
+        const isLocalHost = ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname);
+        setTurnstileEnabled(!!data.turnstile_enabled && !isLocalHost);
         setSiteKey(data.site_key || "");
       })
       .catch(() => {});
@@ -76,29 +78,35 @@ export default function AdminLoginPage() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#0f0f1e",
+        background: "radial-gradient(circle at 20% 0%, var(--mg-lime-soft), transparent 28rem), var(--bg-base)",
+        color: "var(--text-primary)",
       }}
     >
+      <div className="admin-theme-control" aria-label="Theme controls">
+        <ThemeController />
+      </div>
       <div
         style={{
-          background: "#ffffff",
+          background: "var(--surface)",
+          color: "var(--text-primary)",
+          border: "1px solid var(--border-muted)",
           borderRadius: 16,
           padding: "40px 36px",
           width: "100%",
           maxWidth: 380,
-          boxShadow: "0 20px 60px rgba(0,0,0,.35)",
+          boxShadow: "var(--shadow-lg, 0 20px 60px rgba(0,0,0,.25))",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 28 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/assets/logo.png" alt="Marajo Group" style={{ height: 48, width: "auto", objectFit: "contain" }} />
           <div>
-            <h1 style={{ fontSize: 17, color: "#111827" }}>Marajo Group</h1>
-            <p style={{ fontSize: 12, color: "#6b7280" }}>Staff Portal</p>
+            <h1 style={{ fontSize: 17, color: "var(--heading-color)" }}>Marajo Group</h1>
+            <p style={{ fontSize: 12, color: "var(--text-muted)" }}>Staff Portal</p>
           </div>
         </div>
-        <h2 style={{ fontSize: 20, color: "#111827", marginBottom: 6 }}>Sign in</h2>
-        <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 24 }}>
+        <h2 style={{ fontSize: 20, color: "var(--heading-color)", marginBottom: 6 }}>Sign in</h2>
+        <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 24 }}>
           Use your staff account to access the dashboard.
         </p>
 
@@ -119,7 +127,7 @@ export default function AdminLoginPage() {
         )}
 
         <form onSubmit={handleSubmit}>
-          <label htmlFor="email" style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#374151", marginBottom: 6 }}>
+          <label htmlFor="email" style={{ display: "block", fontSize: 13, fontWeight: 600, color: "var(--heading-color)", marginBottom: 6 }}>
             Email
           </label>
           <input
@@ -131,7 +139,7 @@ export default function AdminLoginPage() {
             onChange={(e) => setEmail(e.target.value)}
             style={inputStyle}
           />
-          <label htmlFor="password" style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#374151", marginBottom: 6 }}>
+          <label htmlFor="password" style={{ display: "block", fontSize: 13, fontWeight: 600, color: "var(--heading-color)", marginBottom: 6 }}>
             Password
           </label>
           <input
@@ -151,7 +159,7 @@ export default function AdminLoginPage() {
             style={{
               width: "100%",
               padding: 12,
-              background: loading ? "#86efac" : "#16a34a",
+              background: loading ? "var(--accent-soft)" : "linear-gradient(135deg, var(--mg-green), var(--mg-green-bright))",
               color: "#fff",
               border: "none",
               borderRadius: 8,
@@ -171,9 +179,11 @@ export default function AdminLoginPage() {
 const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "11px 14px",
-  border: "1px solid #d1d5db",
+  border: "1px solid var(--border-muted)",
   borderRadius: 8,
   fontSize: 14,
   marginBottom: 18,
   outline: "none",
+  background: "var(--surface)",
+  color: "var(--text-primary)",
 };

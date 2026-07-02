@@ -97,15 +97,15 @@ export default function AdminDashboardPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg-base)", color: "var(--text-primary)" }}>
-      <div className="admin-theme-control" aria-label="Theme controls">
+      <div className="admin-theme-control" aria-label="Theme controls" style={{ display: "none" }}>
         <ThemeController />
       </div>
       <header
         style={{
+          display: "none",
           background: "linear-gradient(135deg, var(--mg-green-deep), var(--mg-green))",
           color: "#fff",
           padding: "20px 30px",
-          display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           borderBottom: "1px solid rgba(255,255,255,.12)",
@@ -134,7 +134,7 @@ export default function AdminDashboardPage() {
         </button>
       </header>
 
-      <div style={{ display: "flex", minHeight: "calc(100vh - 82px)" }}>
+      <div style={{ display: "flex", minHeight: "100vh" }}>
         <aside style={sidebarStyle}>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <img
@@ -183,12 +183,12 @@ export default function AdminDashboardPage() {
           </div>
         </aside>
 
-        <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-          <div style={{ padding: "24px 28px", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
+          <div style={{ padding: "24px 28px", background: "var(--surface)", borderBottom: "1px solid var(--border-muted)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
               <div>
-                <h1 style={{ fontSize: 26, margin: 0, fontWeight: 700 }}>{ADMIN_NAV_ITEMS.find((item) => item.id === tab)?.label}</h1>
-                <p style={{ margin: "8px 0 0", color: "#64748b", fontSize: 14 }}>
+                <h1 style={{ fontSize: 26, margin: 0, fontWeight: 700, color: "var(--heading-color)" }}>{ADMIN_NAV_ITEMS.find((item) => item.id === tab)?.label}</h1>
+                <p style={{ margin: "8px 0 0", color: "var(--text-muted)", fontSize: 14 }}>
                   {tab === "overview" && "Sales pipeline summary and portal activity."}
                   {tab === "units" && "Manage assigned units across all buildings."}
                   {tab === "leads" && "Track leads, inquiries, and status updates."}
@@ -202,6 +202,24 @@ export default function AdminDashboardPage() {
                   {tab === "notifications" && "Review system alerts and messages."}
                   {tab === "profile" && "Update your staff profile and credentials."}
                 </p>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginLeft: "auto" }}>
+                <ThemeController />
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    background: "#1f6e34",
+                    border: "1px solid #1f6e34",
+                    color: "#fff",
+                    borderRadius: 10,
+                    padding: "10px 18px",
+                    fontSize: 14,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                  }}
+                >
+                  Log out
+                </button>
               </div>
             </div>
           </div>

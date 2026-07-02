@@ -86,7 +86,7 @@ export async function POST(req: NextRequest) {
 
   if (action === "approve-worker") {
     if (!id) return NextResponse.json({ success: false, message: "id is required" }, { status: 400 });
-    await db.execute("UPDATE workers SET verification_status = 'verified' WHERE id = ?", [id]);
+    await db.execute("UPDATE workers SET verification_status = 'approved' WHERE id = ?", [id]);
     return NextResponse.json({ success: true, message: "Worker approved" });
   }
 

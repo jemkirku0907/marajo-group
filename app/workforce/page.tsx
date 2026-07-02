@@ -24,6 +24,9 @@ type Worker = {
   skills: string[];
   rating: number;
   verification_status: string;
+  availability_status?: string;
+  contact_number?: string;
+  email?: string;
 };
 
 type BookForm = {
@@ -77,7 +80,6 @@ export default function WorkforcePage() {
 
   async function findWorkers(e: React.FormEvent) {
     e.preventDefault();
-    if (!requireLogin()) return;
     setBrowseError("");
     setBrowseBusy(true);
     try {
@@ -271,13 +273,14 @@ export default function WorkforcePage() {
                             <th>Experience</th>
                             <th>Skills</th>
                             <th>Rating</th>
+                            <th>Status</th>
                           </tr>
                         </thead>
                         <tbody>
                           {!workers ? (
-                            <tr><td colSpan={5} style={{ color: "var(--text-muted)", textAlign: "center", padding: "1.5rem 0", fontSize: ".88rem" }}>Filter above to load available workers.</td></tr>
+                            <tr><td colSpan={6} style={{ color: "var(--text-muted)", textAlign: "center", padding: "1.5rem 0", fontSize: ".88rem" }}>Filter above to load available workers.</td></tr>
                           ) : workers.length === 0 ? (
-                            <tr><td colSpan={5} style={{ color: "var(--text-muted)", textAlign: "center", padding: "1.5rem 0", fontSize: ".88rem" }}>No available workers match that filter.</td></tr>
+                            <tr><td colSpan={6} style={{ color: "var(--text-muted)", textAlign: "center", padding: "1.5rem 0", fontSize: ".88rem" }}>No available workers match that filter.</td></tr>
                           ) : (
                             workers.map((w) => (
                               <tr key={w.id}>
@@ -286,6 +289,7 @@ export default function WorkforcePage() {
                                 <td>{w.experience_years} yr{w.experience_years === 1 ? "" : "s"}</td>
                                 <td>{Array.isArray(w.skills) && w.skills.length ? w.skills.join(", ") : "—"}</td>
                                 <td>{w.rating ? `★ ${Number(w.rating).toFixed(1)}` : "—"}</td>
+                                <td><span className="status-pill">{w.availability_status || "available"}</span></td>
                               </tr>
                             ))
                           )}

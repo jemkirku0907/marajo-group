@@ -123,8 +123,8 @@ export default function PropertiesPage() {
                     Location<span>{p.location}</span>
                   </span>
                 </div>
-                <Link href={p.hasDetailPage ? `/properties/${p.slug}` : "/contact"} className="btn-link">
-                  {p.hasDetailPage ? "View Details" : "Inquire Now"}
+                <Link href={`/properties/${p.slug}`} className="btn-link">
+                  View Details
                 </Link>
               </div>
             </article>

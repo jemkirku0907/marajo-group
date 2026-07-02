@@ -134,7 +134,7 @@ export default function AdminDashboardPage() {
         </button>
       </header>
 
-      <div style={{ display: "flex", minHeight: "100vh" }}>
+      <div className="admin-dashboard-shell" style={{ display: "flex", minHeight: "100vh", marginTop: 0 }}>
         <aside style={sidebarStyle}>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <img

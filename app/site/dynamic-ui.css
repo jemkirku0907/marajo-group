@@ -164,3 +164,28 @@
   color: var(--mg-green);
   border-bottom-color: #1f6e34;
 }
+
+.admin-dashboard-shell {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.admin-dashboard-shell > aside,
+.admin-dashboard-shell > div {
+  margin-top: 0 !important;
+}
+
+body:has(.admin-dashboard-shell) main,
+body:has(.admin-dashboard-shell) main > div {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+body:has(.admin-dashboard-shell) header[style*="display: none"] {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+}

@@ -1,11 +1,91 @@
 import { NextRequest, NextResponse } from "next/server";
+import nodemailer from "nodemailer";
 import { db } from "@/lib/db";
+
+const CONTACT_TO = "jemkirku0907@gmail.com";
 
 function val(data: Record<string, any>, keys: string[], def = ""): string {
   for (const k of keys) {
     if (data[k] !== undefined && String(data[k]).trim() !== "") return String(data[k]).trim();
   }
   return def;
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function createContactTransport() {
+  const user = process.env.EMAIL_USER || process.env.SMTP_USER;
+  const pass = process.env.EMAIL_PASS || process.env.SMTP_PASS;
+  if (process.env.SMTP_HOST) {
+    return nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT || 587),
+      secure: process.env.SMTP_SECURE === "true",
+      auth: user && pass ? { user, pass } : undefined,
+    });
+  }
+  if (user && pass) {
+    return nodemailer.createTransport({
+      service: "gmail",
+      auth: { user, pass },
+    });
+  }
+  return null;
+}
+
+async function sendContactEmail(input: {
+  name: string;
+  email: string;
+  phone: string;
+  subject: string;
+  message: string;
+  project: string;
+  unitName: string;
+  sourcePageUrl: string;
+}) {
+  const transport = createContactTransport();
+  if (!transport) {
+    console.log(`[mail:disabled] Contact inquiry for ${CONTACT_TO}: ${input.subject}`);
+    return false;
+  }
+  const submittedAt = new Date().toLocaleString("en-US", { dateStyle: "long", timeStyle: "short" });
+  const rows = [
+    ["Name", input.name],
+    ["Email", input.email],
+    ["Phone Number", input.phone],
+    ["Subject", input.subject],
+    ["Project", input.project || "N/A"],
+    ["Unit", input.unitName || "N/A"],
+    ["Date & Time", submittedAt],
+    ["Source Page", input.sourcePageUrl || "Website"],
+  ];
+  const htmlRows = rows
+    .map(([label, value]) => `<tr><td style="padding:8px 12px;color:#64748b;border-bottom:1px solid #e5e7eb">${escapeHtml(label)}</td><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb"><strong>${escapeHtml(value)}</strong></td></tr>`)
+    .join("");
+  const html = `<!doctype html><html><body style="margin:0;background:#f8fafc;font-family:Arial,sans-serif;color:#0f172a">
+    <div style="max-width:640px;margin:24px auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden">
+      <div style="background:#1f6e34;color:#fff;padding:22px 26px"><h1 style="font-size:20px;margin:0">New Marajo Website Inquiry</h1><p style="margin:6px 0 0;color:#dcfce7">Contact form submission</p></div>
+      <table style="width:100%;border-collapse:collapse">${htmlRows}</table>
+      <div style="padding:20px 26px"><h2 style="font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:#64748b">Message</h2><p style="line-height:1.7;white-space:pre-wrap">${escapeHtml(input.message)}</p></div>
+      <div style="padding:16px 26px;background:#f8fafc;color:#64748b;font-size:12px">Reply directly to ${escapeHtml(input.email)} or call ${escapeHtml(input.phone)}.</div>
+    </div>
+  </body></html>`;
+
+  await transport.sendMail({
+    from: process.env.MAIL_FROM || process.env.EMAIL_USER || "Marajo Group <no-reply@marajogroup.com>",
+    to: CONTACT_TO,
+    replyTo: input.email || CONTACT_TO,
+    subject: `Marajo Inquiry: ${input.subject}`,
+    html,
+  });
+  return true;
 }
 
 export async function POST(req: NextRequest) {
@@ -20,6 +100,7 @@ export async function POST(req: NextRequest) {
   const unitName = val(data, ["unit_name", "unit"]);
   const unitType = val(data, ["unit_type", "type"]);
   const building = val(data, ["building"], property);
+  const subjectLine = val(data, ["subject"], property ? `${property} inquiry` : "Website inquiry");
   const message = val(data, ["message"], "Website inquiry.");
   const sourcePageUrl = val(data, ["source_page_url", "source_url"], req.headers.get("referer") || "");
   const leadSource = val(data, ["lead_source"], "Website");
@@ -49,6 +130,12 @@ export async function POST(req: NextRequest) {
   }
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ success: false, message: "Please enter a valid email address." }, { status: 400 });
+  }
+  if (data.subject !== undefined && !subjectLine) {
+    return NextResponse.json({ success: false, message: "Subject is required." }, { status: 400 });
+  }
+  if (data.message !== undefined && !message) {
+    return NextResponse.json({ success: false, message: "Message is required." }, { status: 400 });
   }
 
   const isAppointment = /view|visit|tour|appointment|schedule|book/.test(action) || appointmentDate !== "";
@@ -117,6 +204,8 @@ export async function POST(req: NextRequest) {
     const completedFields = [name, email, phone, prefContact, property, unitName, budgetRange, prefPayment, intendedPurpose, purchaseTimeline, appointmentDate].filter(Boolean).length +
       (message && message !== "Website inquiry." ? 1 : 0);
 
+    const messageWithSubject = subjectLine ? `Subject: ${subjectLine}\n\n${message}` : message;
+
     const [inquiryResult]: any = await conn.execute(
       `INSERT INTO inquiries
         (property_id, contact_id, name, email, phone, preferred_contact_method, project, unit_name, unit_type,
@@ -147,7 +236,7 @@ export async function POST(req: NextRequest) {
         viewsCount,
         returnVisitsCount,
         completedFields,
-        message,
+        messageWithSubject,
         sourcePageUrl,
         leadSource,
         status,
@@ -200,6 +289,22 @@ export async function POST(req: NextRequest) {
     await conn.commit();
     conn.release();
 
+    let emailSent = false;
+    try {
+      emailSent = await sendContactEmail({
+        name,
+        email,
+        phone,
+        subject: subjectLine,
+        message,
+        project: property,
+        unitName,
+        sourcePageUrl,
+      });
+    } catch (mailError) {
+      console.error("Contact notification email failed:", mailError);
+    }
+
     return NextResponse.json({
       success: true,
       message:
@@ -212,6 +317,7 @@ export async function POST(req: NextRequest) {
       contact_id: contactId,
       appointment_created: appointmentCreated,
       lead_score: leadScore,
+      email_sent: emailSent,
     });
   } catch (e: any) {
     await conn.rollback();

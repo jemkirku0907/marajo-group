@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", project: "", unit: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", project: "", unit: "", message: "" });
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState("");
@@ -70,7 +70,7 @@ export default function ContactPage() {
                   </span>
                   <span>
                     <span className="label">Email</span>
-                    <span className="value">inquiries@marajogroup.com</span>
+                    <a className="value contact-link" href="mailto:jemkirku0907@gmail.com">jemkirku0907@gmail.com</a>
                   </span>
                 </div>
                 <div className="contact-info-item">
@@ -79,7 +79,7 @@ export default function ContactPage() {
                   </span>
                   <span>
                     <span className="label">Phone</span>
-                    <span className="value">+63 2 8XXX XXXX</span>
+                    <a className="value contact-link" href="tel:+639924562100">09924562100</a>
                   </span>
                 </div>
                 <div
@@ -156,11 +156,15 @@ export default function ContactPage() {
                   </div>
                   <div className="form-field">
                     <label htmlFor="contact-email">Email Address</label>
-                    <input id="contact-email" type="email" className="form-control" placeholder="you@email.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                    <input id="contact-email" type="email" className="form-control" placeholder="you@email.com" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
                   </div>
                   <div className="form-field">
                     <label htmlFor="contact-phone">Phone Number</label>
-                    <input id="contact-phone" type="tel" className="form-control" placeholder="09XX XXX XXXX" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+                    <input id="contact-phone" type="tel" className="form-control" placeholder="09XX XXX XXXX" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+                  </div>
+                  <div className="form-field field-full">
+                    <label htmlFor="contact-subject">Subject</label>
+                    <input id="contact-subject" type="text" className="form-control" placeholder="Property inquiry" required value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} />
                   </div>
                   <div className="form-field">
                     <label htmlFor="contact-project">Project Interest</label>
@@ -183,7 +187,7 @@ export default function ContactPage() {
                   </div>
                   <div className="form-field field-full">
                     <label htmlFor="contact-message">Message</label>
-                    <textarea id="contact-message" className="form-control" rows={5} placeholder="Tell us your inquiry and preferred schedule" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
+                    <textarea id="contact-message" className="form-control" rows={5} placeholder="Tell us your inquiry and preferred schedule" required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
                   </div>
                   <button className="btn-primary field-full" type="submit" disabled={busy}>
                     {busy ? "Sending…" : "Send Inquiry"}
@@ -197,6 +201,8 @@ export default function ContactPage() {
 
       <style>{`
         .contact-info-item--clickable { cursor: pointer; transition: color 200ms ease; }
+        .contact-link { color: inherit; text-decoration: none; }
+        .contact-link:hover { color: var(--mg-green, #38A000); text-decoration: underline; }
         .contact-info-item--clickable:hover .value,
         .contact-info-item--clickable:hover .contact-info-icon { color: var(--mg-green, #38A000); }
         .map-hint { font-size: 0.8em; opacity: 0.6; font-weight: 500; }
@@ -205,12 +211,13 @@ export default function ContactPage() {
           display: none; position: fixed; inset: 0;
           background: rgba(10,20,10,0.55);
           backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-          z-index: 9999; align-items: center; justify-content: center; padding: 1rem;
+          z-index: 10000; align-items: flex-start; justify-content: center; padding: 5.5rem 1rem 1rem;
         }
         .map-modal-backdrop.is-open { display: flex; }
         .map-modal-box {
           background: var(--surface, #fff); border-radius: 16px; overflow: hidden;
-          box-shadow: 0 32px 80px rgba(0,0,0,0.28); width: 100%; max-width: 680px;
+          box-shadow: 0 32px 80px rgba(0,0,0,0.28); width: 100%; max-width: 860px;
+          max-height: calc(100vh - 6.5rem);
           display: flex; flex-direction: column;
           animation: mapSlideUp 280ms cubic-bezier(0.22,1,0.36,1);
         }
@@ -224,11 +231,11 @@ export default function ContactPage() {
           cursor: pointer; color: var(--text-muted, #6b7280); transition: background 200ms, color 200ms; flex-shrink: 0;
         }
         .map-modal-close:hover { background: #fee2e2; color: #dc2626; }
-        .map-modal-frame { height: 380px; width: 100%; }
+        .map-modal-frame { height: min(52vh, 480px); min-height: 300px; width: 100%; }
         .map-modal-footer { padding: 0.9rem 1.5rem; border-top: 1px solid var(--border-muted, #e5e7eb); display: flex; align-items: center; justify-content: flex-end; }
         .map-open-link { font-size: 0.85rem; font-weight: 600; color: var(--mg-green, #38A000); text-decoration: none; }
         .map-open-link:hover { text-decoration: underline; }
-        @media (max-width: 600px) { .map-modal-frame { height: 260px; } .map-modal-box { border-radius: 12px; } }
+        @media (max-width: 600px) { .map-modal-backdrop { padding-top: 5rem; } .map-modal-frame { height: 320px; min-height: 260px; } .map-modal-box { border-radius: 12px; max-height: calc(100vh - 6rem); } }
       `}</style>
     </main>
   );

@@ -63,3 +63,38 @@ body {
   font-size: 0.875rem;
   padding: 0.625rem 1.25rem;
 }
+
+.property-detail-hero {
+  min-height: calc(70vh - 72px);
+}
+
+.property-map-section {
+  scroll-margin-top: 96px;
+}
+
+.property-map-frame {
+  width: 100%;
+  height: clamp(320px, 52vh, 520px);
+  overflow: hidden;
+  border: 1px solid var(--border-muted, #e5e7eb);
+  border-radius: 12px;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.12);
+  background: #f8fafc;
+}
+
+.property-map-frame iframe {
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .property-detail-hero {
+    min-height: auto;
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .property-map-frame {
+    height: 320px;
+    border-radius: 10px;
+  }
+}

@@ -40,8 +40,8 @@ export default function AccountModal({ open, onClose }: { open: boolean; onClose
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-xl bg-white p-6 shadow-2xl">
+    <div className="fixed inset-0 z-[10000] flex items-start justify-center overflow-y-auto bg-black/50 p-4 pt-24 sm:pt-28">
+      <div className="mb-8 max-h-[calc(100vh-8rem)] w-full max-w-lg overflow-y-auto rounded-xl bg-white p-6 shadow-2xl">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-900">My Account</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600" aria-label="Close">

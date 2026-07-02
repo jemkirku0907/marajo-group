@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Staff Portal - Marajo Group",
+  title: "Admin Dashboard",
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

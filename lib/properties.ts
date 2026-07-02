@@ -34,7 +34,7 @@ export const properties: Property[] = [
     category: "office",
     categoryLabel: "Office",
     location: "BGC, Taguig",
-    image: "/assets/marajo-tower.jpg",
+    image: "/assets/QUACC.jpg",
     cardDescription:
       "Contemporary office destination designed for agile teams, premium operations, and business growth.",
     hasDetailPage: true,
@@ -48,7 +48,7 @@ export const properties: Property[] = [
       heading: "Exceptional residential living with premium amenities and thoughtful planning.",
       paragraph:
         "Marajo Tower offers a refined collection of studio, one-bedroom, and two-bedroom suites with expansive city views, generous amenity spaces, and elevated finishes throughout.",
-      image: "/assets/marajo-tower.jpg",
+      image: "/assets/QUACC.jpg",
       specs: [
         { label: "Floors", value: "30 storeys" },
         { label: "Units", value: "220 premium residences" },
@@ -94,24 +94,24 @@ export const properties: Property[] = [
     location: "Makati City",
     image: "/assets/mrj.jpg",
     cardDescription:
-      "Luxury residential tower delivering elegant units, premium amenities, and a modern city lifestyle.",
+      "Office and commercial building in Makati Poblacion designed for business operations, service teams, and client-facing work.",
     hasDetailPage: true,
     hero: {
-      label: "Office Excellence",
+      label: "Office / Commercial",
       title: "MRJ Center — refined office spaces for premium teams in Makati.",
-      copy: "A contemporary office destination designed for agile teams, executive operations, and flexible corporate environments.",
+      copy: "A commercial building designed for office operations, service businesses, and teams that need practical Makati access.",
     },
     overview: {
       eyebrow: "MRJ Center",
-      heading: "Premium office spaces with modern design, efficient operations, and elevated workplace experience.",
+      heading: "Office and commercial spaces built for practical business use in Makati.",
       paragraph:
-        "MRJ Center offers a distinctive corporate environment with boutique office floors, premium lobby and reception areas, and strategic Makati access for teams and clients.",
+        "MRJ Center is an office/commercial building in the developing vicinity of Makati Poblacion. It supports business operations with accessible commercial spaces, efficient floor planning, and a location suited for teams, tenants, and client-facing services.",
       image: "/assets/mrj.jpg",
       specs: [
-        { label: "Type", value: "Premium Office Development" },
-        { label: "Location", value: "Makati City" },
-        { label: "Space", value: "Flexible floor plates for teams of all sizes" },
-        { label: "Design", value: "Contemporary workplace styling with premium finishes" },
+        { label: "Category", value: "Office / Commercial Building" },
+        { label: "Location", value: "Makati Poblacion" },
+        { label: "Use", value: "Office operations, commercial tenants, and client-facing services" },
+        { label: "Features", value: "Accessible business address, efficient spaces, and professional building environment" },
       ],
     },
   },
@@ -180,7 +180,7 @@ export const properties: Property[] = [
     category: "hospitality",
     categoryLabel: "Hospitality",
     location: "Siargao Island",
-    image: "/assets/marajo-tower.jpg",
+    image: "/assets/QUACC.jpg",
     cardDescription:
       "A refined coastal destination offering island-inspired homes, boutique hospitality, and exceptional natural surroundings.",
     hasDetailPage: true,
@@ -194,7 +194,7 @@ export const properties: Property[] = [
       heading: "Luxury residences curated to the island lifestyle with premium community spaces and coastal comforts.",
       paragraph:
         "Muro Siargao is a boutique coastal development designed for retreat living with modern comforts, landscape-rich courtyards, and direct access to the island's celebrated coast.",
-      image: "/assets/marajo-tower.jpg",
+      image: "/assets/QUACC.jpg",
       specs: [
         { label: "Location", value: "Siargao Island" },
         { label: "Type", value: "Boutique residential resort" },
@@ -209,7 +209,7 @@ export const properties: Property[] = [
     category: "mixed",
     categoryLabel: "Retail Destination",
     location: "Manila",
-    image: "/assets/marajo-tower.jpg",
+    image: "/assets/Space-Solution-A.jpg",
     cardDescription:
       "A luxury retail and community destination anchored by premium brands, high-quality food and beverage, and experiential hospitality.",
     hasDetailPage: true,
@@ -223,7 +223,7 @@ export const properties: Property[] = [
       heading: "Mixed-use retail destination designed for premium brands, curated dining, and dynamic community programming.",
       paragraph:
         "Marajo Town Center combines retail, dining, and lifestyle experiences in a cohesive environment anchored by elegant architecture and event-ready spaces.",
-      image: "/assets/marajo-tower.jpg",
+      image: "/assets/Space-Solution-A.jpg",
       specs: [
         { label: "Offerings", value: "Retail showrooms, restaurants, cultural spaces, and event venues" },
         { label: "Experience", value: "Curated brand environment with premium guest services" },

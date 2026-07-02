@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Marajo Group | Premium Real Estate",
+  title: "Home",
   description:
     "Marajo Group delivers premium real estate developments in the Philippines. Explore properties, amenities, and contact our sales team.",
 };

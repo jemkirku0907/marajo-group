@@ -4,8 +4,11 @@ import { AuthProvider } from "@/lib/AuthContext";
 import LayoutShell from "@/components/LayoutShell";
 
 export const metadata: Metadata = {
-  title: "Marajo Group",
-  description: "Marajo Group — Properties, Parking, Facilities & Workforce",
+  title: {
+    default: "Home | Marajo Group",
+    template: "%s | Marajo Group",
+  },
+  description: "Marajo Group properties, parking, facilities, workforce services, and commercial real estate opportunities.",
 };
 
 export default function RootLayout({

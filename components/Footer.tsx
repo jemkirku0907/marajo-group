@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { properties } from "@/lib/properties";
 
 export default function Footer() {
   return (
@@ -29,8 +30,11 @@ export default function Footer() {
           <h4>Properties</h4>
           <div className="footer-links">
             <Link href="/properties">Browse Properties</Link>
-            <Link href="/properties/marajo-tower">Marajo Tower</Link>
-            <Link href="/properties/salcedo-towers">Salcedo Towers</Link>
+            {properties.map((property) => (
+              <Link key={property.slug} href={`/properties/${property.slug}`}>
+                {property.name}
+              </Link>
+            ))}
           </div>
         </div>
         <div>

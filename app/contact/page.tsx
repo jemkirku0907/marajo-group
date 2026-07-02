@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { properties } from "@/lib/properties";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", project: "", unit: "", message: "" });
@@ -170,10 +171,9 @@ export default function ContactPage() {
                     <label htmlFor="contact-project">Project Interest</label>
                     <select id="contact-project" className="form-control" value={form.project} onChange={(e) => setForm({ ...form, project: e.target.value })}>
                       <option value="" disabled>Select a project</option>
-                      <option>Marajo Tower</option>
-                      <option>Salcedo Towers</option>
-                      <option>MRJ Center</option>
-                      <option>CEO Flats</option>
+                      {properties.map((property) => (
+                        <option key={property.slug} value={property.name}>{property.name}</option>
+                      ))}
                     </select>
                   </div>
                   <div className="form-field">

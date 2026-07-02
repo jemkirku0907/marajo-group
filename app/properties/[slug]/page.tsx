@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const property = getProperty(slug);
   if (!property) return {};
   return {
-    title: `${property.name} | Marajo Group`,
+    title: property.name,
     description: property.cardDescription,
   };
 }

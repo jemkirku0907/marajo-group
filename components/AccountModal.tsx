@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useAuth, authHeaders } from "@/lib/AuthContext";
 
 type HistoryItem = {
@@ -22,6 +23,11 @@ export default function AccountModal({ open, onClose }: { open: boolean; onClose
   const [profile, setProfile] = useState<any>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open || !token) return;
@@ -37,11 +43,20 @@ export default function AccountModal({ open, onClose }: { open: boolean; onClose
       .finally(() => setLoading(false));
   }, [open, token]);
 
-  if (!open) return null;
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open]);
 
-  return (
-    <div className="fixed inset-0 z-[10000] flex items-start justify-center overflow-y-auto bg-black/50 p-4 pt-24 sm:pt-28">
-      <div className="mb-8 max-h-[calc(100vh-8rem)] w-full max-w-lg overflow-y-auto rounded-xl bg-white p-6 shadow-2xl">
+  if (!open || !mounted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[2147483647] flex items-start justify-center overflow-y-auto bg-black/60 p-4 pt-24 sm:pt-28">
+      <div className="relative mb-8 max-h-[calc(100vh-8rem)] w-full max-w-lg overflow-y-auto rounded-xl bg-white p-6 shadow-2xl">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-900">My Account</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600" aria-label="Close">
@@ -107,7 +122,8 @@ export default function AccountModal({ open, onClose }: { open: boolean; onClose
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

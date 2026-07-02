@@ -19,19 +19,34 @@ type Tab =
   | "notifications"
   | "profile";
 
-const ADMIN_NAV_ITEMS: Array<{ id: Tab; label: string; icon: string }> = [
-  { id: "overview", label: "Overview", icon: "O" },
-  { id: "units", label: "Units", icon: "U" },
-  { id: "leads", label: "Leads", icon: "L" },
-  { id: "parking", label: "Parking", icon: "P" },
-  { id: "facilities", label: "Court Bookings", icon: "C" },
-  { id: "workers", label: "Workers", icon: "W" },
-  { id: "calendar", label: "Calendar", icon: "D" },
-  { id: "appointments", label: "Appointments", icon: "A" },
-  { id: "contacts", label: "Contacts", icon: "M" },
-  { id: "tasks", label: "Tasks", icon: "T" },
-  { id: "notifications", label: "Notifications", icon: "N" },
-  { id: "profile", label: "Profile", icon: "S" },
+type AdminIcon =
+  | "layout"
+  | "building"
+  | "users"
+  | "car"
+  | "court"
+  | "tool"
+  | "calendar"
+  | "clock"
+  | "mail"
+  | "check"
+  | "bell"
+  | "user"
+  | "logOut";
+
+const ADMIN_NAV_ITEMS: Array<{ id: Tab; label: string; icon: AdminIcon }> = [
+  { id: "overview", label: "Overview", icon: "layout" },
+  { id: "units", label: "Units", icon: "building" },
+  { id: "leads", label: "Leads", icon: "users" },
+  { id: "parking", label: "Parking", icon: "car" },
+  { id: "facilities", label: "Court Bookings", icon: "court" },
+  { id: "workers", label: "Workers", icon: "tool" },
+  { id: "calendar", label: "Calendar", icon: "calendar" },
+  { id: "appointments", label: "Appointments", icon: "clock" },
+  { id: "contacts", label: "Contacts", icon: "mail" },
+  { id: "tasks", label: "Tasks", icon: "check" },
+  { id: "notifications", label: "Notifications", icon: "bell" },
+  { id: "profile", label: "Profile", icon: "user" },
 ];
 
 const sidebarStyle: React.CSSProperties = {
@@ -62,6 +77,100 @@ const sidebarItemActiveStyle: React.CSSProperties = {
   fontWeight: 700,
   border: "1px solid var(--mg-green)",
 };
+
+function AdminNavIcon({ icon }: { icon: AdminIcon }) {
+  const paths: Record<AdminIcon, React.ReactNode> = {
+    layout: (
+      <>
+        <rect x="3" y="4" width="7" height="7" rx="1.5" />
+        <rect x="14" y="4" width="7" height="7" rx="1.5" />
+        <rect x="3" y="15" width="18" height="5" rx="1.5" />
+      </>
+    ),
+    building: (
+      <>
+        <path d="M4 21h16" />
+        <path d="M6 21V5.8A1.8 1.8 0 0 1 7.8 4h8.4A1.8 1.8 0 0 1 18 5.8V21" />
+        <path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1" />
+      </>
+    ),
+    users: (
+      <>
+        <path d="M16 19c0-2.2-1.8-4-4-4s-4 1.8-4 4" />
+        <circle cx="12" cy="8" r="3" />
+        <path d="M20 18c0-1.8-1.2-3.2-3-3.7M4 18c0-1.8 1.2-3.2 3-3.7" />
+      </>
+    ),
+    car: (
+      <>
+        <path d="M5 12l1.6-4.1A3 3 0 0 1 9.4 6h5.2a3 3 0 0 1 2.8 1.9L19 12" />
+        <path d="M4 12h16v6H4z" />
+        <circle cx="7.5" cy="18" r="1.4" />
+        <circle cx="16.5" cy="18" r="1.4" />
+      </>
+    ),
+    court: (
+      <>
+        <rect x="4" y="5" width="16" height="14" rx="2" />
+        <path d="M12 5v14M4 12h16M8 5v14M16 5v14" />
+      </>
+    ),
+    tool: (
+      <>
+        <path d="M14.7 6.3a4 4 0 0 0-5 5L4 17v3h3l5.7-5.7a4 4 0 0 0 5-5l-2.6 2.6-3-3z" />
+      </>
+    ),
+    calendar: (
+      <>
+        <rect x="4" y="5" width="16" height="15" rx="2" />
+        <path d="M8 3v4M16 3v4M4 10h16" />
+      </>
+    ),
+    clock: (
+      <>
+        <circle cx="12" cy="12" r="8" />
+        <path d="M12 8v5l3 2" />
+      </>
+    ),
+    mail: (
+      <>
+        <rect x="4" y="6" width="16" height="12" rx="2" />
+        <path d="M5 8l7 5 7-5" />
+      </>
+    ),
+    check: (
+      <>
+        <rect x="5" y="4" width="14" height="17" rx="2" />
+        <path d="M9 12l2 2 4-5" />
+      </>
+    ),
+    bell: (
+      <>
+        <path d="M18 10a6 6 0 0 0-12 0c0 7-2 7-2 7h16s-2 0-2-7" />
+        <path d="M10 20a2.2 2.2 0 0 0 4 0" />
+      </>
+    ),
+    user: (
+      <>
+        <circle cx="12" cy="8" r="4" />
+        <path d="M5 21c0-3.3 3.1-6 7-6s7 2.7 7 6" />
+      </>
+    ),
+    logOut: (
+      <>
+        <path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4" />
+        <path d="M14 8l4 4-4 4" />
+        <path d="M18 12H9" />
+      </>
+    ),
+  };
+
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      {paths[icon]}
+    </svg>
+  );
+}
 
 export default function AdminDashboardPage() {
   const router = useRouter();
@@ -185,7 +294,7 @@ export default function AdminDashboardPage() {
                   title={item.label}
                   style={item.id === tab ? sidebarItemActiveStyle : sidebarItemStyle}
                 >
-                  <span className="admin-sidebar-icon">{item.icon}</span>
+                  <span className="admin-sidebar-icon"><AdminNavIcon icon={item.icon} /></span>
                   <span className="admin-sidebar-label">{item.label}</span>
                 </button>
               ))}
@@ -204,7 +313,7 @@ export default function AdminDashboardPage() {
                   title={item.label}
                   style={item.id === tab ? sidebarItemActiveStyle : sidebarItemStyle}
                 >
-                  <span className="admin-sidebar-icon">{item.icon}</span>
+                  <span className="admin-sidebar-icon"><AdminNavIcon icon={item.icon} /></span>
                   <span className="admin-sidebar-label">{item.label}</span>
                 </button>
               ))}
@@ -217,6 +326,10 @@ export default function AdminDashboardPage() {
               <span>{staff.role}</span>
             </div>
           </div>
+          <button className="admin-sidebar-logout" onClick={handleLogout} title="Log out" type="button">
+            <span className="admin-sidebar-icon"><AdminNavIcon icon="logOut" /></span>
+            <span className="admin-sidebar-label">Log out</span>
+          </button>
         </aside>
 
         <div className="admin-dashboard-content">
@@ -242,21 +355,6 @@ export default function AdminDashboardPage() {
               </div>
               <div className="admin-dashboard-actions">
                 <ThemeController />
-                <button
-                  onClick={handleLogout}
-                  style={{
-                    background: "#1f6e34",
-                    border: "1px solid #1f6e34",
-                    color: "#fff",
-                    borderRadius: 10,
-                    padding: "10px 18px",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    cursor: "pointer",
-                  }}
-                >
-                  Log out
-                </button>
               </div>
             </div>
           </div>

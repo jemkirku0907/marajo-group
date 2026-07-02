@@ -288,8 +288,16 @@
   background: var(--surface);
   color: #1f6e34;
   cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16);
-  transition: transform 240ms cubic-bezier(0.2, 0, 0, 1), box-shadow 180ms ease, background-color 180ms ease, color 180ms ease;
+  transition: opacity 160ms ease, transform 240ms cubic-bezier(0.2, 0, 0, 1), box-shadow 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+.admin-dashboard-sidebar:hover .admin-sidebar-toggle,
+.admin-dashboard-sidebar:focus-within .admin-sidebar-toggle {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .admin-sidebar-toggle-icon {
@@ -305,16 +313,24 @@
 
 .admin-sidebar-icon {
   display: inline-flex;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
   background: var(--surface-soft);
   color: var(--mg-green);
-  font-size: 12px;
-  font-weight: 800;
   flex: 0 0 auto;
+}
+
+.admin-sidebar-icon svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .admin-sidebar-label {
@@ -346,6 +362,46 @@
   color: #fff;
   font-weight: 800;
   flex: 0 0 auto;
+}
+
+.admin-sidebar-logout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  border: 1px solid rgba(185, 28, 28, 0.18);
+  background: rgba(185, 28, 28, 0.06);
+  color: #b91c1c;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+.admin-sidebar-logout .admin-sidebar-icon {
+  background: rgba(185, 28, 28, 0.08);
+  color: #b91c1c;
+}
+
+.admin-sidebar-logout:hover {
+  background: rgba(185, 28, 28, 0.1);
+  border-color: rgba(185, 28, 28, 0.32);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.theme-dark .admin-sidebar-logout {
+  border-color: rgba(248, 113, 113, 0.24);
+  background: rgba(248, 113, 113, 0.1);
+  color: #fca5a5;
+}
+
+.theme-dark .admin-sidebar-logout .admin-sidebar-icon {
+  background: rgba(248, 113, 113, 0.12);
+  color: #fca5a5;
 }
 
 .admin-dashboard-shell.is-sidebar-collapsed .admin-dashboard-sidebar {
@@ -383,13 +439,21 @@
 
 .admin-dashboard-shell.is-sidebar-collapsed .admin-dashboard-sidebar button[title] {
   justify-content: center;
-  padding-left: 10px !important;
-  padding-right: 10px !important;
+  gap: 0 !important;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
 }
 
 .admin-dashboard-shell.is-sidebar-collapsed .admin-sidebar-profile {
   padding: 10px;
   justify-content: center;
+}
+
+.admin-dashboard-shell.is-sidebar-collapsed .admin-sidebar-logout {
+  justify-content: center;
+  gap: 0;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .admin-dashboard-content {
@@ -814,6 +878,8 @@ body:has(.admin-dashboard-shell) header[style*="display: none"] {
     right: auto;
     top: auto;
     margin-left: auto;
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .admin-dashboard-backdrop {

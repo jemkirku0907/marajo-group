@@ -21,7 +21,15 @@ export async function GET(req: NextRequest) {
     if (!(await tableExists("workers"))) {
       return NextResponse.json({
         success: true,
-        stats: { total_workers: 0, active_workers: 0, pending_applications: 0, completed_jobs: 0, payroll_pending: 0 },
+        stats: {
+          total_workers: 0,
+          active_workers: 0,
+          pending_applications: 0,
+          completed_jobs: 0,
+          payroll_pending: 0,
+          pending_bookings: 0,
+          confirmed_bookings: 0,
+        },
       });
     }
     const total = await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM workers");
@@ -37,6 +45,12 @@ export async function GET(req: NextRequest) {
     const payroll = await db.queryOne<{ t: number }>(
       "SELECT COALESCE(SUM(net_earnings),0) t FROM worker_payroll WHERE payroll_status IN ('pending','approved')"
     );
+    const pendingBookings = (await tableExists("worker_bookings"))
+      ? await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM worker_bookings WHERE status = 'pending'")
+      : { c: 0 };
+    const confirmedBookings = (await tableExists("worker_bookings"))
+      ? await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM worker_bookings WHERE status = 'confirmed'")
+      : { c: 0 };
     return NextResponse.json({
       success: true,
       stats: {
@@ -45,6 +59,8 @@ export async function GET(req: NextRequest) {
         pending_applications: pending?.c ?? 0,
         completed_jobs: completed?.c ?? 0,
         payroll_pending: Number(payroll?.t ?? 0),
+        pending_bookings: pendingBookings?.c ?? 0,
+        confirmed_bookings: confirmedBookings?.c ?? 0,
       },
     });
   }
@@ -71,6 +87,20 @@ export async function GET(req: NextRequest) {
     sql += " ORDER BY w.created_at DESC LIMIT 100";
     const rows = await db.query(sql, params);
     return NextResponse.json({ success: true, workers: rows, count: rows.length });
+  }
+
+  if (action === "bookings") {
+    if (!(await tableExists("worker_bookings"))) {
+      return NextResponse.json({ success: true, bookings: [], count: 0 });
+    }
+    const rows = await db.query(
+      `SELECT id, user_id, client_name, contact_number, email, position, slots_needed,
+              job_date, shift_start, shift_end, notes, status, created_at, updated_at
+       FROM worker_bookings
+       ORDER BY created_at DESC
+       LIMIT 100`
+    );
+    return NextResponse.json({ success: true, bookings: rows, count: rows.length });
   }
 
   return NextResponse.json({ success: false, message: `Admin workforce endpoint not found: ${action}` }, { status: 404 });
@@ -104,6 +134,21 @@ export async function POST(req: NextRequest) {
     }
     await db.execute("UPDATE workers SET availability_status = ? WHERE id = ?", [status, id]);
     return NextResponse.json({ success: true, message: "Availability updated" });
+  }
+
+  if (action === "update-booking") {
+    const requested = String(data.status || "");
+    const valid = ["pending", "approved", "rejected", "confirmed", "cancelled", "completed"];
+    if (!id || !valid.includes(requested)) {
+      return NextResponse.json({ success: false, message: "id and valid status required" }, { status: 400 });
+    }
+    if (!(await tableExists("worker_bookings"))) {
+      return NextResponse.json({ success: false, message: "worker_bookings table is missing" }, { status: 404 });
+    }
+    const statusMap: Record<string, string> = { approved: "confirmed", rejected: "cancelled" };
+    const status = statusMap[requested] ?? requested;
+    await db.execute("UPDATE worker_bookings SET status = ?, updated_at = NOW() WHERE id = ?", [status, id]);
+    return NextResponse.json({ success: true, message: "Booking updated", status });
   }
 
   return NextResponse.json({ success: false, message: `Admin workforce endpoint not found: ${action}` }, { status: 404 });

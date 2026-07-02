@@ -722,16 +722,19 @@ function FacilitiesTab() {
 function WorkersTab() {
   const [stats, setStats] = useState<any>(null);
   const [workers, setWorkers] = useState<any[]>([]);
+  const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
     setLoading(true);
-    const [s, w] = await Promise.all([
+    const [s, w, b] = await Promise.all([
       fetch("/api/admin/workers?action=stats").then((res) => res.json()),
       fetch("/api/admin/workers?action=workers").then((res) => res.json()),
+      fetch("/api/admin/workers?action=bookings").then((res) => res.json()),
     ]);
     setStats(s.stats);
     setWorkers(w.workers || []);
+    setBookings(b.bookings || []);
     setLoading(false);
   }, []);
 
@@ -757,16 +760,46 @@ function WorkersTab() {
     load();
   }
 
-  if (loading) return <p>Loading workforce data…</p>;
+  async function setAvailability(id: number, status: string) {
+    await fetch("/api/admin/workers?action=set-availability", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, status }),
+    });
+    load();
+  }
+
+  async function updateBooking(id: number, status: string) {
+    await fetch("/api/admin/workers?action=update-booking", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, status }),
+    });
+    load();
+  }
+
+  function formatDate(value: string) {
+    if (!value) return "-";
+    return new Date(value).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  }
+
+  function formatTime(value: string) {
+    if (!value) return "-";
+    return String(value).slice(0, 5);
+  }
+
+  if (loading) return <p>Loading workforce data...</p>;
 
   return (
     <div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 12, marginBottom: 24 }}>
         <StatCard label="Total Workers" value={stats?.total_workers ?? 0} />
         <StatCard label="Active" value={stats?.active_workers ?? 0} />
+        <StatCard label="Pending Bookings" value={stats?.pending_bookings ?? 0} />
+        <StatCard label="Confirmed Bookings" value={stats?.confirmed_bookings ?? 0} />
         <StatCard label="Pending Applications" value={stats?.pending_applications ?? 0} />
         <StatCard label="Completed Jobs" value={stats?.completed_jobs ?? 0} />
-        <StatCard label="Payroll Pending" value={`₱${stats?.payroll_pending ?? 0}`} />
+        <StatCard label="Payroll Pending" value={`PHP ${stats?.payroll_pending ?? 0}`} />
       </div>
 
       <div style={cardStyle}>
@@ -787,7 +820,7 @@ function WorkersTab() {
                 <td style={tdStyle}>
                   {w.first_name} {w.last_name}
                 </td>
-                <td style={tdStyle}>{w.position}</td>
+                <td style={tdStyle}>{String(w.position || "").replace(/_/g, " ")}</td>
                 <td style={tdStyle}>{w.availability_status}</td>
                 <td style={tdStyle}>{w.verification_status}</td>
                 <td style={tdStyle}>
@@ -801,6 +834,12 @@ function WorkersTab() {
                       </button>
                     </>
                   )}
+                  <button
+                    onClick={() => setAvailability(w.id, w.availability_status === "available" ? "unavailable" : "available")}
+                    style={{ ...actionBtn, background: w.availability_status === "available" ? "#64748b" : "#16a34a" }}
+                  >
+                    {w.availability_status === "available" ? "Set Unavailable" : "Set Available"}
+                  </button>
                 </td>
               </tr>
             ))}
@@ -814,8 +853,102 @@ function WorkersTab() {
           </tbody>
         </table>
       </div>
+
+      <div style={{ ...cardStyle, marginTop: 24 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center", flexWrap: "wrap", marginBottom: 12 }}>
+          <div>
+            <h3 style={{ marginBottom: 4 }}>Client Booking Requests</h3>
+            <p style={{ color: "#64748b", fontSize: 13 }}>Approve, reject, or complete public workforce booking requests.</p>
+          </div>
+          <a href="/workforce" style={{ ...actionBtn, textDecoration: "none", background: "#0f766e" }}>
+            Open Worker Portal
+          </a>
+        </div>
+        <div style={{ overflowX: "auto" }}>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Client</th>
+                <th style={thStyle}>Contact</th>
+                <th style={thStyle}>Role Needed</th>
+                <th style={thStyle}>Date</th>
+                <th style={thStyle}>Shift</th>
+                <th style={thStyle}>Slots</th>
+                <th style={thStyle}>Status</th>
+                <th style={thStyle}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookings.map((b) => (
+                <tr key={b.id}>
+                  <td style={tdStyle}>
+                    <strong>{b.client_name}</strong>
+                    <br />
+                    <small style={{ color: "#64748b" }}>{b.email}</small>
+                  </td>
+                  <td style={tdStyle}>{b.contact_number}</td>
+                  <td style={tdStyle}>{String(b.position || "").replace(/_/g, " ")}</td>
+                  <td style={tdStyle}>{formatDate(b.job_date)}</td>
+                  <td style={tdStyle}>
+                    {formatTime(b.shift_start)} - {formatTime(b.shift_end)}
+                  </td>
+                  <td style={tdStyle}>{b.slots_needed}</td>
+                  <td style={tdStyle}>
+                    <span style={statusPillStyle(b.status)}>{b.status}</span>
+                  </td>
+                  <td style={tdStyle}>
+                    {b.status === "pending" ? (
+                      <>
+                        <button onClick={() => updateBooking(b.id, "approved")} style={actionBtn}>
+                          Approve
+                        </button>
+                        <button onClick={() => updateBooking(b.id, "rejected")} style={{ ...actionBtn, background: "#ef4444" }}>
+                          Reject
+                        </button>
+                      </>
+                    ) : b.status === "completed" || b.status === "cancelled" ? (
+                      <span style={{ color: "#64748b", fontSize: 12 }}>Done</span>
+                    ) : (
+                      <button onClick={() => updateBooking(b.id, "completed")} style={{ ...actionBtn, background: "#2563eb" }}>
+                        Mark Completed
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+              {bookings.length === 0 && (
+                <tr>
+                  <td style={tdStyle} colSpan={8}>
+                    No booking requests yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
+}
+
+function statusPillStyle(status: string): React.CSSProperties {
+  const colors: Record<string, { bg: string; fg: string }> = {
+    pending: { bg: "#fef3c7", fg: "#92400e" },
+    confirmed: { bg: "#dcfce7", fg: "#166534" },
+    completed: { bg: "#dbeafe", fg: "#1d4ed8" },
+    cancelled: { bg: "#fee2e2", fg: "#991b1b" },
+  };
+  const color = colors[status] || { bg: "#f1f5f9", fg: "#334155" };
+  return {
+    display: "inline-block",
+    padding: "4px 10px",
+    borderRadius: 999,
+    background: color.bg,
+    color: color.fg,
+    fontSize: 12,
+    fontWeight: 700,
+    textTransform: "capitalize",
+  };
 }
 
 const actionBtn: React.CSSProperties = {

@@ -35,10 +35,6 @@ const ADMIN_NAV_ITEMS: Array<{ id: Tab; label: string }> = [
 ];
 
 const sidebarStyle: React.CSSProperties = {
-  minWidth: 260,
-  borderRight: "1px solid var(--border-muted)",
-  background: "var(--surface)",
-  padding: 24,
   display: "flex",
   flexDirection: "column",
   gap: 24,
@@ -64,6 +60,7 @@ const sidebarItemActiveStyle: React.CSSProperties = {
   background: "var(--accent-soft)",
   color: "var(--mg-green)",
   fontWeight: 700,
+  border: "1px solid var(--mg-green)",
 };
 
 export default function AdminDashboardPage() {
@@ -134,8 +131,8 @@ export default function AdminDashboardPage() {
         </button>
       </header>}
 
-      <div className="admin-dashboard-shell" style={{ display: "flex", minHeight: "100vh", marginTop: 0 }}>
-        <aside style={sidebarStyle}>
+      <div className="admin-dashboard-shell">
+        <aside className="admin-dashboard-sidebar" style={sidebarStyle}>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <img
               src="/assets/logo.png"
@@ -144,12 +141,12 @@ export default function AdminDashboardPage() {
             />
             <div>
               <div style={{ fontSize: 16, fontWeight: 700, color: "var(--heading-color)" }}>Marajo Group</div>
-              <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>Staff Portal</div>
+              <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 4 }}>Staff Portal</div>
             </div>
           </div>
 
           <div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 12 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 12 }}>
               Main
             </div>
             <div style={{ display: "grid", gap: 6 }}>
@@ -166,7 +163,7 @@ export default function AdminDashboardPage() {
           </div>
 
           <div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 12 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 12 }}>
               Tools
             </div>
             <div style={{ display: "grid", gap: 6 }}>
@@ -183,9 +180,9 @@ export default function AdminDashboardPage() {
           </div>
         </aside>
 
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
-          <div style={{ padding: "16px 28px", background: "var(--surface)", borderBottom: "1px solid var(--border-muted)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
+        <div className="admin-dashboard-content">
+          <div className="admin-dashboard-header">
+            <div className="admin-dashboard-header-inner">
               <div>
                 <h1 style={{ fontSize: 26, margin: 0, fontWeight: 700, color: "var(--heading-color)" }}>{ADMIN_NAV_ITEMS.find((item) => item.id === tab)?.label}</h1>
                 <p style={{ margin: "8px 0 0", color: "var(--text-muted)", fontSize: 14 }}>
@@ -203,7 +200,7 @@ export default function AdminDashboardPage() {
                   {tab === "profile" && "Update your staff profile and credentials."}
                 </p>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginLeft: "auto" }}>
+              <div className="admin-dashboard-actions">
                 <ThemeController />
                 <button
                   onClick={handleLogout}
@@ -224,7 +221,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          <main style={{ padding: "20px 28px 28px", flex: 1 }}>
+          <main className="admin-dashboard-main">
             {tab === "overview" && <OverviewTab />}
             {tab === "units" && <UnitsTab />}
             {tab === "leads" && <LeadsTab />}
@@ -247,30 +244,45 @@ export default function AdminDashboardPage() {
 /* ───────────────────── shared bits ───────────────────── */
 
 const cardStyle: React.CSSProperties = {
-  background: "#fff",
+  background: "var(--surface)",
+  color: "var(--text-primary)",
+  border: "1px solid var(--border-muted)",
   borderRadius: 12,
   padding: 18,
-  boxShadow: "0 1px 3px rgba(0,0,0,.08)",
+  boxShadow: "var(--shadow)",
+  overflowX: "auto",
 };
 
-const tableStyle: React.CSSProperties = { width: "100%", borderCollapse: "collapse", fontSize: 13 };
-const thStyle: React.CSSProperties = { textAlign: "left", padding: "10px 12px", borderBottom: "2px solid #e5e7eb", color: "#6b7280", fontWeight: 600 };
-const tdStyle: React.CSSProperties = { padding: "10px 12px", borderBottom: "1px solid #f3f4f6" };
+const tableStyle: React.CSSProperties = { width: "100%", borderCollapse: "collapse", fontSize: 13, color: "var(--text-primary)" };
+const thStyle: React.CSSProperties = {
+  textAlign: "left",
+  padding: "11px 12px",
+  borderBottom: "1px solid var(--border-muted)",
+  background: "var(--surface-soft)",
+  color: "var(--text-muted)",
+  fontWeight: 700,
+};
+const tdStyle: React.CSSProperties = {
+  padding: "11px 12px",
+  borderBottom: "1px solid var(--border-muted)",
+  color: "var(--text-primary)",
+  verticalAlign: "middle",
+};
 
 const inputStyle: React.CSSProperties = {
-  padding: "8px 12px",
-  border: "1px solid #d1d5db",
+  padding: "10px 12px",
+  border: "1px solid var(--border-muted)",
   borderRadius: 8,
   fontSize: 13,
-  color: "#111827",
-  background: "#fff",
+  color: "var(--text-primary)",
+  background: "var(--surface)",
 };
 
 function StatCard({ label, value }: { label: string; value: string | number }) {
   return (
     <div style={cardStyle}>
-      <div style={{ fontSize: 12, color: "#6b7280" }}>{label}</div>
-      <div style={{ fontSize: 22, fontWeight: 700, color: "#111827" }}>{value}</div>
+      <div style={{ fontSize: 12, color: "var(--text-muted)" }}>{label}</div>
+      <div style={{ fontSize: 22, fontWeight: 700, color: "var(--heading-color)" }}>{value}</div>
     </div>
   );
 }
@@ -352,12 +364,12 @@ function LeadsTab() {
             placeholder="Search name, property, email…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ padding: "6px 10px", border: "1px solid #e5e7eb", borderRadius: 6, fontSize: 13, minWidth: 220 }}
+            style={{ ...inputStyle, minWidth: 220 }}
           />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            style={{ padding: "6px 10px", border: "1px solid #e5e7eb", borderRadius: 6, fontSize: 13 }}
+            style={inputStyle}
           >
             <option value="">All statuses</option>
             {STATUS_OPTIONS.map((s) => (
@@ -385,7 +397,7 @@ function LeadsTab() {
               <tr key={l.id}>
                 <td style={tdStyle}>
                   <div style={{ fontWeight: 600 }}>{l.name}</div>
-                  <div style={{ fontSize: 12, color: "#6b7280" }}>{l.email || l.phone}</div>
+                  <div style={{ fontSize: 12, color: "var(--text-muted)" }}>{l.email || l.phone}</div>
                 </td>
                 <td style={tdStyle}>
                   {l.project || "—"}
@@ -401,7 +413,7 @@ function LeadsTab() {
                       fontSize: 11,
                       fontWeight: 700,
                       color: "#fff",
-                      background: statusColor[l.status] || "#6b7280",
+                      background: statusColor[l.status] || "var(--text-muted)",
                     }}
                   >
                     {l.status}
@@ -479,7 +491,7 @@ function LeadDrawer({ id, onClose, onChanged }: { id: number; onClose: () => voi
       onClick={onClose}
     >
       <div
-        style={{ width: 420, maxWidth: "100%", background: "#fff", height: "100%", overflowY: "auto", padding: 24 }}
+        style={{ width: 420, maxWidth: "100%", background: "var(--surface)", color: "var(--text-primary)", height: "100%", overflowY: "auto", padding: 24, borderLeft: "1px solid var(--border-muted)" }}
         onClick={(e) => e.stopPropagation()}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
@@ -495,21 +507,21 @@ function LeadDrawer({ id, onClose, onChanged }: { id: number; onClose: () => voi
           <>
             <div style={{ marginBottom: 16 }}>
               <div style={{ fontWeight: 700, fontSize: 16 }}>{data.lead.name}</div>
-              <div style={{ fontSize: 13, color: "#6b7280" }}>
+              <div style={{ fontSize: 13, color: "var(--text-muted)" }}>
                 {data.lead.email} {data.lead.phone ? `· ${data.lead.phone}` : ""}
               </div>
-              <div style={{ fontSize: 13, color: "#6b7280", marginTop: 4 }}>
+              <div style={{ fontSize: 13, color: "var(--text-muted)", marginTop: 4 }}>
                 {data.lead.project} {data.lead.unit_name ? `· ${data.lead.unit_name}` : ""}
               </div>
-              <div style={{ fontSize: 13, color: "#6b7280", marginTop: 4 }}>Lead score: {data.lead.lead_score ?? 0}</div>
+              <div style={{ fontSize: 13, color: "var(--text-muted)", marginTop: 4 }}>Lead score: {data.lead.lead_score ?? 0}</div>
             </div>
 
             <div style={{ ...cardStyle, marginBottom: 16, padding: 14 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 8, color: "#374151" }}>UPDATE STATUS</div>
+              <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 8, color: "var(--heading-color)" }}>UPDATE STATUS</div>
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
-                style={{ width: "100%", padding: "6px 10px", border: "1px solid #e5e7eb", borderRadius: 6, fontSize: 13, marginBottom: 8 }}
+                style={{ ...inputStyle, width: "100%", marginBottom: 8 }}
               >
                 {STATUS_OPTIONS.map((s) => (
                   <option key={s} value={s}>
@@ -522,7 +534,7 @@ function LeadDrawer({ id, onClose, onChanged }: { id: number; onClose: () => voi
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 rows={3}
-                style={{ width: "100%", padding: "6px 10px", border: "1px solid #e5e7eb", borderRadius: 6, fontSize: 13, marginBottom: 8 }}
+                style={{ ...inputStyle, width: "100%", marginBottom: 8 }}
               />
               <button onClick={saveStatus} disabled={saving} style={{ ...actionBtn, width: "100%" }}>
                 {saving ? "Saving…" : "Save Status"}
@@ -530,13 +542,13 @@ function LeadDrawer({ id, onClose, onChanged }: { id: number; onClose: () => voi
             </div>
 
             <div>
-              <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 8, color: "#374151" }}>ACTIVITY TIMELINE</div>
-              {data.timeline.length === 0 && <p style={{ fontSize: 13, color: "#6b7280" }}>No activity yet.</p>}
+              <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 8, color: "var(--heading-color)" }}>ACTIVITY TIMELINE</div>
+              {data.timeline.length === 0 && <p style={{ fontSize: 13, color: "var(--text-muted)" }}>No activity yet.</p>}
               {data.timeline.map((a: any) => (
-                <div key={a.id} style={{ borderLeft: "2px solid #e5e7eb", paddingLeft: 12, marginBottom: 14 }}>
-                  <div style={{ fontSize: 12, color: "#6b7280" }}>{a.created_at}</div>
+                <div key={a.id} style={{ borderLeft: "2px solid var(--border-muted)", paddingLeft: 12, marginBottom: 14 }}>
+                  <div style={{ fontSize: 12, color: "var(--text-muted)" }}>{a.created_at}</div>
                   <div style={{ fontSize: 13, fontWeight: 600 }}>{a.staff_name}</div>
-                  <div style={{ fontSize: 13, color: "#374151" }}>{a.details}</div>
+                  <div style={{ fontSize: 13, color: "var(--text-muted)" }}>{a.details}</div>
                 </div>
               ))}
             </div>
@@ -858,7 +870,12 @@ function WorkersTab() {
                   )}
                   <button
                     onClick={() => setAvailability(w.id, w.availability_status === "available" ? "unavailable" : "available")}
-                    style={{ ...actionBtn, background: w.availability_status === "available" ? "#64748b" : "#16a34a" }}
+                    style={{
+                      ...actionBtn,
+                      background: w.availability_status === "available" ? "var(--surface-soft)" : "#1f6e34",
+                      color: w.availability_status === "available" ? "var(--text-primary)" : "#fff",
+                      borderColor: w.availability_status === "available" ? "var(--border-muted)" : "#1f6e34",
+                    }}
                   >
                     {w.availability_status === "available" ? "Set Unavailable" : "Set Available"}
                   </button>
@@ -880,9 +897,9 @@ function WorkersTab() {
         <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center", flexWrap: "wrap", marginBottom: 12 }}>
           <div>
             <h3 style={{ marginBottom: 4 }}>Client Booking Requests</h3>
-            <p style={{ color: "#64748b", fontSize: 13 }}>Approve, reject, or complete public workforce booking requests.</p>
+            <p style={{ color: "var(--text-muted)", fontSize: 13 }}>Approve, reject, or complete public workforce booking requests.</p>
           </div>
-          <a href="/workforce" style={{ ...actionBtn, textDecoration: "none", background: "#0f766e" }}>
+          <a href="/workforce" style={{ ...actionBtn, textDecoration: "none" }}>
             Open Worker Portal
           </a>
         </div>
@@ -906,7 +923,7 @@ function WorkersTab() {
                   <td style={tdStyle}>
                     <strong>{b.client_name}</strong>
                     <br />
-                    <small style={{ color: "#64748b" }}>{b.email}</small>
+                    <small style={{ color: "var(--text-muted)" }}>{b.email}</small>
                   </td>
                   <td style={tdStyle}>{b.contact_number}</td>
                   <td style={tdStyle}>{String(b.position || "").replace(/_/g, " ")}</td>
@@ -929,7 +946,7 @@ function WorkersTab() {
                         </button>
                       </>
                     ) : b.status === "completed" || b.status === "cancelled" ? (
-                      <span style={{ color: "#64748b", fontSize: 12 }}>Done</span>
+                      <span style={{ color: "var(--text-muted)", fontSize: 12 }}>Done</span>
                     ) : (
                       <button onClick={() => updateBooking(b.id, "completed")} style={{ ...actionBtn, background: "#2563eb" }}>
                         Mark Completed
@@ -974,15 +991,16 @@ function statusPillStyle(status: string): React.CSSProperties {
 }
 
 const actionBtn: React.CSSProperties = {
-  background: "#16a34a",
+  background: "#1f6e34",
   color: "#fff",
-  border: "none",
-  borderRadius: 6,
-  padding: "6px 10px",
-  fontSize: 12,
-  fontWeight: 600,
+  border: "1px solid #1f6e34",
+  borderRadius: 10,
+  padding: "9px 12px",
+  fontSize: 13,
+  fontWeight: 700,
   cursor: "pointer",
   marginRight: 6,
+  lineHeight: 1.2,
 };
 
 /* ───────────────────── Overview tab ───────────────────── */
@@ -1006,7 +1024,7 @@ function OverviewTab() {
   return (
     <div>
       <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>Dashboard Overview</h2>
-      <p style={{ color: "#6b7280", fontSize: 13, marginBottom: 18 }}>Real-estate sales pipeline summary.</p>
+      <p style={{ color: "var(--text-muted)", fontSize: 13, marginBottom: 18 }}>Real-estate sales pipeline summary.</p>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 12, marginBottom: 24 }}>
         <StatCard label="Total Inquiries" value={s.total_inquiries} />
@@ -1314,17 +1332,17 @@ function CalendarTab() {
                     display: "flex",
                     justifyContent: "space-between",
                     padding: "6px 0",
-                    borderBottom: idx < data.grouped[d].length - 1 ? "1px solid #f3f4f6" : "none",
+                    borderBottom: idx < data.grouped[d].length - 1 ? "1px solid var(--border-muted)" : "none",
                     fontSize: 13,
                   }}
                 >
                   <span>
-                    <strong style={{ color: ev.type === "parking" ? "#3b82f6" : "#16a34a" }}>
+                    <strong style={{ color: ev.type === "parking" ? "#3b82f6" : "var(--mg-green)" }}>
                       {ev.type === "parking" ? "Parking" : "Appointment"}
                     </strong>{" "}
                     — {ev.label} {ev.sublabel ? `(${ev.sublabel})` : ""}
                   </span>
-                  <span style={{ color: "#6b7280" }}>{ev.status}</span>
+                  <span style={{ color: "var(--text-muted)" }}>{ev.status}</span>
                 </div>
               ))}
             </div>
@@ -1404,7 +1422,7 @@ function AppointmentsTab() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
         <div>
           <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>Appointments</h2>
-          <p style={{ color: "#6b7280", fontSize: 13 }}>Site visits and client meetings.</p>
+          <p style={{ color: "var(--text-muted)", fontSize: 13 }}>Site visits and client meetings.</p>
         </div>
         <button onClick={() => setShowForm((v) => !v)} style={actionBtn}>
           {showForm ? "Cancel" : "+ Add Appointment"}
@@ -1535,7 +1553,7 @@ function ContactsTab() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
         <div>
           <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>Contacts</h2>
-          <p style={{ color: "#6b7280", fontSize: 13 }}>All client contacts captured from inquiries.</p>
+          <p style={{ color: "var(--text-muted)", fontSize: 13 }}>All client contacts captured from inquiries.</p>
         </div>
         <button onClick={() => setShowForm((v) => !v)} style={actionBtn}>
           {showForm ? "Cancel" : "+ Add Contact"}
@@ -1604,7 +1622,7 @@ function ContactsTab() {
 /* ───────────────────── Tasks tab ───────────────────── */
 
 const TASK_PRIORITIES = ["high", "medium", "low"];
-const priorityColor: Record<string, string> = { high: "#ef4444", medium: "#f59e0b", low: "#6b7280" };
+const priorityColor: Record<string, string> = { high: "#ef4444", medium: "#f59e0b", low: "var(--text-muted)" };
 
 function TasksTab() {
   const [tasks, setTasks] = useState<any[]>([]);
@@ -1668,7 +1686,7 @@ function TasksTab() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
         <div>
           <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>Tasks</h2>
-          <p style={{ color: "#6b7280", fontSize: 13 }}>To-dos and follow-ups.</p>
+          <p style={{ color: "var(--text-muted)", fontSize: 13 }}>To-dos and follow-ups.</p>
         </div>
         <button onClick={() => setShowForm((v) => !v)} style={actionBtn}>
           {showForm ? "Cancel" : "+ Add Task"}
@@ -1707,9 +1725,9 @@ function TasksTab() {
               <input type="checkbox" checked={!!t.done} onChange={() => toggleTask(t.id)} />
               <div>
                 <div style={{ fontWeight: 600, textDecoration: t.done ? "line-through" : "none" }}>{t.task}</div>
-                <div style={{ fontSize: 12, color: "#6b7280" }}>
+                <div style={{ fontSize: 12, color: "var(--text-muted)" }}>
                   Due: {t.due_date || "—"} ·{" "}
-                  <span style={{ color: priorityColor[t.priority] || "#6b7280", fontWeight: 600 }}>{t.priority}</span>
+                  <span style={{ color: priorityColor[t.priority] || "var(--text-muted)", fontWeight: 600 }}>{t.priority}</span>
                 </div>
               </div>
             </div>
@@ -1771,7 +1789,7 @@ function NotificationsTab() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
         <div>
           <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>Notifications</h2>
-          <p style={{ color: "#6b7280", fontSize: 13 }}>System and lead activity alerts.</p>
+          <p style={{ color: "var(--text-muted)", fontSize: 13 }}>System and lead activity alerts.</p>
         </div>
         <button onClick={markAllRead} style={actionBtn}>Mark all read</button>
       </div>
@@ -1786,13 +1804,13 @@ function NotificationsTab() {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "flex-start",
-              background: n.is_read ? "#fff" : "#f0fdf4",
+              background: n.is_read ? "var(--surface)" : "var(--accent-soft)",
             }}
           >
             <div>
               <div style={{ fontWeight: 700, fontSize: 14 }}>{n.title}</div>
-              <div style={{ fontSize: 13, color: "#374151", marginTop: 2 }}>{n.message}</div>
-              <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 4 }}>
+              <div style={{ fontSize: 13, color: "var(--text-muted)", marginTop: 2 }}>{n.message}</div>
+              <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 4 }}>
                 {n.created_at ? new Date(n.created_at).toLocaleString() : ""}
               </div>
             </div>
@@ -1875,32 +1893,32 @@ function ProfileTab({ staff }: { staff: Staff }) {
   return (
     <div style={{ maxWidth: 480 }}>
       <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>Profile</h2>
-      <p style={{ color: "#6b7280", fontSize: 13, marginBottom: 18 }}>
+      <p style={{ color: "var(--text-muted)", fontSize: 13, marginBottom: 18 }}>
         Signed in as {staff.name} ({staff.role})
       </p>
 
       <div style={{ ...cardStyle, marginBottom: 16, display: "flex", flexDirection: "column", gap: 10 }}>
         <h3 style={{ fontSize: 15, fontWeight: 700 }}>Account Details</h3>
-        <label style={{ fontSize: 12, color: "#6b7280" }}>Name</label>
+        <label style={{ fontSize: 12, color: "var(--text-muted)" }}>Name</label>
         <input style={inputStyle} value={name} onChange={(e) => setName(e.target.value)} />
-        <label style={{ fontSize: 12, color: "#6b7280" }}>Email</label>
+        <label style={{ fontSize: 12, color: "var(--text-muted)" }}>Email</label>
         <input style={inputStyle} value={email} onChange={(e) => setEmail(e.target.value)} />
         <button onClick={saveProfile} disabled={saving} style={actionBtn}>
           {saving ? "Saving…" : "Save Changes"}
         </button>
-        {savedMsg && <div style={{ fontSize: 12, color: "#16a34a" }}>{savedMsg}</div>}
+        {savedMsg && <div style={{ fontSize: 12, color: "var(--mg-green)" }}>{savedMsg}</div>}
       </div>
 
       <div style={{ ...cardStyle, display: "flex", flexDirection: "column", gap: 10 }}>
         <h3 style={{ fontSize: 15, fontWeight: 700 }}>Change Password</h3>
-        <label style={{ fontSize: 12, color: "#6b7280" }}>Current password</label>
+        <label style={{ fontSize: 12, color: "var(--text-muted)" }}>Current password</label>
         <input style={inputStyle} type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
-        <label style={{ fontSize: 12, color: "#6b7280" }}>New password</label>
+        <label style={{ fontSize: 12, color: "var(--text-muted)" }}>New password</label>
         <input style={inputStyle} type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
         <button onClick={changePassword} disabled={pwSaving} style={actionBtn}>
           {pwSaving ? "Saving…" : "Change Password"}
         </button>
-        {pwMsg && <div style={{ fontSize: 12, color: pwMsg.includes("incorrect") ? "#ef4444" : "#16a34a" }}>{pwMsg}</div>}
+        {pwMsg && <div style={{ fontSize: 12, color: pwMsg.includes("incorrect") ? "#ef4444" : "var(--mg-green)" }}>{pwMsg}</div>}
       </div>
     </div>
   );

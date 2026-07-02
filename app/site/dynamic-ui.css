@@ -170,6 +170,10 @@
   padding-top: 0 !important;
 }
 
+body.is-admin-route {
+  padding-top: 0 !important;
+}
+
 .admin-dashboard-shell > aside,
 .admin-dashboard-shell > div {
   margin-top: 0 !important;

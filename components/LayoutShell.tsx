@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import AuthModal from "@/components/AuthModal";
 import Footer from "@/components/Footer";
@@ -11,6 +12,11 @@ import ThemeController from "@/components/ThemeController";
 export default function LayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith("/admin");
+
+  useEffect(() => {
+    document.body.classList.toggle("is-admin-route", Boolean(isAdmin));
+    return () => document.body.classList.remove("is-admin-route");
+  }, [isAdmin]);
 
   return (
     <>

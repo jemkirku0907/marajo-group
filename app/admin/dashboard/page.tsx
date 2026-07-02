@@ -160,8 +160,16 @@ export default function AdminDashboardPage() {
               <div style={{ fontSize: 16, fontWeight: 700, color: "var(--heading-color)" }}>Marajo Group</div>
               <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 4 }}>Staff Portal</div>
             </div>
-            <button className="admin-sidebar-toggle" onClick={toggleSidebar} aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}>
-              {sidebarCollapsed ? ">" : "<"}
+            <button
+              className="admin-sidebar-toggle"
+              onClick={toggleSidebar}
+              aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              aria-expanded={!sidebarCollapsed}
+              type="button"
+            >
+              <span className="admin-sidebar-toggle-icon" aria-hidden="true">
+                {sidebarCollapsed ? ">" : "<"}
+              </span>
             </button>
           </div>
 

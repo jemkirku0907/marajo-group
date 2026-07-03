@@ -42,6 +42,15 @@ export default function AboutPage() {
   return (
     <main>
       <section className="hero about-hero reveal-on-scroll">
+        <Image
+          src="/assets/marajo-tower.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="about-hero-bg"
+          aria-hidden="true"
+        />
         <div className="container about-hero-grid">
           <div className="about-hero-copy reveal-on-scroll">
             <span className="hero-label">About Marajo Group</span>

@@ -8,7 +8,7 @@
   --surface-soft: var(--surface-soft);
   --text: var(--text-primary);
   --text-muted: var(--text-muted);
-  --accent: var(--accent);
+  --accent: var(--mg-green);
   --accent-soft: var(--accent-soft);
   --border: var(--border-muted);
   --shadow: 0 24px 48px rgba(15, 23, 42, 0.08);
@@ -1191,7 +1191,7 @@ body.mobile-open .nav-toggle .hamb::after { transform: rotate(-45deg) translate(
 
 /* Dark mode: sticky Enquire Now button */
 .theme-dark .sticky-contact {
-  background: 7DC241;
+  background: #7DC241;
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.45),
     0 2px 6px rgba(0, 0, 0, 0.25);
@@ -4586,23 +4586,6 @@ body.theme-dark {
   z-index: 30;
 }
 
-.btn-primary,
-.sticky-contact,
-button[type="submit"].btn-primary {
-  background: #1f6e34;
-  color: #ffffff;
-  border-color: transparent;
-  box-shadow: 0 14px 32px rgba(31, 110, 52, 0.24);
-}
-
-.btn-primary:hover,
-.sticky-contact:hover,
-button[type="submit"].btn-primary:hover {
-  background: #174f27;
-  color: #ffffff;
-  box-shadow: 0 18px 42px rgba(31, 110, 52, 0.3);
-}
-
 .btn-secondary,
 .btn-outline {
   border-color: rgba(31, 110, 52, 0.3);
@@ -4852,13 +4835,6 @@ table td {
   max-width: 620px;
   font-size: clamp(1rem, 1.35vw, 1.16rem);
   line-height: 1.75;
-}
-
-.home-hero .btn-primary,
-.about-hero .btn-primary {
-  background: #7dc241;
-  color: #071108;
-  box-shadow: 0 18px 46px rgba(125, 194, 65, 0.22);
 }
 
 .home-hero .btn-secondary,

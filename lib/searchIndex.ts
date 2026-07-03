@@ -21,7 +21,6 @@ export const SEARCH_INDEX: SearchEntry[] = [
   { title: "Salcedo Towers", url: "/properties/salcedo-towers", category: "Properties", excerpt: "Mixed-use development in Makati offering residential suites and office spaces.", keywords: "salcedo towers makati mixed-use office residential" },
   { title: "MRJ Center", url: "/properties/mrj-center", category: "Properties", excerpt: "Premium office destination in Makati Poblacion designed for modern business operations.", keywords: "mrj center makati poblacion office commercial business" },
   { title: "Hightown Quarters Burgos", url: "/properties/hightown-quarters-burgos", category: "Properties", excerpt: "An 11-storey residential condominium building in Poblacion, Makati City.", keywords: "hightown quarters burgos makati poblacion residential condominium" },
-  { title: "Marajo Town Center", url: "/properties/marajo-town-center", category: "Properties", excerpt: "Mixed-use retail and lifestyle destination anchored by premium brands and community experiences.", keywords: "marajo town center retail mixed-use lifestyle commercial" },
   { title: "Muro Siargao", url: "/properties/muro-siargao", category: "Properties", excerpt: "Coastal retreat offering boutique residences and resort-style amenities in Siargao Island.", keywords: "muro siargao coastal resort residences island beach" },
 ];
 

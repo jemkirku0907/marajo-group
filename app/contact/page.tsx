@@ -288,7 +288,7 @@ export default function ContactPage() {
         @keyframes mapSlideUp { from { opacity: 0; transform: translateY(24px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
         .map-modal-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-muted, #e5e7eb); }
         .map-modal-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mg-green, #38A000); margin: 0 0 0.15rem; }
-        .map-modal-title { font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 0; color: var(--heading-color, #0d0d0d); }
+        .map-modal-title { font-family: var(--font-head), sans-serif; font-size: 1.1rem; font-weight: 700; margin: 0; color: var(--heading-color, #0d0d0d); }
         .map-modal-close {
           background: var(--surface-alt, #f3f4f6); border: none; border-radius: 50%;
           width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;

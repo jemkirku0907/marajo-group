@@ -39,7 +39,7 @@
   margin-bottom: -2px;
   white-space: nowrap;
   transition: color .18s, border-color .18s;
-  font-family: inherit;
+  font-family: var(--font-body), sans-serif;
 }
 .booking-step-btn:hover { color: var(--mg-green); }
 .booking-step-btn.active {
@@ -239,7 +239,7 @@
   border-top: 1px solid rgba(31,110,52,.12);
 }
 .summary-total-row .label { font-size: 0.83rem; font-weight: 700; color: var(--heading-color,#0d120a); }
-.summary-total-row .value { font-size: 1.1rem; font-weight: 800; color: var(--mg-green); font-family: 'Poppins', sans-serif; }
+.summary-total-row .value { font-size: 1.1rem; font-weight: 800; color: var(--mg-green); font-family: var(--font-head), sans-serif; }
 
 .summary-footer {
   padding: 1.1rem 1.4rem;
@@ -379,7 +379,7 @@
   background: var(--surface, #fff);
   color: var(--text-primary);
   font-size: 0.9rem;
-  font-family: inherit;
+  font-family: var(--font-body), sans-serif;
   line-height: 1.4;
   transition: border-color .18s ease, box-shadow .18s ease;
   box-sizing: border-box;
@@ -417,7 +417,7 @@
   font-size: .92rem;
   font-weight: 700;
   cursor: pointer;
-  font-family: inherit;
+  font-family: var(--font-body), sans-serif;
   transition: background .18s, transform .18s, box-shadow .18s;
   margin-top: 1.25rem;
 }
@@ -440,7 +440,7 @@
   font-size: .9rem;
   font-weight: 700;
   cursor: pointer;
-  font-family: inherit;
+  font-family: var(--font-body), sans-serif;
   transition: background .18s;
   margin-top: 1.25rem;
 }

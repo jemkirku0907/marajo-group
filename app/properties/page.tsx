@@ -42,7 +42,7 @@ export default function PropertiesPage() {
         <div className="container about-hero-grid">
           <div className="about-hero-copy reveal-on-scroll">
             <span className="hero-label">Our Portfolio</span>
-            <h1 className="hero-title">Premium properties built for people, business, and lasting value.</h1>
+            <h1 className="hero-title">Premium properties. Built to last.</h1>
             <p className="hero-copy">
               Explore Marajo Group&apos;s residential, office, mixed-use, hospitality, and commercial portfolio across
               the Philippines&apos; most active growth districts.
@@ -51,7 +51,7 @@ export default function PropertiesPage() {
               <Link href="#properties-list" className="btn-primary">
                 Browse Properties
               </Link>
-              <Link href="/contact" className="btn-secondary">
+              <Link href="/contact" className="btn-secondary" style={{ borderColor: "#fff", color: "#fff" }}>
                 Inquire Now
               </Link>
             </div>

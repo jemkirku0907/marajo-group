@@ -227,38 +227,6 @@ export const properties: Property[] = [
     },
   },
   {
-    slug: "marajo-town-center",
-    name: "Marajo Town Center",
-    category: "mixed",
-    categoryLabel: "Retail Destination",
-    location: "Manila",
-    // Real Marajo Town Center asset is not in the current project bundle; keep this distinct remote image until supplied.
-    image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1200&h=900&fit=crop&auto=format",
-    // Interior carousel photos are not yet available in the project bundle; using the current property image as fallback.
-    heroImages: ["https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1200&h=900&fit=crop&auto=format"],
-    cardDescription:
-      "A luxury retail and community destination anchored by premium brands, high-quality food and beverage, and experiential hospitality.",
-    hasDetailPage: true,
-    hero: {
-      label: "Retail Destination",
-      title: "Marajo Town Center — the new benchmark for lifestyle retail and mixed-use gathering spaces.",
-      copy: "A luxury retail and community destination anchored by premium brands, high-quality food and beverage, and experiential hospitality.",
-    },
-    overview: {
-      eyebrow: "Marajo Town Center",
-      heading: "Mixed-use retail destination designed for premium brands, curated dining, and dynamic community programming.",
-      paragraph:
-        "Marajo Town Center combines retail, dining, and lifestyle experiences in a cohesive environment anchored by elegant architecture and event-ready spaces.",
-      image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1200&h=900&fit=crop&auto=format",
-      specs: [
-        { label: "Offerings", value: "Retail showrooms, restaurants, cultural spaces, and event venues" },
-        { label: "Experience", value: "Curated brand environment with premium guest services" },
-        { label: "Community", value: "Events, exhibitions, and lifestyle activations" },
-        { label: "Design", value: "Timeless, contemporary finishes with generous public areas" },
-      ],
-    },
-  },
-  {
     slug: "hightown-quarters-palma",
     name: "Hightown Quarters Palma",
     category: "residential",

@@ -9,7 +9,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         minHeight: "100vh",
         background: "var(--bg-base)",
         color: "var(--text-primary)",
-        fontFamily: "'Segoe UI', Arial, sans-serif",
+        fontFamily: "var(--font-body), sans-serif",
       }}
     >
       {children}

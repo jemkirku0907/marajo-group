@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Property } from "@/lib/properties";
+import PropertyHero from "@/components/PropertyHero";
 
 const galleryImages = [
   "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&h=600&fit=crop&auto=format",
@@ -26,24 +27,21 @@ export default function PropertyDetail({ property }: { property: Property }) {
       { label: "Inquiries", value: "Contact Marajo Group for availability, pricing, and site visits." },
     ],
   };
+  const [stat1, stat2] = overview.specs;
+  const heroImage = overview.image || property.image;
 
   return (
-    <main>
-      <section className="hero property-detail-hero">
-        <div className="container hero-content">
-          <span className="hero-label">{hero.label}</span>
-          <h1 className="hero-title">{hero.title}</h1>
-          <p className="hero-copy">{hero.copy}</p>
-          <div className="hero-actions">
-            <Link href="#overview" className="btn-primary">
-              View Overview
-            </Link>
-            <Link href="/contact" className="btn-secondary">
-              Connect with Us
-            </Link>
-          </div>
-        </div>
-      </section>
+    <main className="property-detail-page">
+      <PropertyHero
+        name={property.name}
+        tagline={hero.copy}
+        category={hero.label}
+        meta={`Location: ${property.location} / Type: ${property.categoryLabel}`}
+        heroImage={heroImage}
+        stat1={stat1}
+        stat2={stat2}
+        ctaHref="#overview"
+      />
 
       <section id="overview" className="section">
         <div className="container split-grid">

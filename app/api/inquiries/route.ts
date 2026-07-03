@@ -73,6 +73,24 @@ async function findAssignableStaffId(conn: any): Promise<number | null> {
   return null;
 }
 
+async function runOptionalTransactionStep(
+  conn: any,
+  stage: string,
+  work: () => Promise<void>,
+  context: Record<string, any> = {}
+) {
+  const savepoint = `optional_${stage.replace(/[^a-z0-9_]/gi, "_")}`;
+  await conn.query(`SAVEPOINT ${savepoint}`);
+  try {
+    await work();
+    await conn.query(`RELEASE SAVEPOINT ${savepoint}`);
+  } catch (error) {
+    await conn.query(`ROLLBACK TO SAVEPOINT ${savepoint}`);
+    await conn.query(`RELEASE SAVEPOINT ${savepoint}`);
+    logInquiryError(stage, error, context);
+  }
+}
+
 async function sendContactEmail(input: {
   name: string;
   email: string;
@@ -278,13 +296,26 @@ export async function POST(req: NextRequest) {
     const inquiryId = inquiryResult.insertId;
 
     if (propertyId !== null) {
-      await conn.execute("UPDATE properties SET inquiries_count = inquiries_count + 1 WHERE id = ?", [propertyId]);
+      await runOptionalTransactionStep(
+        conn,
+        "property_inquiry_count_update",
+        () => conn.execute("UPDATE properties SET inquiries_count = inquiries_count + 1 WHERE id = ?", [propertyId]).then(() => undefined),
+        { inquiryId, propertyId }
+      );
     }
     if (unitName || building) {
-      await conn.execute(
-        `UPDATE units SET inquiries_count = inquiries_count + 1
-         WHERE (? = '' OR name = ? OR type = ?) AND (? = '' OR building = ?)`,
-        [unitName, unitName, unitType, building, building]
+      await runOptionalTransactionStep(
+        conn,
+        "unit_inquiry_count_update",
+        () =>
+          conn
+            .execute(
+              `UPDATE units SET inquiries_count = inquiries_count + 1
+               WHERE (? = '' OR name = ? OR type = ?) AND (? = '' OR building = ?)`,
+              [unitName, unitName, unitType, building, building]
+            )
+            .then(() => undefined),
+        { inquiryId, unitName, unitType, building }
       );
     }
 
@@ -295,14 +326,16 @@ export async function POST(req: NextRequest) {
       actDetails = `Reservation request submitted for ${unitName || property}.`;
     }
     if (assignedStaffId !== null) {
-      try {
-        await conn.execute(
+      await runOptionalTransactionStep(
+        conn,
+        "activity_insert",
+        () =>
+          conn.execute(
           `INSERT INTO inquiry_activity (inquiry_id, staff_id, activity_type, details) VALUES (?, ?, 'status_change', ?)`,
           [inquiryId, assignedStaffId, actDetails]
-        );
-      } catch (activityError) {
-        logInquiryError("activity_insert", activityError, { inquiryId, assignedStaffId });
-      }
+          ).then(() => undefined),
+        { inquiryId, assignedStaffId }
+      );
     } else {
       console.warn("Inquiry activity skipped: no staff row available for assignment.", { inquiryId });
     }
@@ -322,14 +355,18 @@ export async function POST(req: NextRequest) {
     const notifTitle = status === "Reserved" ? "New Unit Reservation Request" : isAppointment ? "New Viewing Request" : "New Website Inquiry";
     const subject = unitName || property || "a property";
     const notifMessage = `New ${unitType || "property"} inquiry from ${name} for ${subject}. Lead Score: ${leadScore}.`;
-    try {
-      await conn.execute("INSERT INTO notifications (staff_id, title, message, is_read) VALUES (0, ?, ?, 0)", [
-        notifTitle,
-        notifMessage,
-      ]);
-    } catch (notificationError) {
-      logInquiryError("notification_insert", notificationError, { inquiryId });
-    }
+    await runOptionalTransactionStep(
+      conn,
+      "notification_insert",
+      () =>
+        conn
+          .execute("INSERT INTO notifications (staff_id, title, message, is_read) VALUES (0, ?, ?, 0)", [
+            notifTitle,
+            notifMessage,
+          ])
+          .then(() => undefined),
+      { inquiryId }
+    );
 
     await conn.commit();
     conn.release();

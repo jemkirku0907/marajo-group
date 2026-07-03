@@ -30,7 +30,10 @@ export async function GET(req: NextRequest) {
     try {
       const parking = await db.query<any>(
         `SELECT pr.id,
-                COALESCE(p.reference_number, CONCAT('PRK-', DATE_FORMAT(pr.created_at, '%Y%m%d'), '-', LPAD(pr.id, 4, '0'))) AS reference,
+                COALESCE(
+                  p.reference_number,
+                  CONCAT('PRK-', TO_CHAR(COALESCE(pr.created_at, NOW()), 'YYYYMMDD'), '-', LPAD(pr.id::text, 4, '0'))
+                ) AS reference,
                 pr.reservation_date AS booking_date, pr.entry_time, pr.exit_time,
                 pr.total_duration_hours AS duration_hours,
                 pr.reservation_status AS status, pr.payment_status AS payment_status,

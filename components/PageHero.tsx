@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import Container from "@/components/Container";
 
 type Crumb = {
@@ -14,15 +15,26 @@ export default function PageHero({
   subtitle,
   crumbs,
   label,
+  backgroundImage,
+  backgroundPosition = "center",
 }: {
   eyebrow?: string;
   title: string;
   subtitle?: string;
   crumbs?: Crumb[];
   label?: string;
+  backgroundImage?: string;
+  backgroundPosition?: string;
 }) {
+  const heroStyle = backgroundImage
+    ? ({
+        "--page-hero-image": `url("${backgroundImage}")`,
+        "--page-hero-position": backgroundPosition,
+      } as CSSProperties)
+    : undefined;
+
   return (
-    <section className="page-hero">
+    <section className={`page-hero${backgroundImage ? " page-hero--image" : ""}`} style={heroStyle}>
       <Container className="page-hero-inner">
         <div className="page-hero-copy">
           {eyebrow && <span className="page-hero-eyebrow">{eyebrow}</span>}

@@ -43,6 +43,8 @@ export default function NewsPage() {
         subtitle="A comprehensive overview of our latest news, property launches, and upcoming events."
         crumbs={[{ href: "/", label: "Home" }, { label: "News" }]}
         label="Journal"
+        backgroundImage={POST_IMG}
+        backgroundPosition="center"
       />
 
       <section className="section" style={{ paddingBottom: 0 }}>

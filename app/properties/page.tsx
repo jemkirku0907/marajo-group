@@ -45,6 +45,8 @@ export default function PropertiesPage() {
         subtitle="Browse Marajo Group's current residential, office, mixed-use, hospitality, and commercial portfolio."
         crumbs={[{ href: "/", label: "Home" }, { label: "Properties" }]}
         label="Portfolio"
+        backgroundImage="/assets/marajo-tower.jpg"
+        backgroundPosition="center 42%"
       />
       <section className="section properties-page">
       <div className="container">

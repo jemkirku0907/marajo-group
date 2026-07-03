@@ -59,7 +59,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
   }, [pathname]);
 
   React.useEffect(() => {
-    const hasHeroBlend = pathname === "/" || pathname === "/about" || pathname === "/news";
+    const hasHeroBlend = pathname === "/" || pathname === "/about" || pathname === "/properties" || pathname === "/news" || pathname === "/contact";
     document.body.classList.toggle("has-hero-header", hasHeroBlend);
 
     const updateScrolled = () => setScrolled(window.scrollY > 24);
@@ -73,7 +73,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
   }, [pathname]);
 
   const isServiceActive = SERVICE_LINKS.some((l) => pathname?.startsWith(l.href));
-  const hasHeroBlend = pathname === "/" || pathname === "/about" || pathname === "/news";
+  const hasHeroBlend = pathname === "/" || pathname === "/about" || pathname === "/properties" || pathname === "/news" || pathname === "/contact";
 
   return (
     <header className={`site-header${hasHeroBlend ? " site-header--hero" : ""}${scrolled || mobileMenuOpen ? " is-scrolled" : ""}`}>

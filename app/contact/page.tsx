@@ -61,6 +61,8 @@ export default function ContactPage() {
         subtitle="Send inquiries, request visits, and explore Marajo Group's residential, office, hospitality, and mixed-use opportunities."
         crumbs={[{ href: "/", label: "Home" }, { label: "Contact" }]}
         label="Connect"
+        backgroundImage="/assets/marajo-tower.jpg"
+        backgroundPosition="center 45%"
       />
       <section className="section contact-section contact-shell">
         <div className="container">

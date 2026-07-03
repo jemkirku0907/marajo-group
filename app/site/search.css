@@ -1000,15 +1000,37 @@ body.theme-dark .about-hero .hero-copy {
 
 /* Shared page hero + contact polish */
 .page-hero {
-  padding: clamp(5.5rem, 9vw, 7.5rem) clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem);
+  position: relative;
+  padding: clamp(6.25rem, 10vw, 8rem) clamp(1rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2.25rem);
   background:
-    radial-gradient(circle at 12% 18%, rgba(117, 202, 53, 0.18), transparent 28%),
-    linear-gradient(135deg, rgba(13, 20, 8, 0.98), rgba(31, 110, 52, 0.86));
+    linear-gradient(135deg, rgba(5, 20, 9, 0.98), rgba(31, 110, 52, 0.9));
+  overflow: hidden;
+}
+
+.page-hero--image {
+  background:
+    linear-gradient(90deg, rgba(4, 12, 7, 0.9) 0%, rgba(4, 12, 7, 0.68) 45%, rgba(4, 12, 7, 0.34) 100%),
+    linear-gradient(180deg, rgba(4, 12, 7, 0.26) 0%, rgba(4, 12, 7, 0.84) 100%),
+    var(--page-hero-image);
+  background-size: cover;
+  background-position: var(--page-hero-position, center);
+  background-repeat: no-repeat;
+}
+
+.page-hero--image::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(117, 202, 53, 0.18), transparent 30%),
+    linear-gradient(90deg, rgba(4, 12, 7, 0.18), rgba(4, 12, 7, 0.04));
+  pointer-events: none;
 }
 
 .page-hero-inner {
   position: relative;
-  min-height: clamp(320px, 38vw, 400px);
+  z-index: 1;
+  min-height: clamp(520px, 72svh, 680px);
   max-width: 1280px;
   margin: 0 auto;
   display: flex;
@@ -1018,10 +1040,10 @@ body.theme-dark .about-hero .hero-copy {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 24px;
-  padding: clamp(1.4rem, 4vw, 3rem);
+  padding: clamp(1.5rem, 4vw, 3.25rem);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
-    rgba(0, 0, 0, 0.12);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015)),
+    rgba(0, 0, 0, 0.08);
   box-shadow: 0 28px 80px rgba(15, 23, 42, 0.18);
 }
 
@@ -1046,17 +1068,19 @@ body.theme-dark .about-hero .hero-copy {
 .page-hero h1 {
   margin: 0;
   color: #ffffff;
-  font-size: clamp(2.8rem, 7vw, 5.9rem);
-  line-height: 0.95;
+  font-size: clamp(3.2rem, 7.6vw, 7.2rem);
+  line-height: 0.98;
   letter-spacing: 0;
+  text-shadow: 0 14px 42px rgba(0, 0, 0, 0.32);
 }
 
 .page-hero p {
   max-width: 680px;
   margin: 1rem 0 0;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: clamp(1rem, 1.5vw, 1.2rem);
-  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: clamp(1.05rem, 1.55vw, 1.28rem);
+  line-height: 1.7;
+  text-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
 }
 
 .page-hero-crumbs {
@@ -1249,8 +1273,14 @@ body.theme-dark .about-hero .hero-copy {
   }
 
   .page-hero-inner {
+    min-height: clamp(500px, 76svh, 620px);
     flex-direction: column;
     align-items: flex-start;
+    justify-content: flex-end;
+  }
+
+  .page-hero h1 {
+    font-size: clamp(2.8rem, 15vw, 4.75rem);
   }
 
   .contact-card.contact-card-modern {

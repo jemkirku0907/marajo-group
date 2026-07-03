@@ -1,14 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Property } from "@/lib/properties";
+import Button from "@/components/Button";
 import PropertyHero from "@/components/PropertyHero";
-
-const galleryImages = [
-  "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&h=600&fit=crop&auto=format",
-  "https://images.unsplash.com/photo-1494526585095-c41746248156?w=900&h=600&fit=crop&auto=format",
-  "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=900&h=600&fit=crop&auto=format",
-  "https://images.unsplash.com/photo-1462558813106-ae2d242f4ff8?w=900&h=600&fit=crop&auto=format",
-];
 
 export default function PropertyDetail({ property }: { property: Property }) {
   const hero = property.hero ?? {
@@ -29,6 +22,9 @@ export default function PropertyDetail({ property }: { property: Property }) {
   };
   const [stat1, stat2] = overview.specs;
   const heroImage = overview.image || property.image;
+  const galleryImages = [heroImage, property.image, overview.image, "/assets/marajo-tower.jpg"].filter(Boolean);
+  // Real project gallery assets are still missing for Muro Siargao and Marajo Town Center.
+  const uniqueGalleryImages = [...new Set(galleryImages)].slice(0, 4);
 
   return (
     <main className="property-detail-page">
@@ -60,12 +56,12 @@ export default function PropertyDetail({ property }: { property: Property }) {
               ))}
             </div>
             <div className="hero-actions" style={{ marginTop: "2rem" }}>
-              <Link href="/contact" className="btn-primary">
+              <Button href="/contact" className="btn-primary">
                 Inquire About {property.name}
-              </Link>
-              <Link href="/properties" className="btn-secondary">
+              </Button>
+              <Button href="/properties" variant="secondary" className="btn-secondary">
                 Back to Properties
-              </Link>
+              </Button>
             </div>
           </div>
           <div className="detail-image">
@@ -81,9 +77,9 @@ export default function PropertyDetail({ property }: { property: Property }) {
             <h2>Experience {property.name}&apos;s architecture, interiors, and community spaces.</h2>
           </div>
           <div className="gallery-grid">
-            {galleryImages.map((src, index) => (
+            {uniqueGalleryImages.map((src, index) => (
               <div className="gallery-item" key={src}>
-                <Image src={src} alt={`${property.name} gallery ${index + 1}`} width={900} height={600} />
+                <Image src={src} alt={`${property.name} gallery ${index + 1}`} width={900} height={600} unoptimized={src.startsWith("http")} />
               </div>
             ))}
           </div>

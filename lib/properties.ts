@@ -180,6 +180,7 @@ export const properties: Property[] = [
     category: "hospitality",
     categoryLabel: "Hospitality",
     location: "Siargao Island",
+    // Real Muro Siargao asset is not in the current project bundle; keep this distinct remote image until supplied.
     image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&h=900&fit=crop&auto=format",
     cardDescription:
       "A refined coastal destination offering island-inspired homes, boutique hospitality, and exceptional natural surroundings.",
@@ -209,6 +210,7 @@ export const properties: Property[] = [
     category: "mixed",
     categoryLabel: "Retail Destination",
     location: "Manila",
+    // Real Marajo Town Center asset is not in the current project bundle; keep this distinct remote image until supplied.
     image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1200&h=900&fit=crop&auto=format",
     cardDescription:
       "A luxury retail and community destination anchored by premium brands, high-quality food and beverage, and experiential hospitality.",
@@ -242,6 +244,24 @@ export const properties: Property[] = [
     cardDescription:
       "A compact residential address shaped around comfort, accessibility, and everyday city routines. Hightown Quarters Palma supports modern tenants seeking a well-connected Makati base.",
     hasDetailPage: false,
+    hero: {
+      label: "Residential · Makati City",
+      title: "Hightown Quarters Palma — compact residences for connected Makati living.",
+      copy: "A compact residential address shaped around comfort, accessibility, and everyday city routines.",
+    },
+    overview: {
+      eyebrow: "Hightown Quarters Palma",
+      heading: "Practical city residences in a well-connected Makati location.",
+      paragraph:
+        "Hightown Quarters Palma is part of Marajo Group's Makati residential portfolio, offering efficient layouts and convenient access for long-stay residents and city professionals.",
+      image: "/assets/HQ-Palma.jpg",
+      specs: [
+        { label: "Type", value: "Residential condominium" },
+        { label: "Height", value: "5 storeys" },
+        { label: "Location", value: "Palma, Makati" },
+        { label: "Portfolio", value: "Hightown Quarters collection" },
+      ],
+    },
   },
   {
     slug: "space-solutions",
@@ -253,6 +273,24 @@ export const properties: Property[] = [
     cardDescription:
       "Flexible storage and business space in Makati for teams that need practical, secure, and accessible facilities. The development supports commercial operations with adaptable space planning.",
     hasDetailPage: false,
+    hero: {
+      label: "Commercial Storage",
+      title: "Space Solutions — first-class modern storage and business support facilities.",
+      copy: "Flexible storage and business space in Makati for teams that need practical, secure, and accessible facilities.",
+    },
+    overview: {
+      eyebrow: "Space Solutions",
+      heading: "Modern storage facilities designed for practical commercial operations.",
+      paragraph:
+        "Space Solutions is a first-class modern storage facility in Makati, extending Marajo Group's portfolio into secure, adaptable space for commercial and operational needs.",
+      image: "/assets/Space-Solution-A.jpg",
+      specs: [
+        { label: "Type", value: "Modern storage facility" },
+        { label: "Location", value: "Makati City" },
+        { label: "Use", value: "Commercial storage and business support" },
+        { label: "Access", value: "Secure, practical, and adaptable spaces" },
+      ],
+    },
   },
   {
     slug: "hightown-quarters-alfonso",
@@ -264,6 +302,24 @@ export const properties: Property[] = [
     cardDescription:
       "A residential property in the Hightown Quarters collection, positioned for residents who value Makati access and efficient city living. Alfonso adds another neighborhood option within the portfolio.",
     hasDetailPage: false,
+    hero: {
+      label: "Residential · Makati City",
+      title: "Hightown Quarters Alfonso — efficient city living within the Hightown portfolio.",
+      copy: "A residential property for residents who value Makati access and straightforward urban convenience.",
+    },
+    overview: {
+      eyebrow: "Hightown Quarters Alfonso",
+      heading: "Neighborhood residential access with efficient layouts and practical Makati connectivity.",
+      paragraph:
+        "Hightown Quarters Alfonso adds another Makati option within Marajo Group's Hightown Quarters collection, shaped around access, comfort, and everyday city routines.",
+      image: "/assets/HQ-Alfonso.jpg",
+      specs: [
+        { label: "Type", value: "Residential condominium" },
+        { label: "Height", value: "5 storeys" },
+        { label: "Location", value: "Alfonso, Makati" },
+        { label: "Portfolio", value: "Hightown Quarters collection" },
+      ],
+    },
   },
   {
     slug: "hightown-quarters-albert",
@@ -275,6 +331,24 @@ export const properties: Property[] = [
     cardDescription:
       "Part of Marajo Group's Makati residential portfolio, Hightown Quarters Albert offers a straightforward urban address for long-stay renters and city professionals.",
     hasDetailPage: false,
+    hero: {
+      label: "Residential · Makati City",
+      title: "Hightown Quarters Albert — a straightforward Makati address for city professionals.",
+      copy: "Part of Marajo Group's Makati residential portfolio, built for long-stay renters and professionals.",
+    },
+    overview: {
+      eyebrow: "Hightown Quarters Albert",
+      heading: "Reliable urban residences for long-stay city routines.",
+      paragraph:
+        "Hightown Quarters Albert offers a practical residential address within the Marajo Group portfolio, supporting city professionals who need access, comfort, and dependable everyday space.",
+      image: "/assets/HQ-Albert.jpg",
+      specs: [
+        { label: "Type", value: "Residential condominium" },
+        { label: "Height", value: "5 storeys" },
+        { label: "Location", value: "Albert, Makati" },
+        { label: "Portfolio", value: "Hightown Quarters collection" },
+      ],
+    },
   },
 ];
 

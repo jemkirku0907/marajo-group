@@ -110,6 +110,7 @@ export default function HomePage() {
               <div className="home-mosaic-label">
                 <span className="home-mosaic-tag">Mixed-use · Makati</span>
                 <strong>Salcedo Towers</strong>
+                <p>27-storey mixed-use address in the heart of the Makati CBD.</p>
               </div>
             </Link>
             <Link href="/properties/hightown-quarters-burgos" className="home-mosaic-card">
@@ -117,6 +118,7 @@ export default function HomePage() {
               <div className="home-mosaic-label">
                 <span className="home-mosaic-tag">Residential · Makati</span>
                 <strong>Hightown Quarters Burgos</strong>
+                <p>11-storey residential condominium for efficient Poblacion living.</p>
               </div>
             </Link>
           </div>

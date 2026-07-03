@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Button from "@/components/Button";
+import StatCard from "@/components/StatCard";
 
 type HeroStat = {
   label: string;
@@ -33,9 +34,14 @@ export default function PropertyHero({ name, tagline, category, meta, heroImage,
       <div className="property-hero-card">
         <Image src={heroImage} alt={`${name} property image`} fill priority sizes="(max-width: 768px) 100vw, 94vw" className="property-hero-image" />
         <div className="property-hero-scrim" aria-hidden="true" />
+        <div className="property-hero-orb" aria-hidden="true" />
+        <div className="property-hero-grain" aria-hidden="true" />
 
         <div className="property-hero-topline">
-          <span>{category}</span>
+          <span className="property-hero-eyebrow">
+            <span className="property-hero-status-dot" aria-hidden="true" />
+            {category}
+          </span>
           <span>{meta}</span>
         </div>
 
@@ -61,16 +67,7 @@ export default function PropertyHero({ name, tagline, category, meta, heroImage,
           </div>
         </div>
 
-        {stats.length > 0 && (
-          <aside className="property-hero-stat-card" aria-label={`${name} highlights`}>
-            {stats.map((stat) => (
-              <div key={`${stat.label}-${stat.value}`} className="property-hero-stat">
-                <strong>{stat.value}</strong>
-                <span>{stat.label}</span>
-              </div>
-            ))}
-          </aside>
-        )}
+        <StatCard items={stats} label={`${name} highlights`} className="property-hero-stat-card" />
       </div>
     </section>
   );

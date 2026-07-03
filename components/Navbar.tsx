@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
 import AccountModal from "./AccountModal";
+import Button from "./Button";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -144,9 +145,9 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
         <div className="header-actions">
           {themeControl}
           {!user ? (
-            <button type="button" onClick={() => openModal("login")} className="btn-primary">
+            <Button type="button" onClick={() => openModal("login")} className="btn-primary nav-login-button">
               Log In
-            </button>
+            </Button>
           ) : (
             <div className="user-menu">
               <button

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import Button from "@/components/Button";
 
 type HeroStat = {
   label: string;
@@ -48,16 +48,16 @@ export default function PropertyHero({ name, tagline, category, meta, heroImage,
         <div className="property-hero-content">
           <p>{tagline}</p>
           <div className="property-hero-actions">
-            <Link href={ctaHref} className="property-hero-button property-hero-button-primary">
+            <Button href={ctaHref} className="property-hero-button property-hero-button-primary">
               View Overview
               <svg className="property-hero-button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M7 17 17 7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M9 7h8v8" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </Link>
-            <Link href="/contact" className="property-hero-button property-hero-button-secondary">
+            </Button>
+            <Button href="/contact" variant="secondary" className="property-hero-button property-hero-button-secondary">
               Inquire Now
-            </Link>
+            </Button>
           </div>
         </div>
 

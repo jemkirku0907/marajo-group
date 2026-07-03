@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Button from "@/components/Button";
 
 export const metadata = {
   title: "Home",
@@ -20,12 +21,12 @@ export default function HomePage() {
               Makati, BGC, and select Philippine growth districts.
             </p>
             <div className="hero-actions">
-              <Link href="/properties" className="btn-primary">
+              <Button href="/properties" className="btn-primary">
                 Explore Properties
-              </Link>
-              <Link href="/about" className="btn-secondary">
+              </Button>
+              <Button href="/about" variant="secondary" className="btn-secondary">
                 Our Story
-              </Link>
+              </Button>
             </div>
           </div>
           <div className="home-hero-media reveal-on-scroll" aria-label="Featured Marajo development preview">
@@ -356,12 +357,12 @@ export default function HomePage() {
             <h2>Schedule a site visit or request project information.</h2>
           </div>
           <div className="section-actions">
-            <Link href="/contact" className="btn-primary">
+            <Button href="/contact" className="btn-primary">
               Contact Sales
-            </Link>
-            <Link href="/properties" className="btn-outline">
+            </Button>
+            <Button href="/properties" variant="secondary" className="btn-outline">
               View Properties
-            </Link>
+            </Button>
           </div>
         </div>
       </section>

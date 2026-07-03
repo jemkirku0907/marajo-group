@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { properties as ALL_PROPERTIES } from "@/lib/properties";
+import PageHero from "@/components/PageHero";
 
 const CATEGORIES = [
   { key: "all", label: "All" },
@@ -37,19 +38,16 @@ export default function PropertiesPage() {
   }, [category, query, sort]);
 
   return (
-    <section className="section properties-page">
+    <>
+      <PageHero
+        eyebrow="Properties"
+        title="Search premium properties"
+        subtitle="Browse Marajo Group's current residential, office, mixed-use, hospitality, and commercial portfolio."
+        crumbs={[{ href: "/", label: "Home" }, { label: "Properties" }]}
+        label="Portfolio"
+      />
+      <section className="section properties-page">
       <div className="container">
-        <div className="section-title">
-          <span>Properties</span>
-          <h1>Search premium properties</h1>
-        </div>
-
-        <nav className="breadcrumb" aria-label="Breadcrumb">
-          <Link href="/">Home</Link>
-          <span>›</span>
-          <span>Properties</span>
-        </nav>
-
         <div className="property-controls">
           <div className="property-tools">
             <div className="results-counter">
@@ -132,6 +130,8 @@ export default function PropertiesPage() {
         </div>
         {filtered.length === 0 && <div className="no-results">No properties match your search.</div>}
       </div>
-    </section>
+      </section>
+    </>
   );
 }
+

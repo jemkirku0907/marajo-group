@@ -1,4 +1,5 @@
 import Image from "next/image";
+import PageHero from "@/components/PageHero";
 
 export const metadata = {
   title: "Marajo Journal | News, Updates & Market Insights",
@@ -36,16 +37,13 @@ const POST_IMG = "https://www.marajogroup.com/wp-content/uploads/2024/01/Post-Ne
 export default function NewsPage() {
   return (
     <main>
-      <section className="journal-hero">
-        <Image src={POST_IMG} alt="Marajo Journal" width={1600} height={700} className="journal-hero-img" unoptimized priority />
-        <div className="journal-hero-overlay">
-          <div className="container">
-            <span className="journal-label">Marajo Journal</span>
-            <h1 className="journal-hero-title">News, Updates &amp; Market Insights</h1>
-            <p className="journal-hero-sub">A comprehensive overview of our latest news, property launches, and upcoming events.</p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Marajo Journal"
+        title="News, Updates & Market Insights"
+        subtitle="A comprehensive overview of our latest news, property launches, and upcoming events."
+        crumbs={[{ href: "/", label: "Home" }, { label: "News" }]}
+        label="Journal"
+      />
 
       <section className="section" style={{ paddingBottom: 0 }}>
         <div className="container">

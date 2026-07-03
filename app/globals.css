@@ -219,3 +219,24 @@ html.theme-dark {
     border-radius: 10px;
   }
 }
+
+/* Shared layer contract: keep page chrome predictable across legacy CSS files. */
+.site-header {
+  z-index: 2000 !important;
+}
+
+.nav-dropdown-menu,
+.user-dropdown-menu {
+  z-index: 2200 !important;
+}
+
+.sticky-contact,
+.ui-button--floating-action {
+  z-index: 900 !important;
+}
+
+.modal-backdrop,
+.lead-modal-backdrop,
+.map-modal-backdrop {
+  z-index: 10000 !important;
+}

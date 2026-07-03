@@ -116,9 +116,6 @@ export default function ParkingPage() {
       setSlots(data.available_slots);
       setSelectedSlot(null);
       goTo(1);
-      setSlots(data.available_slots);
-      setSelectedSlot(null);
-      goTo(1);
     } catch {
       setAvailError("Network error. Please try again.");
     } finally {
@@ -162,6 +159,7 @@ export default function ParkingPage() {
         return;
       }
       setResult(data);
+      window.dispatchEvent(new CustomEvent("marajo:booking-history-refresh"));
       goTo(3);
     } catch {
       setReserveError("Network error. Please try again.");

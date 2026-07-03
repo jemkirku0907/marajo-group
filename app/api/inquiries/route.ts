@@ -40,6 +40,39 @@ function createContactTransport() {
   return null;
 }
 
+function logInquiryError(stage: string, error: any, context: Record<string, any> = {}) {
+  console.error("Inquiry submission error:", {
+    stage,
+    message: error?.message,
+    code: error?.code,
+    errno: error?.errno,
+    sqlState: error?.sqlState,
+    sqlMessage: error?.sqlMessage,
+    stack: error?.stack,
+    ...context,
+  });
+}
+
+async function findAssignableStaffId(conn: any): Promise<number | null> {
+  try {
+    const [rows]: any = await conn.execute(
+      "SELECT id FROM staff WHERE role IN ('admin', 'manager', 'agent', 'sales') ORDER BY id ASC LIMIT 1"
+    );
+    if (rows[0]?.id) return Number(rows[0].id);
+  } catch (error) {
+    logInquiryError("staff_lookup", error);
+  }
+
+  try {
+    const [rows]: any = await conn.execute("SELECT id FROM staff ORDER BY id ASC LIMIT 1");
+    if (rows[0]?.id) return Number(rows[0].id);
+  } catch (error) {
+    logInquiryError("staff_fallback_lookup", error);
+  }
+
+  return null;
+}
+
 async function sendContactEmail(input: {
   name: string;
   email: string;
@@ -200,7 +233,7 @@ export async function POST(req: NextRequest) {
     if (action.includes("reserve")) status = "Reserved";
     else if (isAppointment) status = "Site Visit Scheduled";
 
-    const assignedStaffId = 1;
+    const assignedStaffId = await findAssignableStaffId(conn);
     const completedFields = [name, email, phone, prefContact, property, unitName, budgetRange, prefPayment, intendedPurpose, purchaseTimeline, appointmentDate].filter(Boolean).length +
       (message && message !== "Website inquiry." ? 1 : 0);
 
@@ -261,10 +294,18 @@ export async function POST(req: NextRequest) {
     } else if (status === "Reserved") {
       actDetails = `Reservation request submitted for ${unitName || property}.`;
     }
-    await conn.execute(
-      `INSERT INTO inquiry_activity (inquiry_id, staff_id, activity_type, details) VALUES (?, ?, 'status_change', ?)`,
-      [inquiryId, assignedStaffId, actDetails]
-    );
+    if (assignedStaffId !== null) {
+      try {
+        await conn.execute(
+          `INSERT INTO inquiry_activity (inquiry_id, staff_id, activity_type, details) VALUES (?, ?, 'status_change', ?)`,
+          [inquiryId, assignedStaffId, actDetails]
+        );
+      } catch (activityError) {
+        logInquiryError("activity_insert", activityError, { inquiryId, assignedStaffId });
+      }
+    } else {
+      console.warn("Inquiry activity skipped: no staff row available for assignment.", { inquiryId });
+    }
 
     let appointmentCreated = false;
     if (isAppointment) {
@@ -281,10 +322,14 @@ export async function POST(req: NextRequest) {
     const notifTitle = status === "Reserved" ? "New Unit Reservation Request" : isAppointment ? "New Viewing Request" : "New Website Inquiry";
     const subject = unitName || property || "a property";
     const notifMessage = `New ${unitType || "property"} inquiry from ${name} for ${subject}. Lead Score: ${leadScore}.`;
-    await conn.execute("INSERT INTO notifications (staff_id, title, message, is_read) VALUES (0, ?, ?, 0)", [
-      notifTitle,
-      notifMessage,
-    ]);
+    try {
+      await conn.execute("INSERT INTO notifications (staff_id, title, message, is_read) VALUES (0, ?, ?, 0)", [
+        notifTitle,
+        notifMessage,
+      ]);
+    } catch (notificationError) {
+      logInquiryError("notification_insert", notificationError, { inquiryId });
+    }
 
     await conn.commit();
     conn.release();
@@ -322,7 +367,7 @@ export async function POST(req: NextRequest) {
   } catch (e: any) {
     await conn.rollback();
     conn.release();
-    console.error("Inquiry submission error:", e);
+    logInquiryError("transaction", e, { name, email, phone, property, unitName, propertyIdRaw, action });
     return NextResponse.json({ success: false, message: "Failed to save inquiry. Please try again." }, { status: 500 });
   }
 }

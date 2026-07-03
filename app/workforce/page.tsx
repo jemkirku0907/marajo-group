@@ -95,6 +95,7 @@ export default function WorkforcePage() {
       setWorkers(data.workers);
       if (browsePosition) setForm((f) => ({ ...f, position: browsePosition }));
       if (browseDate) setForm((f) => ({ ...f, job_date: browseDate }));
+      goTo(1);
     } catch {
       setBrowseError("Network error. Please try again.");
     } finally {

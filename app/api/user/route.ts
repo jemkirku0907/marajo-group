@@ -132,7 +132,10 @@ export async function GET(req: NextRequest) {
 
     history.sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
 
-    return NextResponse.json({ success: true, history });
+    return NextResponse.json(
+      { success: true, history },
+      { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+    );
   }
 
   return NextResponse.json({ success: false, message: "Endpoint not found" }, { status: 404 });

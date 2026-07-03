@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useAuth, authHeaders } from "@/lib/AuthContext";
 
@@ -29,19 +29,41 @@ export default function AccountModal({ open, onClose }: { open: boolean; onClose
     setMounted(true);
   }, []);
 
+  const loadHistory = useCallback(async () => {
+    if (!token) return;
+    const h = await fetch("/api/user?action=history", {
+      headers: authHeaders(token),
+      cache: "no-store",
+    }).then((r) => r.json());
+    if (h.success) setHistory(h.history);
+  }, [token]);
+
   useEffect(() => {
     if (!open || !token) return;
     setLoading(true);
     Promise.all([
-      fetch("/api/user?action=profile", { headers: authHeaders(token) }).then((r) => r.json()),
-      fetch("/api/user?action=history", { headers: authHeaders(token) }).then((r) => r.json()),
+      fetch("/api/user?action=profile", { headers: authHeaders(token), cache: "no-store" }).then((r) => r.json()),
+      loadHistory(),
     ])
-      .then(([p, h]) => {
+      .then(([p]) => {
         if (p.success) setProfile(p.user);
-        if (h.success) setHistory(h.history);
       })
       .finally(() => setLoading(false));
-  }, [open, token]);
+  }, [loadHistory, open, token]);
+
+  useEffect(() => {
+    if (!open || tab !== "history") return;
+    loadHistory().catch((error) => console.error("Failed to refresh booking history:", error));
+  }, [loadHistory, open, tab]);
+
+  useEffect(() => {
+    if (!token) return;
+    const refresh = () => {
+      loadHistory().catch((error) => console.error("Failed to refresh booking history:", error));
+    };
+    window.addEventListener("marajo:booking-history-refresh", refresh);
+    return () => window.removeEventListener("marajo:booking-history-refresh", refresh);
+  }, [loadHistory, token]);
 
   useEffect(() => {
     if (!open) return;

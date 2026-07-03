@@ -1356,6 +1356,21 @@ button[type="submit"].btn-primary:hover {
   color: var(--button-secondary-text, #111827) !important;
 }
 
+.home-hero .btn-secondary,
+.about-hero .btn-secondary {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.42) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(12px);
+}
+
+.home-hero .btn-secondary:hover,
+.about-hero .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.64) !important;
+  color: #ffffff !important;
+}
+
 .breadcrumb {
   position: relative;
   z-index: 2;

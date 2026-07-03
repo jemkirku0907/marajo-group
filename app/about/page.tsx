@@ -36,8 +36,12 @@ const CSR_SLIDES = [
 ];
 
 export default function AboutPage() {
-  const [openItem, setOpenItem] = useState<number | null>(null);
+  const [openItems, setOpenItems] = useState<Record<number, boolean>>({});
   const [slide, setSlide] = useState(0);
+
+  function toggleTimelineItem(index: number) {
+    setOpenItems((items) => ({ ...items, [index]: !items[index] }));
+  }
 
   return (
     <main>
@@ -170,22 +174,22 @@ export default function AboutPage() {
             {TIMELINE.map((item, i) => (
               <div
                 key={`${item.title}-${i}`}
-                className={`timeline-item${openItem === i ? " is-open" : ""}`}
+                className={`timeline-item${openItems[i] ? " is-open" : ""}`}
                 tabIndex={0}
                 role="button"
-                aria-expanded={openItem === i}
-                onClick={() => setOpenItem(openItem === i ? null : i)}
+                aria-expanded={Boolean(openItems[i])}
+                onClick={() => toggleTimelineItem(i)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    setOpenItem(openItem === i ? null : i);
+                    toggleTimelineItem(i);
                   }
                 }}
               >
                 <Image src={item.img} alt={`${item.title} milestone`} width={400} height={280} className="timeline-image" unoptimized={item.img.startsWith("http")} />
                 <span>{item.year}</span>
                 <h3>{item.title}</h3>
-                <p style={{ maxHeight: openItem === i ? "240px" : "0px", overflow: "hidden", transition: "max-height 0.3s ease" }}>
+                <p style={{ maxHeight: openItems[i] ? "240px" : "0px", opacity: openItems[i] ? 1 : 0, overflow: "hidden", transition: "max-height 0.3s ease, opacity 0.3s ease" }}>
                   {item.text}
                 </p>
               </div>

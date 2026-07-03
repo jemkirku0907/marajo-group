@@ -34,6 +34,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
         category={hero.label}
         meta={`Location: ${property.location} / Type: ${property.categoryLabel}`}
         heroImage={heroImage}
+        heroImages={property.heroImages}
         stat1={stat1}
         stat2={stat2}
         ctaHref="#overview"

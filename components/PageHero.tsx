@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Container from "@/components/Container";
 
 type Crumb = {
   href?: string;
@@ -22,7 +23,7 @@ export default function PageHero({
 }) {
   return (
     <section className="page-hero">
-      <div className="page-hero-inner">
+      <Container className="page-hero-inner">
         <div className="page-hero-copy">
           {eyebrow && <span className="page-hero-eyebrow">{eyebrow}</span>}
           <h1>{title}</h1>
@@ -38,7 +39,7 @@ export default function PageHero({
           </nav>
         )}
         {label && <span className="page-hero-side-label">{label}</span>}
-      </div>
+      </Container>
     </section>
   );
 }

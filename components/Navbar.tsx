@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
 import AccountModal from "./AccountModal";
 import Button from "./Button";
+import Container from "./Container";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -76,7 +77,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
 
   return (
     <header className={`site-header${hasHeroBlend ? " site-header--hero" : ""}${scrolled || mobileMenuOpen ? " is-scrolled" : ""}`}>
-      <div className="container navbar">
+      <Container className="navbar">
         <Link href="/" className="brand">
           <Image src="/assets/logo.png" alt="Marajo Group" className="site-logo" width={140} height={40} priority />
           <span className="visually-hidden">Marajo Group</span>
@@ -187,7 +188,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
             </div>
           )}
         </div>
-      </div>
+      </Container>
 
       <AccountModal open={accountOpen} onClose={() => setAccountOpen(false)} />
     </header>

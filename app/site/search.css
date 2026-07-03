@@ -490,7 +490,7 @@ body.theme-dark .about-hero .hero-copy {
 }
 
 .property-hero-frame {
-  padding: clamp(1rem, 3vw, 2rem);
+  padding: clamp(0.85rem, 2vw, 1.5rem);
   background:
     linear-gradient(180deg, rgba(31, 110, 52, 0.04), transparent 54%),
     var(--bg-base);
@@ -499,7 +499,8 @@ body.theme-dark .about-hero .hero-copy {
 .property-hero-card {
   position: relative;
   isolation: isolate;
-  min-height: clamp(640px, 82svh, 840px);
+  height: clamp(460px, 58svh, 560px);
+  max-height: 560px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.68);
   border-radius: 24px;
@@ -512,10 +513,22 @@ body.theme-dark .about-hero .hero-copy {
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
 }
 
+.property-hero-carousel {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+}
+
 .property-hero-image {
   z-index: -3;
   object-fit: cover;
   object-position: center;
+  opacity: 0;
+  transition: opacity 700ms ease;
+}
+
+.property-hero-image.is-active {
+  opacity: 1;
 }
 
 .property-hero-scrim {
@@ -554,7 +567,7 @@ body.theme-dark .about-hero .hero-copy {
   z-index: 1;
   left: clamp(1rem, 5vw, 5rem);
   right: clamp(1rem, 5vw, 5rem);
-  top: 19%;
+  top: 15%;
   margin: 0;
   display: grid;
   color: rgba(255, 255, 255, 0.44);
@@ -602,12 +615,57 @@ body.theme-dark .about-hero .hero-copy {
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
-  border-radius: 999px;
+  border-radius: var(--button-radius, 10px);
   padding: 0.82rem 1.3rem;
   font-size: 0.92rem;
   font-weight: 800;
   text-decoration: none;
   transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+
+.property-hero-carousel-controls {
+  position: absolute;
+  right: clamp(1.25rem, 3vw, 2rem);
+  top: clamp(4.25rem, 9vw, 5.5rem);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--button-radius, 10px);
+  padding: 0.35rem;
+  background: rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(12px);
+}
+
+.property-hero-carousel-controls button {
+  display: inline-grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.property-hero-dots {
+  display: inline-flex;
+  gap: 0.34rem;
+}
+
+.property-hero-dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.property-hero-dots button.is-active {
+  width: 20px;
+  background: var(--brand-green-bright, #75ca35);
 }
 
 .property-hero-button-primary {
@@ -825,6 +883,7 @@ body.theme-dark .about-hero .hero-copy {
 
 .property-hero-button-icon {
   flex: 0 0 auto;
+  color: var(--brand-green-bright, #75ca35);
 }
 
 .property-hero-stat-card {
@@ -932,7 +991,8 @@ body.theme-dark .about-hero .hero-copy {
   }
 
   .property-hero-card {
-    min-height: 760px;
+    height: 620px;
+    max-height: 620px;
     border-radius: 20px;
   }
 
@@ -952,7 +1012,7 @@ body.theme-dark .about-hero .hero-copy {
 
   .property-hero-content {
     right: 1.25rem;
-    bottom: 11.8rem;
+    bottom: 10.8rem;
   }
 
   .property-hero-stat-card {
@@ -964,7 +1024,8 @@ body.theme-dark .about-hero .hero-copy {
 
 @media (max-width: 520px) {
   .property-hero-card {
-    min-height: 720px;
+    height: 590px;
+    max-height: 590px;
   }
 
   .property-hero-wordmark {
@@ -1241,4 +1302,68 @@ body.theme-dark .about-hero .hero-copy {
   .contact-info-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Regression fixes: shared alignment and Marajo button identity */
+.container {
+  width: min(100% - 2rem, 1280px);
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: min(100% - 5rem, 1280px);
+  }
+}
+
+.page-hero-inner {
+  width: min(100% - 2rem, 1280px);
+  max-width: 1280px;
+}
+
+@media (min-width: 768px) {
+  .page-hero-inner {
+    width: min(100% - 5rem, 1280px);
+  }
+}
+
+.ui-button,
+.btn-primary,
+.btn-secondary,
+.btn-outline,
+.theme-primary-button,
+.sticky-contact,
+.user-avatar {
+  border-radius: var(--button-radius, 10px) !important;
+}
+
+.sticky-contact,
+.ui-button--floating-action {
+  background: var(--brand-green, #1f6e34) !important;
+  border-color: var(--brand-green, #1f6e34) !important;
+  color: #ffffff !important;
+}
+
+.sticky-contact-icon {
+  background: rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+}
+
+.user-avatar {
+  background: var(--brand-green, #1f6e34) !important;
+  color: #ffffff !important;
+}
+
+.btn-primary,
+.ui-button--primary,
+.theme-primary-button {
+  box-shadow: inset 4px 0 0 var(--brand-green-bright, #75ca35), 0 10px 24px rgba(17, 24, 39, 0.16) !important;
+}
+
+.btn-primary:hover,
+.ui-button--primary:hover,
+.theme-primary-button:hover {
+  border-color: var(--brand-green, #1f6e34) !important;
 }

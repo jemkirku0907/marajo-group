@@ -10,6 +10,7 @@ export interface Property {
   categoryLabel: string;
   location: string;
   image: string;
+  heroImages?: string[];
   cardDescription: string;
   /** Whether this property has a full dedicated detail page. */
   hasDetailPage: boolean;
@@ -35,6 +36,8 @@ export const properties: Property[] = [
     categoryLabel: "Office",
     location: "BGC, Taguig",
     image: "/assets/marajo-tower.jpg",
+    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
+    heroImages: ["/assets/marajo-tower.jpg"],
     cardDescription:
       "Contemporary office destination designed for agile teams, premium operations, and business growth.",
     hasDetailPage: true,
@@ -64,6 +67,8 @@ export const properties: Property[] = [
     categoryLabel: "Mixed-Use",
     location: "Salcedo Village",
     image: "/assets/SALCEDO-TOWERS.jpg",
+    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
+    heroImages: ["/assets/SALCEDO-TOWERS.jpg"],
     cardDescription:
       "Elevated mixed-use development with residential suites and office spaces in a prime Makati address.",
     hasDetailPage: true,
@@ -93,6 +98,8 @@ export const properties: Property[] = [
     categoryLabel: "Office",
     location: "Makati City",
     image: "/assets/mrj.jpg",
+    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
+    heroImages: ["/assets/mrj.jpg"],
     cardDescription:
       "Office and commercial building in Makati Poblacion designed for business operations, service teams, and client-facing work.",
     hasDetailPage: true,
@@ -122,6 +129,8 @@ export const properties: Property[] = [
     categoryLabel: "Residential",
     location: "Makati City",
     image: "/assets/ceoflats.jpg",
+    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
+    heroImages: ["/assets/ceoflats.jpg"],
     cardDescription: "Executive residences offering privacy, premium interiors, and refined urban living.",
     hasDetailPage: true,
     hero: {
@@ -150,6 +159,8 @@ export const properties: Property[] = [
     categoryLabel: "Residential",
     location: "Burgos, Makati",
     image: "/assets/HQ-Burgos.jpg",
+    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
+    heroImages: ["/assets/HQ-Burgos.jpg"],
     cardDescription:
       "Residential quarters designed for convenient city living near Makati's dining, work, and lifestyle destinations. The Burgos address offers practical layouts for professionals and long-stay residents.",
     hasDetailPage: true,
@@ -182,6 +193,8 @@ export const properties: Property[] = [
     location: "Siargao Island",
     // Real Muro Siargao asset is not in the current project bundle; keep this distinct remote image until supplied.
     image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&h=900&fit=crop&auto=format",
+    // Interior carousel photos are not yet available in the project bundle; using the current property image as fallback.
+    heroImages: ["https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&h=900&fit=crop&auto=format"],
     cardDescription:
       "A refined coastal destination offering island-inspired homes, boutique hospitality, and exceptional natural surroundings.",
     hasDetailPage: true,
@@ -212,6 +225,8 @@ export const properties: Property[] = [
     location: "Manila",
     // Real Marajo Town Center asset is not in the current project bundle; keep this distinct remote image until supplied.
     image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1200&h=900&fit=crop&auto=format",
+    // Interior carousel photos are not yet available in the project bundle; using the current property image as fallback.
+    heroImages: ["https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1200&h=900&fit=crop&auto=format"],
     cardDescription:
       "A luxury retail and community destination anchored by premium brands, high-quality food and beverage, and experiential hospitality.",
     hasDetailPage: true,
@@ -241,6 +256,8 @@ export const properties: Property[] = [
     categoryLabel: "Residential",
     location: "Palma, Makati",
     image: "/assets/HQ-Palma.jpg",
+    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
+    heroImages: ["/assets/HQ-Palma.jpg"],
     cardDescription:
       "A compact residential address shaped around comfort, accessibility, and everyday city routines. Hightown Quarters Palma supports modern tenants seeking a well-connected Makati base.",
     hasDetailPage: false,
@@ -270,6 +287,8 @@ export const properties: Property[] = [
     categoryLabel: "Commercial",
     location: "Makati City",
     image: "/assets/Space-Solution-A.jpg",
+    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
+    heroImages: ["/assets/Space-Solution-A.jpg"],
     cardDescription:
       "Flexible storage and business space in Makati for teams that need practical, secure, and accessible facilities. The development supports commercial operations with adaptable space planning.",
     hasDetailPage: false,
@@ -299,6 +318,8 @@ export const properties: Property[] = [
     categoryLabel: "Residential",
     location: "Alfonso, Makati",
     image: "/assets/HQ-Alfonso.jpg",
+    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
+    heroImages: ["/assets/HQ-Alfonso.jpg"],
     cardDescription:
       "A residential property in the Hightown Quarters collection, positioned for residents who value Makati access and efficient city living. Alfonso adds another neighborhood option within the portfolio.",
     hasDetailPage: false,
@@ -328,6 +349,8 @@ export const properties: Property[] = [
     categoryLabel: "Residential",
     location: "Albert, Makati",
     image: "/assets/HQ-Albert.jpg",
+    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
+    heroImages: ["/assets/HQ-Albert.jpg"],
     cardDescription:
       "Part of Marajo Group's Makati residential portfolio, Hightown Quarters Albert offers a straightforward urban address for long-stay renters and city professionals.",
     hasDetailPage: false,

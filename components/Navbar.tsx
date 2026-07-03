@@ -39,6 +39,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [scrolled, setScrolled] = useState(false);
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -55,10 +56,25 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
     setDropdownOpen(false);
   }, [pathname]);
 
+  React.useEffect(() => {
+    const hasHeroBlend = pathname === "/" || pathname === "/about" || pathname === "/news";
+    document.body.classList.toggle("has-hero-header", hasHeroBlend);
+
+    const updateScrolled = () => setScrolled(window.scrollY > 24);
+    updateScrolled();
+    window.addEventListener("scroll", updateScrolled, { passive: true });
+
+    return () => {
+      document.body.classList.remove("has-hero-header");
+      window.removeEventListener("scroll", updateScrolled);
+    };
+  }, [pathname]);
+
   const isServiceActive = SERVICE_LINKS.some((l) => pathname?.startsWith(l.href));
+  const hasHeroBlend = pathname === "/" || pathname === "/about" || pathname === "/news";
 
   return (
-    <header className="site-header">
+    <header className={`site-header${hasHeroBlend ? " site-header--hero" : ""}${scrolled || mobileMenuOpen ? " is-scrolled" : ""}`}>
       <div className="container navbar">
         <Link href="/" className="brand">
           <Image src="/assets/logo.png" alt="Marajo Group" className="site-logo" width={140} height={40} priority />

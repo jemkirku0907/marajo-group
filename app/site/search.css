@@ -193,10 +193,101 @@
 
 /* Final visual polish overrides loaded last.
    Keeps Home/About CTAs above the fold and prevents theme text colors from leaking into image heroes. */
+body.has-hero-header {
+  padding-top: 0;
+}
+
+body.has-hero-header .site-header.site-header--hero {
+  background: linear-gradient(180deg, rgba(5, 15, 7, 0.66), rgba(5, 15, 7, 0));
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+
+body.has-hero-header .site-header.site-header--hero:not(.is-scrolled) .nav-link,
+body.has-hero-header .site-header.site-header--hero:not(.is-scrolled) .nav-dropdown-toggle {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+body.has-hero-header .site-header.site-header--hero:not(.is-scrolled) .nav-link:hover,
+body.has-hero-header .site-header.site-header--hero:not(.is-scrolled) .nav-link.active,
+body.has-hero-header .site-header.site-header--hero:not(.is-scrolled) .nav-dropdown-toggle:hover,
+body.has-hero-header .site-header.site-header--hero:not(.is-scrolled) .nav-dropdown-toggle.active {
+  color: #d7f7c8;
+}
+
+body.has-hero-header .site-header.site-header--hero:not(.is-scrolled) .nav-search-input {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+}
+
+body.has-hero-header .site-header.site-header--hero:not(.is-scrolled) .nav-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+body.has-hero-header .site-header.site-header--hero.is-scrolled,
+body.mobile-open.has-hero-header .site-header.site-header--hero {
+  background: var(--nav-bg);
+  border-bottom-color: var(--header-border);
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.1);
+}
+
+.btn-primary,
+.nav-cta,
+.theme-primary-button,
+.home-hero .btn-primary,
+.about-hero .btn-primary {
+  background: #7dc241;
+  border-color: #7dc241;
+  color: #071108;
+}
+
+.btn-primary:hover,
+.nav-cta:hover,
+.theme-primary-button:hover,
+.home-hero .btn-primary:hover,
+.about-hero .btn-primary:hover {
+  background: #8bd84b;
+  border-color: #8bd84b;
+  color: #071108;
+}
+
+.btn-secondary,
+.btn-outline {
+  background: rgba(125, 194, 65, 0.1);
+  border-color: rgba(125, 194, 65, 0.34);
+  color: #1f6e34;
+}
+
+body.theme-dark .btn-secondary,
+body.theme-dark .btn-outline {
+  background: rgba(125, 194, 65, 0.1);
+  border-color: rgba(125, 194, 65, 0.34);
+  color: #d7f7c8;
+}
+
 .home-hero,
 .about-hero {
-  min-height: calc(100svh - 72px);
+  min-height: 100svh;
   padding: clamp(2.75rem, 6vh, 4.75rem) 0 clamp(2.25rem, 5vh, 3.75rem);
+}
+
+.home-hero {
+  background-image:
+    linear-gradient(90deg, rgba(4, 12, 7, 0.88) 0%, rgba(4, 12, 7, 0.7) 42%, rgba(4, 12, 7, 0.24) 100%),
+    linear-gradient(180deg, rgba(4, 12, 7, 0.16) 0%, rgba(4, 12, 7, 0.82) 100%),
+    url("/assets/marajo-tower.jpg");
+}
+
+.about-hero {
+  background-color: #071108;
+  background-image:
+    linear-gradient(90deg, rgba(4, 12, 7, 0.88) 0%, rgba(4, 12, 7, 0.66) 42%, rgba(4, 12, 7, 0.22) 100%),
+    linear-gradient(180deg, rgba(4, 12, 7, 0.12) 0%, rgba(4, 12, 7, 0.82) 100%),
+    url("/assets/SALCEDO-TOWERS.jpg");
+  background-size: cover;
+  background-position: center 38%;
+  background-repeat: no-repeat;
 }
 
 .home-hero-grid,
@@ -306,7 +397,7 @@ body.theme-dark .about-hero .hero-copy {
 @media (max-width: 760px) {
   .home-hero,
   .about-hero {
-    min-height: calc(100svh - 68px);
+    min-height: 100svh;
     padding: clamp(2.75rem, 7vh, 4rem) 0 clamp(2rem, 5vh, 3rem);
   }
 

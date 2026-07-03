@@ -34,7 +34,7 @@ export const properties: Property[] = [
     category: "office",
     categoryLabel: "Office",
     location: "BGC, Taguig",
-    image: "/assets/QUACC.jpg",
+    image: "/assets/marajo-tower.jpg",
     cardDescription:
       "Contemporary office destination designed for agile teams, premium operations, and business growth.",
     hasDetailPage: true,
@@ -48,7 +48,7 @@ export const properties: Property[] = [
       heading: "Exceptional residential living with premium amenities and thoughtful planning.",
       paragraph:
         "Marajo Tower offers a refined collection of studio, one-bedroom, and two-bedroom suites with expansive city views, generous amenity spaces, and elevated finishes throughout.",
-      image: "/assets/QUACC.jpg",
+      image: "/assets/marajo-tower.jpg",
       specs: [
         { label: "Floors", value: "30 storeys" },
         { label: "Units", value: "220 premium residences" },
@@ -180,7 +180,7 @@ export const properties: Property[] = [
     category: "hospitality",
     categoryLabel: "Hospitality",
     location: "Siargao Island",
-    image: "/assets/QUACC.jpg",
+    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&h=900&fit=crop&auto=format",
     cardDescription:
       "A refined coastal destination offering island-inspired homes, boutique hospitality, and exceptional natural surroundings.",
     hasDetailPage: true,
@@ -194,7 +194,7 @@ export const properties: Property[] = [
       heading: "Luxury residences curated to the island lifestyle with premium community spaces and coastal comforts.",
       paragraph:
         "Muro Siargao is a boutique coastal development designed for retreat living with modern comforts, landscape-rich courtyards, and direct access to the island's celebrated coast.",
-      image: "/assets/QUACC.jpg",
+      image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&h=900&fit=crop&auto=format",
       specs: [
         { label: "Location", value: "Siargao Island" },
         { label: "Type", value: "Boutique residential resort" },
@@ -209,7 +209,7 @@ export const properties: Property[] = [
     category: "mixed",
     categoryLabel: "Retail Destination",
     location: "Manila",
-    image: "/assets/Space-Solution-A.jpg",
+    image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1200&h=900&fit=crop&auto=format",
     cardDescription:
       "A luxury retail and community destination anchored by premium brands, high-quality food and beverage, and experiential hospitality.",
     hasDetailPage: true,
@@ -223,7 +223,7 @@ export const properties: Property[] = [
       heading: "Mixed-use retail destination designed for premium brands, curated dining, and dynamic community programming.",
       paragraph:
         "Marajo Town Center combines retail, dining, and lifestyle experiences in a cohesive environment anchored by elegant architecture and event-ready spaces.",
-      image: "/assets/Space-Solution-A.jpg",
+      image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1200&h=900&fit=crop&auto=format",
       specs: [
         { label: "Offerings", value: "Retail showrooms, restaurants, cultural spaces, and event venues" },
         { label: "Experience", value: "Curated brand environment with premium guest services" },

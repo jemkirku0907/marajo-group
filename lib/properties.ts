@@ -3,6 +3,14 @@ export interface PropertySpec {
   value: string;
 }
 
+export interface PropertyInfoCard {
+  title: string;
+  text: string;
+  action: string;
+  ariaLabel?: string;
+  icon?: "home" | "wave" | "chart" | "pin";
+}
+
 export interface Property {
   slug: string;
   name: string;
@@ -26,6 +34,7 @@ export interface Property {
     image: string;
     specs: PropertySpec[];
   };
+  infoCards?: PropertyInfoCard[];
 }
 
 export const properties: Property[] = [

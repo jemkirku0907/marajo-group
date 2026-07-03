@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { properties } from "@/lib/properties";
-import PageHero from "@/components/PageHero";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", project: "", unit: "", message: "" });
@@ -55,15 +56,34 @@ export default function ContactPage() {
 
   return (
     <main>
-      <PageHero
-        eyebrow="Contact"
-        title="Reach our sales team"
-        subtitle="Send inquiries, request visits, and explore Marajo Group's residential, office, hospitality, and mixed-use opportunities."
-        crumbs={[{ href: "/", label: "Home" }, { label: "Contact" }]}
-        label="Connect"
-        backgroundImage="/assets/marajo-tower.jpg"
-        backgroundPosition="center 45%"
-      />
+      <section className="hero about-hero reveal-on-scroll">
+        <div className="container about-hero-grid">
+          <div className="about-hero-copy reveal-on-scroll">
+            <span className="hero-label">Contact Us</span>
+            <h1 className="hero-title">Reach our sales team for inquiries, visits, and consultations.</h1>
+            <p className="hero-copy">
+              Our Marajo sales team is ready to assist with property inquiries, brochure downloads, leasing
+              information, and tailored consultations.
+            </p>
+            <div className="hero-actions">
+              <Link href="#contact-form" className="btn-primary">
+                Send Inquiry
+              </Link>
+              <Link href="#contact-location" className="btn-secondary">
+                View Location
+              </Link>
+            </div>
+          </div>
+          <div className="about-hero-media reveal-on-scroll" aria-label="Marajo Tower head office">
+            <Image src="/assets/marajo-tower.jpg" alt="Marajo Tower, BGC" width={900} height={680} priority />
+            <div className="hero-feature-panel">
+              <span>Head Office</span>
+              <strong>Marajo Tower</strong>
+              <p>BGC</p>
+            </div>
+          </div>
+        </div>
+      </section>
       <section className="section contact-section contact-shell">
         <div className="container">
           <div className="contact-modern-grid">
@@ -156,7 +176,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="contact-card contact-card-modern">
+            <div id="contact-form" className="contact-card contact-card-modern">
               <h3>Send an Inquiry</h3>
               <p className="form-intro">Fill out the form and our team will get back to you within 2 business days.</p>
 
@@ -223,7 +243,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="section contact-map-section">
+      <section id="contact-location" className="section contact-map-section">
         <div className="container">
           <div className="contact-map-wrap">
             <iframe

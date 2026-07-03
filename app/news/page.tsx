@@ -1,5 +1,5 @@
 import Image from "next/image";
-import PageHero from "@/components/PageHero";
+import Link from "next/link";
 
 export const metadata = {
   title: "Marajo Journal | News, Updates & Market Insights",
@@ -37,17 +37,36 @@ const POST_IMG = "https://www.marajogroup.com/wp-content/uploads/2024/01/Post-Ne
 export default function NewsPage() {
   return (
     <main>
-      <PageHero
-        eyebrow="Marajo Journal"
-        title="News, Updates & Market Insights"
-        subtitle="A comprehensive overview of our latest news, property launches, and upcoming events."
-        crumbs={[{ href: "/", label: "Home" }, { label: "News" }]}
-        label="Journal"
-        backgroundImage={POST_IMG}
-        backgroundPosition="center"
-      />
+      <section className="hero about-hero reveal-on-scroll">
+        <div className="container about-hero-grid">
+          <div className="about-hero-copy reveal-on-scroll">
+            <span className="hero-label">Marajo Journal</span>
+            <h1 className="hero-title">News, updates, and market insights from Marajo Group.</h1>
+            <p className="hero-copy">
+              Stay informed on property launches, company milestones, market notes, and community updates from the
+              Marajo Group team.
+            </p>
+            <div className="hero-actions">
+              <Link href="#latest-news" className="btn-primary">
+                Read Latest
+              </Link>
+              <Link href="/contact" className="btn-secondary">
+                Contact Us
+              </Link>
+            </div>
+          </div>
+          <div className="about-hero-media reveal-on-scroll" aria-label="Featured Marajo journal story">
+            <Image src={POST_IMG} alt="Marajo journal featured story" width={900} height={680} priority unoptimized />
+            <div className="hero-feature-panel">
+              <span>May 2026</span>
+              <strong>Featured Story</strong>
+              <p>Marajo Tower welcomes its first homeowners</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <section className="section" style={{ paddingBottom: 0 }}>
+      <section id="latest-news" className="section" style={{ paddingBottom: 0 }}>
         <div className="container">
           <div className="section-title">
             <span>Latest</span>

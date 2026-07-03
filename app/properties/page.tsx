@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { properties as ALL_PROPERTIES } from "@/lib/properties";
-import PageHero from "@/components/PageHero";
 
 const CATEGORIES = [
   { key: "all", label: "All" },
@@ -39,16 +38,35 @@ export default function PropertiesPage() {
 
   return (
     <>
-      <PageHero
-        eyebrow="Properties"
-        title="Search premium properties"
-        subtitle="Browse Marajo Group's current residential, office, mixed-use, hospitality, and commercial portfolio."
-        crumbs={[{ href: "/", label: "Home" }, { label: "Properties" }]}
-        label="Portfolio"
-        backgroundImage="/assets/marajo-tower.jpg"
-        backgroundPosition="center 42%"
-      />
-      <section className="section properties-page">
+      <section className="hero about-hero reveal-on-scroll">
+        <div className="container about-hero-grid">
+          <div className="about-hero-copy reveal-on-scroll">
+            <span className="hero-label">Our Portfolio</span>
+            <h1 className="hero-title">Premium properties built for people, business, and lasting value.</h1>
+            <p className="hero-copy">
+              Explore Marajo Group&apos;s residential, office, mixed-use, hospitality, and commercial portfolio across
+              the Philippines&apos; most active growth districts.
+            </p>
+            <div className="hero-actions">
+              <Link href="#properties-list" className="btn-primary">
+                Browse Properties
+              </Link>
+              <Link href="/contact" className="btn-secondary">
+                Inquire Now
+              </Link>
+            </div>
+          </div>
+          <div className="about-hero-media reveal-on-scroll" aria-label="Salcedo Towers portfolio preview">
+            <Image src="/assets/SALCEDO-TOWERS.jpg" alt="Salcedo Towers" width={900} height={680} priority />
+            <div className="hero-feature-panel">
+              <span>{ALL_PROPERTIES.length} Properties</span>
+              <strong>Portfolio</strong>
+              <p>Across Makati, BGC, Siargao</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="properties-list" className="section properties-page">
       <div className="container">
         <div className="property-controls">
           <div className="property-tools">

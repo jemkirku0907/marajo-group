@@ -1996,14 +1996,14 @@ body:has(.property-detail-page) .sticky-contact {
   background-image:
     linear-gradient(90deg, rgba(5, 20, 9, 0.9), rgba(5, 20, 9, 0.58) 48%, rgba(5, 20, 9, 0.76)),
     linear-gradient(180deg, rgba(5, 20, 9, 0.18), rgba(5, 20, 9, 0.72)),
-    url("/assets/SALCEDO-TOWERS.jpg") !important;
+    url("/assets/Marajo-Share-Social.jpg") !important;
 }
 
 .news-page .about-hero {
   background-image:
     linear-gradient(90deg, rgba(5, 20, 9, 0.92), rgba(5, 20, 9, 0.5) 48%, rgba(5, 20, 9, 0.78)),
     linear-gradient(180deg, rgba(5, 20, 9, 0.2), rgba(5, 20, 9, 0.76)),
-    url("https://www.marajogroup.com/wp-content/uploads/2024/01/Post-New.jpg") !important;
+    url("/assets/Post-New.jpg") !important;
 }
 
 .contact-page .about-hero {

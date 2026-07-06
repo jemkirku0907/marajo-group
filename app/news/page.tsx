@@ -6,7 +6,7 @@ export const metadata = {
   title: "Marajo Journal | News, Updates & Market Insights",
 };
 
-const POST_IMG = "https://www.marajogroup.com/wp-content/uploads/2024/01/Post-New.jpg";
+const POST_IMG = "/assets/Post-New.jpg";
 const MURO_IMG = properties.find((property) => property.slug === "muro-siargao")?.image || POST_IMG;
 const TOWER_IMG = properties.find((property) => property.slug === "marajo-tower")?.image || POST_IMG;
 const featuredPropertyCount = properties.filter((property) => property.overview).length;

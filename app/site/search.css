@@ -1994,22 +1994,22 @@ body:has(.property-detail-page) .sticky-contact {
 
 .properties-listing-page .about-hero {
   background-image:
-    linear-gradient(90deg, rgba(5, 20, 9, 0.9), rgba(5, 20, 9, 0.58) 48%, rgba(5, 20, 9, 0.76)),
-    linear-gradient(180deg, rgba(5, 20, 9, 0.18), rgba(5, 20, 9, 0.72)),
+    linear-gradient(90deg, rgba(5, 20, 9, 0.78), rgba(5, 20, 9, 0.42) 48%, rgba(5, 20, 9, 0.62)),
+    linear-gradient(180deg, rgba(5, 20, 9, 0.08), rgba(5, 20, 9, 0.56)),
     url("/assets/Marajo-Share-Social.jpg") !important;
 }
 
 .news-page .about-hero {
   background-image:
-    linear-gradient(90deg, rgba(5, 20, 9, 0.92), rgba(5, 20, 9, 0.5) 48%, rgba(5, 20, 9, 0.78)),
-    linear-gradient(180deg, rgba(5, 20, 9, 0.2), rgba(5, 20, 9, 0.76)),
+    linear-gradient(90deg, rgba(5, 20, 9, 0.8), rgba(5, 20, 9, 0.36) 48%, rgba(5, 20, 9, 0.64)),
+    linear-gradient(180deg, rgba(5, 20, 9, 0.08), rgba(5, 20, 9, 0.58)),
     url("/assets/Post-New.jpg") !important;
 }
 
 .contact-page .about-hero {
   background-image:
-    linear-gradient(90deg, rgba(5, 20, 9, 0.92), rgba(5, 20, 9, 0.48) 48%, rgba(5, 20, 9, 0.76)),
-    linear-gradient(180deg, rgba(5, 20, 9, 0.2), rgba(5, 20, 9, 0.78)),
+    linear-gradient(90deg, rgba(5, 20, 9, 0.8), rgba(5, 20, 9, 0.36) 48%, rgba(5, 20, 9, 0.62)),
+    linear-gradient(180deg, rgba(5, 20, 9, 0.08), rgba(5, 20, 9, 0.58)),
     url("/assets/marajo-tower.jpg") !important;
 }
 
@@ -2019,4 +2019,35 @@ body:has(.property-detail-page) .sticky-contact {
   background:
     radial-gradient(circle at 78% 14%, rgba(117, 202, 53, 0.24), transparent 30%),
     linear-gradient(135deg, rgba(5, 20, 9, 0.18), rgba(31, 110, 52, 0.2));
+}
+
+.news-page .about-hero-grid,
+.contact-page .about-hero-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, min(36vw, 520px));
+}
+
+.news-page .about-hero-media,
+.contact-page .about-hero-media {
+  justify-self: end;
+  width: min(100%, 520px);
+  overflow: visible;
+}
+
+.news-page .about-hero-media .hero-feature-panel,
+.contact-page .about-hero-media .hero-feature-panel {
+  right: clamp(0.75rem, 2vw, 1.25rem);
+  max-width: min(320px, calc(100% - 2rem));
+}
+
+@media (max-width: 1100px) {
+  .news-page .about-hero-grid,
+  .contact-page .about-hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .news-page .about-hero-media,
+  .contact-page .about-hero-media {
+    justify-self: stretch;
+    width: 100%;
+  }
 }

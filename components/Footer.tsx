@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { properties } from "@/lib/properties";
 
+const featuredFooterProperties = properties.slice(0, 4);
+
 export default function Footer() {
   return (
     <footer className="footer">
@@ -29,12 +31,12 @@ export default function Footer() {
         <div>
           <h4>Properties</h4>
           <div className="footer-links">
-            <Link href="/properties">Browse Properties</Link>
-            {properties.map((property) => (
+            {featuredFooterProperties.map((property) => (
               <Link key={property.slug} href={`/properties/${property.slug}`}>
                 {property.name}
               </Link>
             ))}
+            <Link href="/properties">View All Properties</Link>
           </div>
         </div>
         <div>

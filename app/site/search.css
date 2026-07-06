@@ -1755,7 +1755,7 @@ button[type="submit"].btn-primary:hover {
 }
 
 body:has(.property-detail-page) .sticky-contact {
-  bottom: 7.25rem;
+  display: none;
 }
 
 .property-hero-carousel,
@@ -1862,14 +1862,20 @@ body:has(.property-detail-page) .sticky-contact {
 }
 
 .property-detail-page #overview .property-detail-image-frame {
-  align-self: center;
+  position: sticky;
+  top: clamp(5.5rem, 9vh, 7rem);
+  align-self: start;
   justify-self: end;
   width: 100%;
   max-width: 520px;
+  min-height: min(70vh, 680px);
+  aspect-ratio: auto;
 }
 
 .property-detail-page #overview .property-detail-image-frame img {
   display: block;
+  height: 100%;
+  min-height: inherit;
 }
 
 .theme-dark .property-spec-grid .list-item {
@@ -1942,10 +1948,6 @@ body:has(.property-detail-page) .sticky-contact {
     font-size: clamp(2.4rem, 8.5vw, 4.25rem);
   }
 
-  body:has(.property-detail-page) .sticky-contact {
-    display: none;
-  }
-
   .property-hero-bottom-strip {
     min-height: 132px;
   }
@@ -1955,18 +1957,48 @@ body:has(.property-detail-page) .sticky-contact {
   }
 
   .property-detail-page #overview .property-detail-image-frame {
+    position: static;
     min-height: auto;
   }
 }
 
 @media (max-width: 560px) {
+  .property-hero-frame {
+    padding: 1rem;
+  }
+
   .property-hero-card {
-    height: 720px;
+    height: clamp(660px, 176vw, 720px);
     max-height: 720px;
+    border-radius: 22px;
+  }
+
+  .property-hero-carousel,
+  .property-hero-card {
+    aspect-ratio: auto;
+  }
+
+  .property-hero-image {
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .property-hero-topline {
+    top: 1.15rem;
+    left: 1.15rem;
+    right: 1.15rem;
+  }
+
+  .property-hero-eyebrow {
+    min-height: 38px;
+    padding: 0.58rem 0.85rem;
   }
 
   .property-hero-content {
-    bottom: 14.2rem;
+    left: 1.15rem;
+    right: 1.15rem;
+    bottom: clamp(14.25rem, 42vw, 15.5rem);
+    width: auto;
   }
 
   .property-hero-wordmark {
@@ -1976,6 +2008,7 @@ body:has(.property-detail-page) .sticky-contact {
 
   .property-hero-bottom-strip {
     min-height: 150px;
+    padding: 0.85rem;
   }
 
   .property-hero-strip-item strong {

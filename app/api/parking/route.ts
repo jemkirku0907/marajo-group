@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
     `SELECT id, slot_number, floor_level, slot_type
      FROM parking_slots
      WHERE facility_id = ?
-       AND status = 'available'
+       AND COALESCE(status, 'available') NOT IN ('maintenance', 'unavailable', 'disabled')
        AND id NOT IN (
          SELECT slot_id FROM parking_reservations
          WHERE facility_id = ?
@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
       [slotId, facilityId]
     );
     const slotRow = slotRows[0];
-    if (!slotRow || slotRow.status !== "available") {
+    if (!slotRow || ["maintenance", "unavailable", "disabled"].includes(String(slotRow.status || "").toLowerCase())) {
       throw new Error("That slot is no longer available.");
     }
 
@@ -152,9 +152,6 @@ export async function POST(req: NextRequest) {
        VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)`,
       [reservationId, userId, total, base, vat, service, refNumber]
     );
-
-    await conn.execute("UPDATE parking_slots SET status = 'reserved' WHERE id = ?", [slotId]);
-
     await conn.commit();
     conn.release();
 

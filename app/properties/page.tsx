@@ -37,7 +37,7 @@ export default function PropertiesPage() {
   }, [category, query, sort]);
 
   return (
-    <>
+    <main className="properties-listing-page">
       <section className="hero about-hero reveal-on-scroll">
         <div className="container about-hero-grid">
           <div className="about-hero-copy reveal-on-scroll">
@@ -151,7 +151,7 @@ export default function PropertiesPage() {
         {filtered.length === 0 && <div className="no-results">No properties match your search.</div>}
       </div>
       </section>
-    </>
+    </main>
   );
 }
 

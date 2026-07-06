@@ -1982,3 +1982,41 @@ body:has(.property-detail-page) .sticky-contact {
     white-space: normal;
   }
 }
+
+/* Real image-backed heroes for listing/news/contact pages. */
+.properties-listing-page .about-hero,
+.news-page .about-hero,
+.contact-page .about-hero {
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+.properties-listing-page .about-hero {
+  background-image:
+    linear-gradient(90deg, rgba(5, 20, 9, 0.9), rgba(5, 20, 9, 0.58) 48%, rgba(5, 20, 9, 0.76)),
+    linear-gradient(180deg, rgba(5, 20, 9, 0.18), rgba(5, 20, 9, 0.72)),
+    url("/assets/SALCEDO-TOWERS.jpg") !important;
+}
+
+.news-page .about-hero {
+  background-image:
+    linear-gradient(90deg, rgba(5, 20, 9, 0.92), rgba(5, 20, 9, 0.5) 48%, rgba(5, 20, 9, 0.78)),
+    linear-gradient(180deg, rgba(5, 20, 9, 0.2), rgba(5, 20, 9, 0.76)),
+    url("https://www.marajogroup.com/wp-content/uploads/2024/01/Post-New.jpg") !important;
+}
+
+.contact-page .about-hero {
+  background-image:
+    linear-gradient(90deg, rgba(5, 20, 9, 0.92), rgba(5, 20, 9, 0.48) 48%, rgba(5, 20, 9, 0.76)),
+    linear-gradient(180deg, rgba(5, 20, 9, 0.2), rgba(5, 20, 9, 0.78)),
+    url("/assets/marajo-tower.jpg") !important;
+}
+
+.properties-listing-page .about-hero::before,
+.news-page .about-hero::before,
+.contact-page .about-hero::before {
+  background:
+    radial-gradient(circle at 78% 14%, rgba(117, 202, 53, 0.24), transparent 30%),
+    linear-gradient(135deg, rgba(5, 20, 9, 0.18), rgba(31, 110, 52, 0.2));
+}

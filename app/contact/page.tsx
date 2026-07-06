@@ -60,7 +60,7 @@ export default function ContactPage() {
         <div className="container about-hero-grid">
           <div className="about-hero-copy reveal-on-scroll">
             <span className="hero-label">Contact Us</span>
-            <h1 className="hero-title">Reach our sales team for inquiries, visits, and consultations.</h1>
+            <h1 className="hero-title">Reach our  team for inquiries, visits, and consultations.</h1>
             <p className="hero-copy">
               Our Marajo sales team is ready to assist with property inquiries, brochure downloads, leasing
               information, and tailored consultations.

@@ -226,7 +226,7 @@ export default function ParkingPage() {
             </div>
           </div>
           <div className="platform-preview">
-            <img src="/assets/parking.jpg" alt="Marajo Tower exterior" />
+            <img src="/assets/Parking.jpg" alt="Marajo Tower exterior" />
             <div className="platform-status-strip">
               <div><strong>₱50</strong><span>Hourly rate</span></div>
               <div><strong>₱500</strong><span>Daily max</span></div>

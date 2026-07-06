@@ -1294,16 +1294,27 @@ function StatusSummary({ title, rows, total }: { title: string; rows: Array<{ st
 function OverviewTab({ onNavigate }: { onNavigate: (tab: Tab) => void }) {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("/api/admin/overview?action=summary")
-      .then((r) => r.json())
-      .then((d) => setData(d))
+    fetch("/api/admin/overview?action=summary", { cache: "no-store" })
+      .then(async (r) => {
+        const payload = await r.json().catch(() => ({ success: false, message: "Invalid overview response." }));
+        if (!r.ok || !payload?.success) {
+          console.error("[admin dashboard] overview fetch failed", { status: r.status, payload });
+          setError(payload?.error || payload?.message || "Unable to load overview.");
+        }
+        setData(payload);
+      })
+      .catch((err) => {
+        console.error("[admin dashboard] overview fetch crashed", err);
+        setError(err instanceof Error ? err.message : "Unable to load overview.");
+      })
       .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <DashboardSkeleton variant="overview" />;
-  if (!data?.success) return <p>Unable to load overview.</p>;
+  if (!data?.success) return <p>Unable to load overview{error ? `: ${error}` : "."}</p>;
 
   const s = data.stats;
   const now = new Date();

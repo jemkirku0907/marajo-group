@@ -60,9 +60,7 @@ export default function AboutPage() {
             <span className="hero-label">About Marajo Group</span>
             <h1 className="hero-title">Quality is the essence and our dream.</h1>
             <p className="hero-copy">
-              Marajo Group is a versatile real estate developer specializing in commercial, residential,
-              hospitality, and storage properties. Behind every project is a dedicated team that believes premium
-              development begins with discipline, imagination, personalized service, and care.
+             Marajo Group is a real estate developer covering commercial, residential, hospitality, and storage properties, built on a team that values discipline, imagination, personalized service, and care in every project.
             </p>
             <div className="hero-actions">
               <Link href="/properties" className="btn-primary">

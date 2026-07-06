@@ -33,6 +33,7 @@ export async function GET(req: NextRequest) {
   const action = req.nextUrl.searchParams.get("action") ?? "summary";
 
   if (action === "summary") {
+    try {
     const hasInquiries = await tableExists("inquiries");
     const hasUnits = await tableExists("units");
     const hasProperties = await tableExists("properties");
@@ -69,7 +70,7 @@ export async function GET(req: NextRequest) {
       ? (await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM appointments WHERE status = 'upcoming'"))?.c ?? 0
       : 0;
     const pendingTasks = hasTasks
-      ? (await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM tasks WHERE done = 0"))?.c ?? 0
+      ? (await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM tasks WHERE done = false"))?.c ?? 0
       : 0;
     const totalContacts = hasContacts
       ? (await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM contacts"))?.c ?? 0
@@ -135,7 +136,7 @@ export async function GET(req: NextRequest) {
     const upcomingTasks = hasTasks
       ? await db.query(
           `SELECT id, task, due_date, priority, done FROM tasks
-           WHERE done = 0 ORDER BY due_date ASC LIMIT 5`
+           WHERE done = false ORDER BY due_date ASC LIMIT 5`
         )
       : [];
 
@@ -283,6 +284,17 @@ export async function GET(req: NextRequest) {
       },
       activity,
     });
+    } catch (error) {
+      console.error("[admin overview] summary failed", error);
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Failed to load admin overview.",
+          error: error instanceof Error ? error.message : String(error),
+        },
+        { status: 500 }
+      );
+    }
   }
 
   return NextResponse.json({ success: false, message: `Admin overview endpoint not found: ${action}` }, { status: 404 });

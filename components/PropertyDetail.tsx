@@ -168,7 +168,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
         </div>
       </section>
 
-      <section className="section section-soft">
+      <section id="gallery" className="section section-soft">
         <div className="container">
           <div className="section-title">
             <span>Gallery</span>

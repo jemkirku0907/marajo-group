@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Button from "@/components/Button";
 import StatCard from "@/components/StatCard";
 
@@ -32,6 +33,13 @@ function splitName(name: string) {
 export default function PropertyHero({ name, tagline, category, meta, heroImage, heroImages, stat1, stat2, ctaHref }: PropertyHeroProps) {
   const titleLines = splitName(name);
   const stats = [stat1, stat2].filter(Boolean) as HeroStat[];
+  const metaItems = meta.split("/").map((item) => item.trim()).filter(Boolean);
+  const stripItems = [
+    { label: "Location", value: metaItems.find((item) => item.toLowerCase().startsWith("location:"))?.replace(/^Location:\s*/i, "") || metaItems[0] || "Philippines" },
+    { label: "Type", value: metaItems.find((item) => item.toLowerCase().startsWith("type:"))?.replace(/^Type:\s*/i, "") || category },
+    { label: stats[0]?.label || "Portfolio", value: stats[0]?.value || "Marajo Group" },
+    { label: stats[1]?.label || "Inquiries", value: stats[1]?.value || "By appointment" },
+  ];
   const slides = useMemo(() => {
     const unique = [...new Set([...(heroImages ?? []), heroImage].filter(Boolean))];
     return unique.length > 0 ? unique : [heroImage];
@@ -69,6 +77,25 @@ export default function PropertyHero({ name, tagline, category, meta, heroImage,
         }}
         onTouchEnd={(event) => handleTouchEnd(event.changedTouches[0]?.clientX ?? 0)}
       >
+        <div className="property-hero-mini-nav" aria-label={`${name} quick navigation`}>
+          <Link href="/" className="property-hero-brand" aria-label="Marajo Group home">
+            <Image src="/assets/logo.png" alt="Marajo Group" width={72} height={72} priority />
+          </Link>
+          <nav className="property-hero-nav-links" aria-label="Property links">
+            <Link href="/properties">Portfolio</Link>
+            <Link href="#overview">Overview</Link>
+            <Link href="#gallery">Gallery</Link>
+            <Link href="/contact">Contact</Link>
+          </nav>
+          <Button href="/contact" className="property-hero-nav-cta">
+            Inquire Now
+            <svg className="property-hero-button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 17 17 7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M9 7h8v8" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Button>
+        </div>
+
         <div className="property-hero-carousel" aria-label={`${name} image carousel`}>
           {slides.map((slide, index) => (
             <Image
@@ -118,6 +145,14 @@ export default function PropertyHero({ name, tagline, category, meta, heroImage,
         </div>
 
         <StatCard items={stats} label={`${name} highlights`} className="property-hero-stat-card" />
+        <div className="property-hero-bottom-strip" aria-label={`${name} quick facts`}>
+          {stripItems.map((item) => (
+            <div className="property-hero-strip-item" key={`${item.label}-${item.value}`}>
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+            </div>
+          ))}
+        </div>
         {hasMultipleSlides && (
           <div className="property-hero-carousel-controls" aria-label={`${name} carousel controls`}>
             <button type="button" aria-label="Previous image" onClick={() => goToSlide(activeSlide - 1)}>

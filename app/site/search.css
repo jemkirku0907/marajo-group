@@ -1822,3 +1822,238 @@ button[type="submit"].btn-primary:hover {
     padding-right: 0;
   }
 }
+
+/* Site-wide property detail fixes: normal heading flow, single stat strip, consistent media sizing. */
+.property-hero-card {
+  height: clamp(560px, 68svh, 680px);
+  max-height: 680px;
+}
+
+.property-hero-content {
+  bottom: clamp(5.6rem, 9vw, 6.7rem);
+  display: grid;
+  gap: clamp(0.9rem, 1.7vw, 1.25rem);
+  width: min(650px, calc(100% - clamp(2.5rem, 10vw, 9.6rem)));
+}
+
+.property-hero-wordmark {
+  position: static;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.24em;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(2.5rem, 6vw, 6rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  text-shadow: 0 18px 48px rgba(0, 0, 0, 0.42);
+  mix-blend-mode: normal;
+  pointer-events: auto;
+}
+
+.property-hero-wordmark span {
+  display: inline;
+}
+
+.property-hero-content p {
+  max-width: 46rem;
+  font-size: clamp(0.98rem, 1.25vw, 1.12rem);
+}
+
+.property-hero-stat-card {
+  display: none !important;
+}
+
+.property-hero-bottom-strip {
+  min-height: 94px;
+}
+
+body:has(.property-detail-page) .sticky-contact {
+  bottom: 7.25rem;
+}
+
+.property-hero-carousel,
+.property-hero-card {
+  aspect-ratio: 16 / 9;
+}
+
+.property-hero-image,
+.detail-image img,
+.gallery-item img,
+.journal-featured-img img,
+.journal-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.detail-image,
+.property-detail-image-frame,
+.gallery-item,
+.journal-featured-img,
+.journal-card-img {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.property-detail-image-frame {
+  border-radius: 18px;
+  border: 1px solid var(--border-muted, rgba(31, 110, 52, 0.16));
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.12);
+  background: var(--surface, #ffffff);
+}
+
+.property-spec-grid {
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.property-spec-grid .list-item {
+  position: relative;
+  min-height: 128px;
+  padding: 1.2rem;
+  border: 1px solid rgba(31, 110, 52, 0.16);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(31, 110, 52, 0.045), transparent),
+    var(--surface, #ffffff);
+  box-shadow: 0 12px 34px rgba(15, 23, 42, 0.08);
+}
+
+.property-spec-grid .list-item::before {
+  content: "";
+  position: absolute;
+  top: 1rem;
+  left: 1.2rem;
+  width: 34px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--mg-green, #1f6e34);
+}
+
+.property-spec-grid .list-item h3 {
+  margin: 0 0 0.6rem;
+  padding-top: 0.75rem;
+  color: var(--text-primary, #111827);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.property-spec-grid .list-item p {
+  margin: 0;
+  color: var(--text-muted, #475569);
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.property-detail-actions {
+  margin-top: 2rem;
+}
+
+.theme-dark .property-spec-grid .list-item {
+  border-color: rgba(117, 202, 53, 0.2);
+  background:
+    linear-gradient(180deg, rgba(117, 202, 53, 0.08), transparent),
+    rgba(255, 255, 255, 0.05);
+}
+
+.theme-dark .property-detail-image-frame {
+  border-color: rgba(117, 202, 53, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.news-page .about-hero,
+.contact-page .about-hero {
+  background:
+    radial-gradient(circle at 78% 12%, rgba(117, 202, 53, 0.28), transparent 28%),
+    linear-gradient(135deg, rgba(5, 20, 9, 0.98), rgba(31, 110, 52, 0.92) 56%, rgba(8, 34, 15, 0.98));
+}
+
+.news-page .about-hero::before,
+.contact-page .about-hero::before {
+  background:
+    linear-gradient(90deg, rgba(5, 20, 9, 0.72), rgba(5, 20, 9, 0.24) 52%, rgba(5, 20, 9, 0.52)),
+    radial-gradient(circle at 18% 22%, rgba(117, 202, 53, 0.18), transparent 34%);
+}
+
+.news-page .hero-feature-panel,
+.contact-page .hero-feature-panel {
+  border-color: rgba(255, 255, 255, 0.28);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.08)),
+    rgba(5, 20, 9, 0.42);
+  color: #ffffff;
+  backdrop-filter: blur(18px);
+}
+
+.news-page .about-hero-media,
+.contact-page .about-hero-media {
+  aspect-ratio: 16 / 9;
+}
+
+.news-page .about-hero-media img,
+.contact-page .about-hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.journal-source-note {
+  margin: 1.25rem 0 0;
+  color: var(--text-muted, #64748b);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .property-hero-card {
+    height: 700px;
+    max-height: 700px;
+  }
+
+  .property-hero-content {
+    bottom: 13rem;
+    width: auto;
+  }
+
+  .property-hero-wordmark {
+    font-size: clamp(2.4rem, 8.5vw, 4.25rem);
+  }
+
+  body:has(.property-detail-page) .sticky-contact {
+    display: none;
+  }
+
+  .property-hero-bottom-strip {
+    min-height: 132px;
+  }
+}
+
+@media (max-width: 560px) {
+  .property-hero-card {
+    height: 720px;
+    max-height: 720px;
+  }
+
+  .property-hero-content {
+    bottom: 14.2rem;
+  }
+
+  .property-hero-wordmark {
+    font-size: clamp(2.25rem, 10.5vw, 3.4rem);
+    line-height: 1.05;
+  }
+
+  .property-hero-bottom-strip {
+    min-height: 150px;
+  }
+
+  .property-hero-strip-item strong {
+    white-space: normal;
+  }
+}

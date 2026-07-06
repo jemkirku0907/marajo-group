@@ -55,7 +55,7 @@ export default function ContactPage() {
   }
 
   return (
-    <main>
+    <main className="contact-page">
       <section className="hero about-hero reveal-on-scroll">
         <div className="container about-hero-grid">
           <div className="about-hero-copy reveal-on-scroll">

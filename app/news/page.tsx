@@ -1,42 +1,49 @@
 import Image from "next/image";
 import Link from "next/link";
+import { properties } from "@/lib/properties";
 
 export const metadata = {
   title: "Marajo Journal | News, Updates & Market Insights",
 };
 
+const POST_IMG = "https://www.marajogroup.com/wp-content/uploads/2024/01/Post-New.jpg";
+const MURO_IMG = properties.find((property) => property.slug === "muro-siargao")?.image || POST_IMG;
+const TOWER_IMG = properties.find((property) => property.slug === "marajo-tower")?.image || POST_IMG;
+const featuredPropertyCount = properties.filter((property) => property.overview).length;
+
 const ARTICLES = [
   {
-    tag: "Property Launch",
+    tag: "Marajo Journal",
     tagClass: "journal-tag--launch",
-    date: "April 2026",
-    title: "Salcedo Towers expansion plan now available for inquiry",
-    excerpt: "Residential floors and business-ready office suites are available for investors seeking strategic Makati exposure.",
-    alt: "Salcedo Towers",
+    date: "October 18, 2023",
+    title: "Growing into one of the country's most trusted real estate companies",
+    excerpt: "Marajo Group has built a solid reputation across commercial, residential, hospitality, and storage developments through decades of quality-focused work.",
+    alt: "Marajo Journal feature",
+    image: POST_IMG,
   },
   {
-    tag: "Market Insight",
+    tag: "Land Development",
     tagClass: "journal-tag--insight",
-    date: "March 2026",
-    title: "Why premium Metro Manila real estate remains a smart long-term hold",
-    excerpt: "Marajo Group shares the latest outlook for growth, value appreciation, and high-demand urban locations.",
-    alt: "Metro Manila Market Insight",
+    date: "Portfolio Update",
+    title: "Muro Siargao planned community highlights island growth potential",
+    excerpt: "Muro Siargao is envisioned as a residential and commercial subdivision shaped around Siargao's natural setting and rising appeal.",
+    alt: "Muro Siargao",
+    image: MURO_IMG,
   },
   {
-    tag: "Community",
+    tag: "Portfolio",
     tagClass: "journal-tag--community",
-    date: "February 2026",
-    title: "Marajo Group launches sustainability roadmap for new developments",
-    excerpt: "The company outlined plans for lower environmental impact and greater community benefits across all future projects.",
-    alt: "Sustainability Roadmap",
+    date: "Company Update",
+    title: "Marajo Group portfolio spans office, residential, hospitality, and storage",
+    excerpt: "The Group operates premium office space and prime residential properties while continuing to serve growing business and residential needs.",
+    alt: "Marajo Group portfolio",
+    image: TOWER_IMG,
   },
 ];
 
-const POST_IMG = "https://www.marajogroup.com/wp-content/uploads/2024/01/Post-New.jpg";
-
 export default function NewsPage() {
   return (
-    <main>
+    <main className="news-page">
       <section className="hero about-hero reveal-on-scroll">
         <div className="container about-hero-grid">
           <div className="about-hero-copy reveal-on-scroll">
@@ -58,9 +65,9 @@ export default function NewsPage() {
           <div className="about-hero-media reveal-on-scroll" aria-label="Featured Marajo journal story">
             <Image src={POST_IMG} alt="Marajo journal featured story" width={900} height={680} priority unoptimized />
             <div className="hero-feature-panel">
-              <span>May 2026</span>
-              <strong>Featured Story</strong>
-              <p>Marajo Tower welcomes its first homeowners</p>
+              <span>October 18, 2023</span>
+              <strong>Marajo Journal</strong>
+              <p>Growing into one of the country&apos;s most trusted real estate companies</p>
             </div>
           </div>
         </div>
@@ -74,18 +81,18 @@ export default function NewsPage() {
           </div>
           <a href="#" className="journal-featured">
             <div className="journal-featured-img">
-              <Image src={POST_IMG} alt="Marajo Tower welcomes its first homeowners" width={900} height={600} unoptimized />
+              <Image src={POST_IMG} alt="Growing into one of the country's most trusted real estate companies" width={900} height={600} unoptimized />
             </div>
             <div className="journal-featured-body">
               <div className="journal-meta">
                 <span className="journal-tag">Company News</span>
-                <span>May 2026</span>
+                <span>October 18, 2023</span>
               </div>
-              <h2 className="journal-featured-title">Marajo Tower welcomes its first homeowners</h2>
+              <h2 className="journal-featured-title">Growing into one of the country&apos;s most trusted real estate companies</h2>
               <p>
-                Project delivery continues on schedule with premium amenities and customer care services now fully
-                active. The handover marks a major milestone in Marajo Group&apos;s commitment to timely,
-                high-quality residential development in the heart of Makati.
+                Since its inception four decades ago, Marajo Group has grown into one of the country&apos;s reliable
+                real estate developers, focused on quality across commercial, residential, hospitality, and storage
+                properties.
               </p>
               <span className="journal-read-more">Read Full Story →</span>
             </div>
@@ -103,7 +110,7 @@ export default function NewsPage() {
             {ARTICLES.map((a) => (
               <a href="#" className="journal-card" key={a.title}>
                 <div className="journal-card-img">
-                  <Image src={POST_IMG} alt={a.alt} width={700} height={480} unoptimized />
+                  <Image src={a.image} alt={a.alt} width={700} height={480} unoptimized={a.image.startsWith("http")} />
                 </div>
                 <div className="journal-card-body">
                   <div className="journal-meta">
@@ -117,6 +124,9 @@ export default function NewsPage() {
               </a>
             ))}
           </div>
+          <p className="journal-source-note">
+            Journal content is based on Marajo Group&apos;s published journal and current portfolio of {featuredPropertyCount} properties.
+          </p>
         </div>
       </section>
     </main>

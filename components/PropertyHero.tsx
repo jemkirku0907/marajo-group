@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
-import StatCard from "@/components/StatCard";
 
 type HeroStat = {
   label: string;
@@ -24,10 +23,7 @@ type PropertyHeroProps = {
 };
 
 function splitName(name: string) {
-  const parts = name.trim().split(/\s+/);
-  if (parts.length <= 2) return [name];
-  const midpoint = Math.ceil(parts.length / 2);
-  return [parts.slice(0, midpoint).join(" "), parts.slice(midpoint).join(" ")];
+  return name.trim().split(/\s+/);
 }
 
 export default function PropertyHero({ name, tagline, category, meta, heroImage, heroImages, stat1, stat2, ctaHref }: PropertyHeroProps) {
@@ -122,13 +118,12 @@ export default function PropertyHero({ name, tagline, category, meta, heroImage,
           <span>{meta}</span>
         </div>
 
-        <h1 className="property-hero-wordmark" aria-label={name}>
-          {titleLines.map((line) => (
-            <span key={line}>{line}</span>
-          ))}
-        </h1>
-
         <div className="property-hero-content">
+          <h1 className="property-hero-wordmark" aria-label={name}>
+            {titleLines.map((line) => (
+              <span key={line}>{line}</span>
+            ))}
+          </h1>
           <p>{tagline}</p>
           <div className="property-hero-actions">
             <Button href={ctaHref} className="property-hero-button property-hero-button-primary">
@@ -144,7 +139,6 @@ export default function PropertyHero({ name, tagline, category, meta, heroImage,
           </div>
         </div>
 
-        <StatCard items={stats} label={`${name} highlights`} className="property-hero-stat-card" />
         <div className="property-hero-bottom-strip" aria-label={`${name} quick facts`}>
           {stripItems.map((item) => (
             <div className="property-hero-strip-item" key={`${item.label}-${item.value}`}>

@@ -128,7 +128,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
               <h2>{overview.heading}</h2>
             </div>
             <p>{overview.paragraph}</p>
-            <div className="list-grid" style={{ marginTop: "2rem" }}>
+            <div className="list-grid property-spec-grid">
               {overview.specs.map((spec) => (
                 <div className="list-item" key={spec.label}>
                   <h3>{spec.label}</h3>
@@ -136,7 +136,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
                 </div>
               ))}
             </div>
-            <div className="hero-actions" style={{ marginTop: "2rem" }}>
+            <div className="hero-actions property-detail-actions">
               <Button href="/contact" className="btn-primary">
                 Inquire About {property.name}
               </Button>
@@ -145,7 +145,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
               </Button>
             </div>
           </div>
-          <div className="detail-image">
+          <div className="detail-image property-detail-image-frame">
             <Image src={overview.image} alt={property.name} width={1000} height={800} />
           </div>
         </div>

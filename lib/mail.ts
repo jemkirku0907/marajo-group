@@ -120,22 +120,22 @@ export async function sendParkingReceipt(reservationId: number): Promise<boolean
 
   const body = `
   <div class="section"><h2>Client Information</h2>
-    <div class="row"><span class="label">Name</span><span class="value">${r.full_name}</span></div>
-    <div class="row"><span class="label">Email</span><span class="value">${r.email}</span></div>
-    <div class="row"><span class="label">Phone</span><span class="value">${r.contact_number || "N/A"}</span></div>
+    <div class="row"><span class="label">Name:</span><span class="value">${r.full_name}</span></div>
+    <div class="row"><span class="label">Email:</span><span class="value">${r.email}</span></div>
+    <div class="row"><span class="label">Phone:</span><span class="value">${r.contact_number || "N/A"}</span></div>
   </div>
   <div class="section"><h2>Parking Slot</h2>
-    <div class="row"><span class="label">Facility</span><span class="value">${facilityLine}</span></div>
-    <div class="row"><span class="label">Slot</span><span class="value">${r.slot_number || "N/A"} (Floor ${r.floor_level ?? 1}, ${cap(r.slot_type || "standard")})</span></div>
-    <div class="row"><span class="label">Vehicle</span><span class="value">${vehicle}</span></div>
+    <div class="row"><span class="label">Facility:</span><span class="value">${facilityLine}</span></div>
+    <div class="row"><span class="label">Slot:</span><span class="value">${r.slot_number || "N/A"} (Floor ${r.floor_level ?? 1}, ${cap(r.slot_type || "standard")})</span></div>
+    <div class="row"><span class="label">Vehicle:</span><span class="value">${vehicle}</span></div>
   </div>
   <div class="section"><h2>Schedule</h2>
-    <div class="row"><span class="label">Date</span><span class="value">${fmtDate(r.reservation_date)}</span></div>
-    <div class="row"><span class="label">Time</span><span class="value">${fmtTime(r.entry_time)} – ${fmtTime(r.exit_time)}</span></div>
+    <div class="row"><span class="label">Date:</span><span class="value">${fmtDate(r.reservation_date)}</span></div>
+    <div class="row"><span class="label">Time:</span><span class="value">${fmtTime(r.entry_time)} – ${fmtTime(r.exit_time)}</span></div>
   </div>
   <div class="section" style="border-bottom:none"><h2>Payment</h2>
-    <div class="row"><span class="label">Payment status</span><span class="value">${cap(r.payment_status || "pending")}</span></div>
-    <div style="margin-top:14px"><div class="amount-box"><span class="amount-label">Total Fee</span><span class="amount-value">${amount}</span></div></div>
+    <div class="row"><span class="label">Payment status:</span><span class="value">${cap(r.payment_status || "pending")}</span></div>
+    <div style="margin-top:14px"><div class="amount-box"><span class="amount-label">Total Fee:</span><span class="amount-value">${amount}</span></div></div>
   </div>`;
 
   const html = layout(
@@ -204,23 +204,23 @@ export async function sendCourtBookingReceipt(bookingId: number): Promise<boolea
 
   const body = `
   <div class="section"><h2>Client Information</h2>
-    <div class="row"><span class="label">Name</span><span class="value">${r.full_name}</span></div>
-    <div class="row"><span class="label">Email</span><span class="value">${r.email}</span></div>
-    <div class="row"><span class="label">Phone</span><span class="value">${r.contact_number || "N/A"}</span></div>
+    <div class="row"><span class="label">Name:</span><span class="value">${r.full_name}</span></div>
+    <div class="row"><span class="label">Email:</span><span class="value">${r.email}</span></div>
+    <div class="row"><span class="label">Phone:</span><span class="value">${r.contact_number || "N/A"}</span></div>
   </div>
   <div class="section"><h2>Court Details</h2>
-    <div class="row"><span class="label">Court</span><span class="value">Marajo Tower Multi-Purpose Court</span></div>
-    <div class="row"><span class="label">Date</span><span class="value">${fmtDate(r.booking_date)}</span></div>
-    <div class="row"><span class="label">Time</span><span class="value">${fmtTime(r.start_time)} – ${fmtTime(r.end_time)}</span></div>
-    <div class="row"><span class="label">Duration</span><span class="value">${Number(r.total_hours ?? 1).toFixed(1)} hour(s)</span></div>
+    <div class="row"><span class="label">Court:</span><span class="value">Marajo Tower Multi-Purpose Court</span></div>
+    <div class="row"><span class="label">Date:</span><span class="value">${fmtDate(r.booking_date)}</span></div>
+    <div class="row"><span class="label">Time:</span><span class="value">${fmtTime(r.start_time)} – ${fmtTime(r.end_time)}</span></div>
+    <div class="row"><span class="label">Duration:</span><span class="value">${Number(r.total_hours ?? 1).toFixed(1)} hour(s)</span></div>
     ${notesRow}
   </div>
   <div class="section" style="border-bottom:none"><h2>Payment</h2>
     <div class="row"><span class="label">Court fee (₱1000/hr)</span><span class="value">${peso(Number(r.base_amount ?? 0))}</span></div>
-    <div class="row"><span class="label">VAT</span><span class="value">${peso(Number(r.vat_amount ?? 0))}</span></div>
-    <div class="row"><span class="label">Service fee</span><span class="value">${peso(Number(r.service_fee ?? 0))}</span></div>
-    <div class="row"><span class="label">Payment status</span><span class="value">${cap(r.payment_status || "pending")}</span></div>
-    <div style="margin-top:14px"><div class="amount-box"><span class="amount-label">Total Fee</span><span class="amount-value">${peso(Number(r.total_amount ?? 0))}</span></div></div>
+    <div class="row"><span class="label">VAT:</span><span class="value">${peso(Number(r.vat_amount ?? 0))}</span></div>
+    <div class="row"><span class="label">Service fee:</span><span class="value">${peso(Number(r.service_fee ?? 0))}</span></div>
+    <div class="row"><span class="label">Payment status:</span><span class="value">${cap(r.payment_status || "pending")}</span></div>
+    <div style="margin-top:14px"><div class="amount-box"><span class="amount-label">Total Fee:</span><span class="amount-value">${peso(Number(r.total_amount ?? 0))}</span></div></div>
   </div>`;
 
   const html = layout(

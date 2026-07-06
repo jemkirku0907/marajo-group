@@ -104,7 +104,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
   };
   const [stat1, stat2] = overview.specs;
   const heroImage = overview.image || property.image;
-  const infoCards = property.infoCards?.length ? property.infoCards : DEFAULT_INFO_CARDS;
+  const infoCards = property.facilities?.length ? property.facilities : property.infoCards?.length ? property.infoCards : DEFAULT_INFO_CARDS;
 
   return (
     <main className="property-detail-page">

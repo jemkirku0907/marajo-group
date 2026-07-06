@@ -34,6 +34,7 @@ export interface Property {
     image: string;
     specs: PropertySpec[];
   };
+  facilities?: PropertyInfoCard[];
   infoCards?: PropertyInfoCard[];
 }
 
@@ -68,6 +69,36 @@ export const properties: Property[] = [
         { label: "Amenities", value: "Infinity pool, gym, sky lounge, and concierge services" },
       ],
     },
+    facilities: [
+      {
+        title: "Meeting Rooms",
+        text: "Professional rooms for tenant meetings, client briefings, and focused business sessions.",
+        action: "meeting-rooms",
+        ariaLabel: "Meeting Rooms - Marajo Tower facilities",
+        icon: "home",
+      },
+      {
+        title: "Conference Rooms",
+        text: "Larger corporate rooms suited for presentations, planning sessions, and team gatherings.",
+        action: "conference-rooms",
+        ariaLabel: "Conference Rooms - Marajo Tower facilities",
+        icon: "chart",
+      },
+      {
+        title: "Business Lounge",
+        text: "Shared tenant lounge areas that support informal work, waiting guests, and quick coordination.",
+        action: "business-lounge",
+        ariaLabel: "Business Lounge - Marajo Tower facilities",
+        icon: "wave",
+      },
+      {
+        title: "PEZA Office Support",
+        text: "Office-oriented building services, secure access, parking support, and BGC connectivity.",
+        action: "peza-office-support",
+        ariaLabel: "PEZA Office Support - Marajo Tower facilities",
+        icon: "pin",
+      },
+    ],
   },
   {
     slug: "salcedo-towers",
@@ -99,6 +130,36 @@ export const properties: Property[] = [
         { label: "Parking", value: "Covered parking with visitor support" },
       ],
     },
+    facilities: [
+      {
+        title: "Residential Suites",
+        text: "Private residential layouts for professionals and families who want a central Makati address.",
+        action: "residential-suites",
+        ariaLabel: "Residential Suites - Salcedo Towers facilities",
+        icon: "home",
+      },
+      {
+        title: "Office Spaces",
+        text: "Office-ready spaces for teams that need a business address within a mixed-use environment.",
+        action: "office-spaces",
+        ariaLabel: "Office Spaces - Salcedo Towers facilities",
+        icon: "chart",
+      },
+      {
+        title: "Garden Terraces",
+        text: "Shared terraces and lounge pockets that soften the urban setting for residents and tenants.",
+        action: "garden-terraces",
+        ariaLabel: "Garden Terraces - Salcedo Towers facilities",
+        icon: "wave",
+      },
+      {
+        title: "Secure Access",
+        text: "Managed building access, concierge support, and covered parking for daily convenience.",
+        action: "secure-access",
+        ariaLabel: "Secure Access - Salcedo Towers facilities",
+        icon: "pin",
+      },
+    ],
   },
   {
     slug: "mrj-center",
@@ -130,6 +191,36 @@ export const properties: Property[] = [
         { label: "Features", value: "Accessible business address, efficient spaces, and professional building environment" },
       ],
     },
+    facilities: [
+      {
+        title: "Office Floors",
+        text: "Efficient office spaces for service teams, operations groups, and client-facing businesses.",
+        action: "office-floors",
+        ariaLabel: "Office Floors - MRJ Center facilities",
+        icon: "home",
+      },
+      {
+        title: "Commercial Units",
+        text: "Flexible commercial areas that can support professional services and tenant operations.",
+        action: "commercial-units",
+        ariaLabel: "Commercial Units - MRJ Center facilities",
+        icon: "chart",
+      },
+      {
+        title: "Shared Building Services",
+        text: "Practical support areas and building services for day-to-day business continuity.",
+        action: "building-services",
+        ariaLabel: "Shared Building Services - MRJ Center facilities",
+        icon: "wave",
+      },
+      {
+        title: "Makati Access",
+        text: "A Poblacion location with practical access for employees, clients, and suppliers.",
+        action: "makati-access",
+        ariaLabel: "Makati Access - MRJ Center facilities",
+        icon: "pin",
+      },
+    ],
   },
   {
     slug: "ceo-flats",
@@ -160,6 +251,36 @@ export const properties: Property[] = [
         { label: "Privacy", value: "Security-first design with dedicated circulation and smart access." },
       ],
     },
+    facilities: [
+      {
+        title: "Studio Units",
+        text: "Efficient private residences for city professionals who need comfort and practical Makati access.",
+        action: "studio-units",
+        ariaLabel: "Studio Units - CEO Flats facilities",
+        icon: "home",
+      },
+      {
+        title: "One-Bedroom Suites",
+        text: "Residential layouts with more living space for executives, couples, and long-stay residents.",
+        action: "one-bedroom-suites",
+        ariaLabel: "One-Bedroom Suites - CEO Flats facilities",
+        icon: "wave",
+      },
+      {
+        title: "Residential Amenities",
+        text: "Resident-focused amenities such as lounge, fitness, concierge, and secure arrival areas.",
+        action: "residential-amenities",
+        ariaLabel: "Residential Amenities - CEO Flats facilities",
+        icon: "chart",
+      },
+      {
+        title: "Private Access",
+        text: "Security-first circulation, managed entry, and residential privacy for everyday peace of mind.",
+        action: "private-access",
+        ariaLabel: "Private Access - CEO Flats facilities",
+        icon: "pin",
+      },
+    ],
   },
   {
     slug: "hightown-quarters-burgos",
@@ -193,6 +314,36 @@ export const properties: Property[] = [
         { label: "Studio with Loft", value: "10 units on the 5th floor and 7 biggest units on the 11th floor" },
       ],
     },
+    facilities: [
+      {
+        title: "Studio Units",
+        text: "Sixty-five studio units across the 6th to 10th floors for efficient city living.",
+        action: "studio-units",
+        ariaLabel: "Studio Units - Hightown Quarters Burgos facilities",
+        icon: "home",
+      },
+      {
+        title: "Studio with Loft",
+        text: "Loft-style units on selected floors for residents who need a more flexible layout.",
+        action: "studio-lofts",
+        ariaLabel: "Studio with Loft - Hightown Quarters Burgos facilities",
+        icon: "wave",
+      },
+      {
+        title: "Residential Parking",
+        text: "Dedicated parking support for residents in a dense, walkable Makati neighborhood.",
+        action: "residential-parking",
+        ariaLabel: "Residential Parking - Hightown Quarters Burgos facilities",
+        icon: "chart",
+      },
+      {
+        title: "Poblacion Access",
+        text: "A residential base near dining, work, and lifestyle destinations in Makati.",
+        action: "poblacion-access",
+        ariaLabel: "Poblacion Access - Hightown Quarters Burgos facilities",
+        icon: "pin",
+      },
+    ],
   },
   {
     slug: "muro-siargao",
@@ -225,6 +376,36 @@ export const properties: Property[] = [
         { label: "Experience", value: "Relaxed coastal living with resort-style amenities" },
       ],
     },
+    facilities: [
+      {
+        title: "Island Residences",
+        text: "Beach-inspired residences and suites designed around relaxed coastal routines.",
+        action: "island-residences",
+        ariaLabel: "Island Residences - Muro Siargao facilities",
+        icon: "home",
+      },
+      {
+        title: "Boutique Hospitality",
+        text: "Hospitality-oriented guest spaces shaped for stays, retreats, and island comfort.",
+        action: "boutique-hospitality",
+        ariaLabel: "Boutique Hospitality - Muro Siargao facilities",
+        icon: "wave",
+      },
+      {
+        title: "Outdoor Courtyards",
+        text: "Landscape-rich community spaces that connect the development to the island setting.",
+        action: "outdoor-courtyards",
+        ariaLabel: "Outdoor Courtyards - Muro Siargao facilities",
+        icon: "chart",
+      },
+      {
+        title: "Coastal Access",
+        text: "A Siargao location built around natural surroundings, leisure, and retreat living.",
+        action: "coastal-access",
+        ariaLabel: "Coastal Access - Muro Siargao facilities",
+        icon: "pin",
+      },
+    ],
   },
   {
     slug: "hightown-quarters-palma",
@@ -256,6 +437,36 @@ export const properties: Property[] = [
         { label: "Portfolio", value: "Hightown Quarters collection" },
       ],
     },
+    facilities: [
+      {
+        title: "Compact Residences",
+        text: "Efficient residential units for long-stay renters and city professionals.",
+        action: "compact-residences",
+        ariaLabel: "Compact Residences - Hightown Quarters Palma facilities",
+        icon: "home",
+      },
+      {
+        title: "Resident Support",
+        text: "Practical resident services and secure access for everyday city routines.",
+        action: "resident-support",
+        ariaLabel: "Resident Support - Hightown Quarters Palma facilities",
+        icon: "wave",
+      },
+      {
+        title: "Neighborhood Access",
+        text: "A Makati address connected to work, dining, and daily essentials.",
+        action: "neighborhood-access",
+        ariaLabel: "Neighborhood Access - Hightown Quarters Palma facilities",
+        icon: "pin",
+      },
+      {
+        title: "Hightown Living",
+        text: "Part of the Hightown Quarters collection focused on practical residential convenience.",
+        action: "hightown-living",
+        ariaLabel: "Hightown Living - Hightown Quarters Palma facilities",
+        icon: "chart",
+      },
+    ],
   },
   {
     slug: "space-solutions",
@@ -287,6 +498,36 @@ export const properties: Property[] = [
         { label: "Access", value: "Secure, practical, and adaptable spaces" },
       ],
     },
+    facilities: [
+      {
+        title: "Storage Units",
+        text: "Secure storage spaces for businesses that need flexible and practical capacity.",
+        action: "storage-units",
+        ariaLabel: "Storage Units - Space Solutions facilities",
+        icon: "home",
+      },
+      {
+        title: "Business Support Space",
+        text: "Adaptable spaces for commercial operations, inventory handling, and support work.",
+        action: "business-support-space",
+        ariaLabel: "Business Support Space - Space Solutions facilities",
+        icon: "chart",
+      },
+      {
+        title: "Secure Access",
+        text: "Controlled access and practical building systems for operational reliability.",
+        action: "secure-access",
+        ariaLabel: "Secure Access - Space Solutions facilities",
+        icon: "pin",
+      },
+      {
+        title: "Flexible Planning",
+        text: "Space planning suited to changing storage and commercial support needs.",
+        action: "flexible-planning",
+        ariaLabel: "Flexible Planning - Space Solutions facilities",
+        icon: "wave",
+      },
+    ],
   },
   {
     slug: "hightown-quarters-alfonso",
@@ -318,6 +559,36 @@ export const properties: Property[] = [
         { label: "Portfolio", value: "Hightown Quarters collection" },
       ],
     },
+    facilities: [
+      {
+        title: "Residential Units",
+        text: "Efficient city residences for Makati renters and long-stay professionals.",
+        action: "residential-units",
+        ariaLabel: "Residential Units - Hightown Quarters Alfonso facilities",
+        icon: "home",
+      },
+      {
+        title: "Resident Essentials",
+        text: "Practical building support for secure, straightforward daily living.",
+        action: "resident-essentials",
+        ariaLabel: "Resident Essentials - Hightown Quarters Alfonso facilities",
+        icon: "wave",
+      },
+      {
+        title: "Makati Connectivity",
+        text: "Neighborhood access for work, errands, and regular city routines.",
+        action: "makati-connectivity",
+        ariaLabel: "Makati Connectivity - Hightown Quarters Alfonso facilities",
+        icon: "pin",
+      },
+      {
+        title: "Hightown Portfolio",
+        text: "A residential option within the Hightown Quarters collection.",
+        action: "hightown-portfolio",
+        ariaLabel: "Hightown Portfolio - Hightown Quarters Alfonso facilities",
+        icon: "chart",
+      },
+    ],
   },
   {
     slug: "hightown-quarters-albert",
@@ -349,6 +620,36 @@ export const properties: Property[] = [
         { label: "Portfolio", value: "Hightown Quarters collection" },
       ],
     },
+    facilities: [
+      {
+        title: "Residential Units",
+        text: "Practical residences built for long-stay renters and city professionals.",
+        action: "residential-units",
+        ariaLabel: "Residential Units - Hightown Quarters Albert facilities",
+        icon: "home",
+      },
+      {
+        title: "Secure Entry",
+        text: "Managed access and everyday building support for dependable city living.",
+        action: "secure-entry",
+        ariaLabel: "Secure Entry - Hightown Quarters Albert facilities",
+        icon: "pin",
+      },
+      {
+        title: "Urban Convenience",
+        text: "A straightforward Makati address close to work, services, and daily needs.",
+        action: "urban-convenience",
+        ariaLabel: "Urban Convenience - Hightown Quarters Albert facilities",
+        icon: "wave",
+      },
+      {
+        title: "Hightown Living",
+        text: "Part of Marajo Group's Hightown Quarters residential portfolio.",
+        action: "hightown-living",
+        ariaLabel: "Hightown Living - Hightown Quarters Albert facilities",
+        icon: "chart",
+      },
+    ],
   },
 ];
 

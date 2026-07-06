@@ -5033,3 +5033,93 @@ table td {
     transition: none;
   }
 }
+
+/* Properties listing cards: keep full card content visible after gallery image rules. */
+.properties-listing-page .property-listing-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.properties-listing-page .property-listing-card .property-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  margin: 0;
+  border-radius: var(--radius) var(--radius) 0 0;
+  overflow: hidden;
+  background: var(--surface-soft);
+}
+
+.properties-listing-page .property-listing-card .property-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0;
+}
+
+.properties-listing-page .property-listing-card .property-details {
+  display: grid;
+  gap: 0.95rem;
+  flex: 1;
+  padding: 1.45rem;
+}
+
+.properties-listing-page .property-listing-card .property-kicker {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.properties-listing-page .property-listing-card h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: clamp(1.35rem, 2vw, 1.7rem);
+  line-height: 1.15;
+}
+
+.properties-listing-page .property-listing-card .property-description {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.65;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.properties-listing-page .property-listing-card .property-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin: 0.35rem 0 0;
+}
+
+.properties-listing-page .property-listing-card .property-meta > span {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.properties-listing-page .property-listing-card .property-meta > span > span {
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.properties-listing-page .property-listing-card .btn-link {
+  margin-top: auto;
+  color: var(--mg-green);
+  text-decoration: none;
+}

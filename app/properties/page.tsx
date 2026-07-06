@@ -14,6 +14,23 @@ const CATEGORIES = [
   { key: "hospitality", label: "Hospitality" },
 ] as const;
 
+function getLocationTag(location: string) {
+  const value = location.toLowerCase();
+  if (value.includes("bgc") || value.includes("bonifacio")) return "BGC";
+  if (value.includes("siargao")) return "Siargao";
+  if (
+    value.includes("makati") ||
+    value.includes("salcedo") ||
+    value.includes("burgos") ||
+    value.includes("palma") ||
+    value.includes("alfonso") ||
+    value.includes("albert")
+  ) {
+    return "Makati";
+  }
+  return location;
+}
+
 export default function PropertiesPage() {
   const [category, setCategory] = useState<string>("all");
   const [query, setQuery] = useState("");
@@ -66,92 +83,115 @@ export default function PropertiesPage() {
           </div>
         </div>
       </section>
+
       <section id="properties-list" className="section properties-page">
-      <div className="container">
-        <div className="property-controls">
-          <div className="property-tools">
-            <div className="results-counter">
-              Showing {filtered.length} of {ALL_PROPERTIES.length} properties
-            </div>
-            <div className="property-sort">
-              <label htmlFor="sort-select">Sort by</label>
-              <select id="sort-select" aria-label="Sort properties" value={sort} onChange={(e) => setSort(e.target.value)}>
-                <option value="newest">Newest</option>
-                <option value="name">Name A-Z</option>
-                <option value="location">Location</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="property-search-wrapper">
-            <input
-              className="form-control"
-              type="search"
-              placeholder="Search by name, type, location"
-              aria-label="Search properties"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            <button type="button" aria-label="Search properties">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="7"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <div className="gallery-filters" role="tablist" aria-label="Property categories">
-          {CATEGORIES.map((c) => (
-            <button
-              key={c.key}
-              type="button"
-              className={`gallery-filter${category === c.key ? " active" : ""}`}
-              role="tab"
-              aria-selected={category === c.key}
-              onClick={() => setCategory(c.key)}
-            >
-              {c.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="card-grid">
-          {filtered.map((p) => (
-            <Link key={p.slug} href={`/properties/${p.slug}`} className="property-card property-card-link gallery-item in-view" aria-label={`View details for ${p.name}`}>
-              <div className="property-image">
-                <Image src={p.image} alt={p.name} width={700} height={500} />
-                <button className="favorite-btn" type="button" aria-label={`Save ${p.name}`}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M20.8 4.6a5.68 5.68 0 0 0-8 0L12 5.4l-0.8-0.8a5.68 5.68 0 0 0-8 8l0.8 0.8L12 21.5l8-8 0.8-0.8a5.68 5.68 0 0 0 0-8z"></path>
-                  </svg>
-                </button>
+        <div className="container">
+          <div className="property-controls">
+            <div className="property-tools">
+              <div className="results-counter">
+                Showing {filtered.length} of {ALL_PROPERTIES.length} properties
               </div>
-              <div className="property-details">
-                <p className="text-muted">
-                  {p.categoryLabel} · {p.location}
-                </p>
-                <h3>{p.name}</h3>
-                <p>{p.cardDescription}</p>
-                <div className="property-meta">
-                  <span>
-                    Type<span>{p.categoryLabel}</span>
-                  </span>
-                  <span>
-                    Location<span>{p.location}</span>
-                  </span>
+              <div className="property-sort">
+                <label htmlFor="sort-select">Sort by</label>
+                <select
+                  id="sort-select"
+                  aria-label="Sort properties"
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value)}
+                >
+                  <option value="newest">Newest</option>
+                  <option value="name">Name A-Z</option>
+                  <option value="location">Location</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="property-search-wrapper">
+              <input
+                className="form-control"
+                type="search"
+                placeholder="Search by name, type, location"
+                aria-label="Search properties"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              <button type="button" aria-label="Search properties">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="11" cy="11" r="7"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div className="gallery-filters" role="tablist" aria-label="Property categories">
+            {CATEGORIES.map((c) => (
+              <button
+                key={c.key}
+                type="button"
+                className={`gallery-filter${category === c.key ? " active" : ""}`}
+                role="tab"
+                aria-selected={category === c.key}
+                onClick={() => setCategory(c.key)}
+              >
+                {c.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="card-grid">
+            {filtered.map((p) => (
+              <article key={p.slug} className="property-card property-listing-card in-view">
+                <div className="property-image">
+                  <Image src={p.image} alt={p.name} width={700} height={500} />
+                  <button className="favorite-btn" type="button" aria-label={`Save ${p.name}`}>
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M20.8 4.6a5.68 5.68 0 0 0-8 0L12 5.4l-0.8-0.8a5.68 5.68 0 0 0-8 8l0.8 0.8L12 21.5l8-8 0.8-0.8a5.68 5.68 0 0 0 0-8z"></path>
+                    </svg>
+                  </button>
                 </div>
-                <span className="btn-link">
-                  View Details
-                </span>
-              </div>
-            </Link>
-          ))}
+                <div className="property-details">
+                  <p className="property-kicker">
+                    {p.categoryLabel} {"\u00b7"} {getLocationTag(p.location)}
+                  </p>
+                  <h3>{p.name}</h3>
+                  <p className="property-description">{p.cardDescription}</p>
+                  <div className="property-meta">
+                    <span>
+                      Type<span>{p.categoryLabel}</span>
+                    </span>
+                    <span>
+                      Location<span>{p.location}</span>
+                    </span>
+                  </div>
+                  <Link href={`/properties/${p.slug}`} className="btn-link" aria-label={`View details for ${p.name}`}>
+                    View Details
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+          {filtered.length === 0 && <div className="no-results">No properties match your search.</div>}
         </div>
-        {filtered.length === 0 && <div className="no-results">No properties match your search.</div>}
-      </div>
       </section>
     </main>
   );
 }
-

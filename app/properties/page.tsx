@@ -151,9 +151,18 @@ export default function PropertiesPage() {
           <div className="card-grid">
             {filtered.map((p) => (
               <article key={p.slug} className="property-card property-listing-card in-view">
+                <Link href={`/properties/${p.slug}`} className="property-card-hitbox" aria-label={`View details for ${p.name}`} />
                 <div className="property-image">
                   <Image src={p.image} alt={p.name} width={700} height={500} />
-                  <button className="favorite-btn" type="button" aria-label={`Save ${p.name}`}>
+                  <button
+                    className="favorite-btn"
+                    type="button"
+                    aria-label={`Save ${p.name}`}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                    }}
+                  >
                     <svg
                       width="18"
                       height="18"

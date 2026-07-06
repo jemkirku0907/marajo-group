@@ -1108,8 +1108,16 @@ body.theme-dark .about-hero .hero-copy {
 }
 
 .property-hero-button-secondary {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.48);
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.82);
+  color: #ffffff;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(12px);
+}
+
+.property-hero-button-secondary:hover {
+  background: rgba(255, 255, 255, 0.28);
+  border-color: #ffffff;
   color: #ffffff;
 }
 
@@ -1836,7 +1844,10 @@ body:has(.property-detail-page) .sticky-contact {
 }
 
 .property-detail-actions {
-  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin-top: 0;
 }
 
 .property-detail-page #overview .split-grid {
@@ -1861,13 +1872,19 @@ body:has(.property-detail-page) .sticky-contact {
   line-height: 1.75;
 }
 
-.property-detail-page #overview .property-detail-image-frame {
+.property-detail-page #overview .property-detail-side {
   position: sticky;
   top: clamp(5.5rem, 9vh, 7rem);
   align-self: start;
   justify-self: end;
   width: 100%;
   max-width: 520px;
+  display: grid;
+  gap: 1rem;
+}
+
+.property-detail-page #overview .property-detail-image-frame {
+  width: 100%;
   min-height: min(70vh, 680px);
   aspect-ratio: auto;
 }
@@ -1956,8 +1973,13 @@ body:has(.property-detail-page) .sticky-contact {
     grid-template-columns: 1fr;
   }
 
-  .property-detail-page #overview .property-detail-image-frame {
+  .property-detail-page #overview .property-detail-side {
     position: static;
+    max-width: none;
+    justify-self: stretch;
+  }
+
+  .property-detail-page #overview .property-detail-image-frame {
     min-height: auto;
   }
 }

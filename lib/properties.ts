@@ -11,6 +11,16 @@ export interface PropertyInfoCard {
   icon?: "home" | "wave" | "chart" | "pin";
 }
 
+export type FacilityType = "meeting-room" | "overnight-stay" | "storage" | "court";
+
+export interface PropertyBookableFacility {
+  type: FacilityType;
+  label: string;
+  description: string;
+  rateLabel: string;
+  image: string;
+}
+
 export interface Property {
   slug: string;
   name: string;
@@ -35,6 +45,7 @@ export interface Property {
     specs: PropertySpec[];
   };
   facilities?: PropertyInfoCard[];
+  bookableFacilities?: PropertyBookableFacility[];
   infoCards?: PropertyInfoCard[];
 }
 
@@ -99,6 +110,22 @@ export const properties: Property[] = [
         icon: "pin",
       },
     ],
+    bookableFacilities: [
+      {
+        type: "meeting-room",
+        label: "Meeting Room",
+        description: "Professional meeting space for tenant briefings, client sessions, and team planning.",
+        rateLabel: "PHP 1,500 / hour",
+        image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&h=600&fit=crop&auto=format",
+      },
+      {
+        type: "court",
+        label: "Multi-Purpose Court",
+        description: "Hourly court reservation at Marajo Tower with instant availability checking.",
+        rateLabel: "PHP 1,000 / hour",
+        image: "/assets/marajo-tower.jpg",
+      },
+    ],
   },
   {
     slug: "salcedo-towers",
@@ -158,6 +185,15 @@ export const properties: Property[] = [
         action: "secure-access",
         ariaLabel: "Secure Access - Salcedo Towers facilities",
         icon: "pin",
+      },
+    ],
+    bookableFacilities: [
+      {
+        type: "overnight-stay",
+        label: "Residential Suite",
+        description: "Overnight stay request for Salcedo Towers residential suites in Makati.",
+        rateLabel: "Rate on request",
+        image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&h=600&fit=crop&auto=format",
       },
     ],
   },
@@ -281,6 +317,15 @@ export const properties: Property[] = [
         icon: "pin",
       },
     ],
+    bookableFacilities: [
+      {
+        type: "overnight-stay",
+        label: "Executive Studio / Suite",
+        description: "Overnight stay request for CEO Flats residential units and executive suites.",
+        rateLabel: "Rate on request",
+        image: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=900&h=600&fit=crop&auto=format",
+      },
+    ],
   },
   {
     slug: "hightown-quarters-burgos",
@@ -342,6 +387,15 @@ export const properties: Property[] = [
         action: "poblacion-access",
         ariaLabel: "Poblacion Access - Hightown Quarters Burgos facilities",
         icon: "pin",
+      },
+    ],
+    bookableFacilities: [
+      {
+        type: "overnight-stay",
+        label: "Studio Unit",
+        description: "Overnight stay request for Hightown Quarters Burgos studio and loft-style units.",
+        rateLabel: "Rate on request",
+        image: "https://images.unsplash.com/photo-1462558813106-4a58a3287273?w=900&h=600&fit=crop&auto=format",
       },
     ],
   },
@@ -406,6 +460,15 @@ export const properties: Property[] = [
         icon: "pin",
       },
     ],
+    bookableFacilities: [
+      {
+        type: "overnight-stay",
+        label: "Island Suite",
+        description: "Overnight stay request for Muro Siargao boutique hospitality suites.",
+        rateLabel: "Rate on request",
+        image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=900&h=600&fit=crop&auto=format",
+      },
+    ],
   },
   {
     slug: "hightown-quarters-palma",
@@ -465,6 +528,15 @@ export const properties: Property[] = [
         action: "hightown-living",
         ariaLabel: "Hightown Living - Hightown Quarters Palma facilities",
         icon: "chart",
+      },
+    ],
+    bookableFacilities: [
+      {
+        type: "overnight-stay",
+        label: "Compact Residence",
+        description: "Overnight stay request for Hightown Quarters Palma residential units.",
+        rateLabel: "Rate on request",
+        image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=900&h=600&fit=crop&auto=format",
       },
     ],
   },
@@ -528,6 +600,15 @@ export const properties: Property[] = [
         icon: "wave",
       },
     ],
+    bookableFacilities: [
+      {
+        type: "storage",
+        label: "Storage Unit",
+        description: "Storage reservation request for secure commercial storage space.",
+        rateLabel: "Rate on request",
+        image: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=900&h=600&fit=crop&auto=format",
+      },
+    ],
   },
   {
     slug: "hightown-quarters-alfonso",
@@ -589,6 +670,15 @@ export const properties: Property[] = [
         icon: "chart",
       },
     ],
+    bookableFacilities: [
+      {
+        type: "overnight-stay",
+        label: "Residential Unit",
+        description: "Overnight stay request for Hightown Quarters Alfonso residential units.",
+        rateLabel: "Rate on request",
+        image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&h=600&fit=crop&auto=format",
+      },
+    ],
   },
   {
     slug: "hightown-quarters-albert",
@@ -648,6 +738,15 @@ export const properties: Property[] = [
         action: "hightown-living",
         ariaLabel: "Hightown Living - Hightown Quarters Albert facilities",
         icon: "chart",
+      },
+    ],
+    bookableFacilities: [
+      {
+        type: "overnight-stay",
+        label: "Residential Unit",
+        description: "Overnight stay request for Hightown Quarters Albert residential units.",
+        rateLabel: "Rate on request",
+        image: "https://images.unsplash.com/photo-1494526585095-e8aeecc6e179?w=900&h=600&fit=crop&auto=format",
       },
     ],
   },

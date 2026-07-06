@@ -130,6 +130,12 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
               </ul>
             )}
           </div>
+
+          {themeControl && (
+            <div className="nav-mobile-footer" aria-label="Mobile theme controls">
+              {themeControl}
+            </div>
+          )}
         </nav>
 
         <form onSubmit={handleSearch} className="nav-search" role="search">

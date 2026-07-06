@@ -4176,6 +4176,23 @@ body.theme-light .home-mosaic {
   .nav-mobile-footer { display: none !important; }
 }
 
+.properties-listing-page .property-listing-card {
+  cursor: pointer;
+}
+
+.properties-listing-page .property-card-hitbox {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.properties-listing-page .property-listing-card .favorite-btn,
+.properties-listing-page .property-listing-card .btn-link {
+  position: relative;
+  z-index: 2;
+}
+
 /* Lightweight page transition: simple fade only for less work and no lag */
 html.page-transition body {
   transition: opacity 200ms ease;

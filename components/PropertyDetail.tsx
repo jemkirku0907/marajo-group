@@ -136,6 +136,11 @@ export default function PropertyDetail({ property }: { property: Property }) {
                 </div>
               ))}
             </div>
+          </div>
+          <aside className="property-detail-side">
+            <div className="detail-image property-detail-image-frame">
+              <Image src={overview.image} alt={property.name} width={1000} height={800} />
+            </div>
             <div className="hero-actions property-detail-actions">
               <Button href="/contact" className="btn-primary">
                 Inquire About {property.name}
@@ -144,10 +149,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
                 Back to Properties
               </Button>
             </div>
-          </div>
-          <div className="detail-image property-detail-image-frame">
-            <Image src={overview.image} alt={property.name} width={1000} height={800} />
-          </div>
+          </aside>
         </div>
       </section>
 

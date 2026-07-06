@@ -56,7 +56,7 @@ function logInquiryError(stage: string, error: any, context: Record<string, any>
 async function findAssignableStaffId(conn: any): Promise<number | null> {
   try {
     const [rows]: any = await conn.execute(
-      "SELECT id FROM staff WHERE role IN ('admin', 'manager', 'agent', 'sales') ORDER BY id ASC LIMIT 1"
+      "SELECT id FROM staff WHERE role_code IN ('admin', 'property_manager', 'staff', 'super_admin') AND is_active = 1 ORDER BY id ASC LIMIT 1"
     );
     if (rows[0]?.id) return Number(rows[0].id);
   } catch (error) {
@@ -64,7 +64,7 @@ async function findAssignableStaffId(conn: any): Promise<number | null> {
   }
 
   try {
-    const [rows]: any = await conn.execute("SELECT id FROM staff ORDER BY id ASC LIMIT 1");
+    const [rows]: any = await conn.execute("SELECT id FROM staff WHERE is_active = 1 ORDER BY id ASC LIMIT 1");
     if (rows[0]?.id) return Number(rows[0].id);
   } catch (error) {
     logInquiryError("staff_fallback_lookup", error);
@@ -264,7 +264,7 @@ export async function POST(req: NextRequest) {
          lead_score, assigned_staff_id, views_count, return_visits_count, completed_fields_count,
          message, source_page_url, lead_source, status)
        VALUES (?, ?, ?, NULLIF(?, ''), NULLIF(?, ''), NULLIF(?, ''), NULLIF(?, ''), NULLIF(?, ''), NULLIF(?, ''),
-               NULLIF(?, ''), NULLIF(?, ''), NULLIF(?, ''), NULLIF(?, ''), NULLIF(?, ''), NULLIF(?, ''),
+               NULLIF(?, ''), NULLIF(?, ''), NULLIF(?, ''), NULLIF(?, ''), CAST(NULLIF(?, '') AS date), CAST(NULLIF(?, '') AS time),
                ?, ?, ?, ?, ?, NULLIF(?, ''), NULLIF(?, ''), ?, ?)`,
       [
         propertyId,
@@ -330,10 +330,12 @@ export async function POST(req: NextRequest) {
         conn,
         "activity_insert",
         () =>
-          conn.execute(
-          `INSERT INTO inquiry_activity (inquiry_id, staff_id, activity_type, details) VALUES (?, ?, 'status_change', ?)`,
-          [inquiryId, assignedStaffId, actDetails]
-          ).then(() => undefined),
+          conn
+            .execute(
+              `INSERT INTO inquiry_activity (inquiry_id, staff_id, activity_type, details) VALUES (?, ?, ?, ?)`,
+              [inquiryId, assignedStaffId, "status_change", actDetails]
+            )
+            .then(() => undefined),
         { inquiryId, assignedStaffId }
       );
     } else {
@@ -405,6 +407,15 @@ export async function POST(req: NextRequest) {
     await conn.rollback();
     conn.release();
     logInquiryError("transaction", e, { name, email, phone, property, unitName, propertyIdRaw, action });
-    return NextResponse.json({ success: false, message: "Failed to save inquiry. Please try again." }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message:
+          process.env.NODE_ENV === "production"
+            ? "Failed to save inquiry. Please try again."
+            : `Failed to save inquiry: ${e?.message || e?.sqlMessage || String(e)}`,
+      },
+      { status: 500 }
+    );
   }
 }

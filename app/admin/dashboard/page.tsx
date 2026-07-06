@@ -1451,7 +1451,7 @@ function OverviewTab({ onNavigate }: { onNavigate: (tab: Tab) => void }) {
         <OverviewListPanel title="Top Properties by Inquiries" items={topProperties} />
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 18 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 520px), 1fr))", gap: 18 }}>
         <section style={overviewCardBase}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 14 }}>
             <div>
@@ -1460,35 +1460,37 @@ function OverviewTab({ onNavigate }: { onNavigate: (tab: Tab) => void }) {
             </div>
             <button onClick={() => onNavigate("leads")} style={{ ...actionBtn, marginRight: 0, padding: "8px 11px" }}>View all</button>
           </div>
-          <table style={tableStyle}>
-            <thead>
-              <tr>
-                <th style={thStyle}>Name</th>
-                <th style={thStyle}>Property / Type</th>
-                <th style={thStyle}>Date</th>
-                <th style={thStyle}>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentRows.map((item) => (
-                <tr key={item.key}>
-                  <td style={tdStyle}>
-                    <strong>{item.name || "Unknown"}</strong>
-                    <br />
-                    <small style={{ color: "var(--text-muted)" }}>{item.type}</small>
-                  </td>
-                  <td style={tdStyle}>{item.property}</td>
-                  <td style={tdStyle}>{formatOverviewDate(item.date)}</td>
-                  <td style={tdStyle}><span style={statusPillStyle(String(item.status).toLowerCase())}>{item.status}</span></td>
-                </tr>
-              ))}
-              {recentRows.length === 0 && (
+          <div style={{ overflowX: "auto", width: "100%" }}>
+            <table style={{ ...tableStyle, minWidth: 640 }}>
+              <thead>
                 <tr>
-                  <td style={tdStyle} colSpan={4}>No recent activity yet.</td>
+                  <th style={{ ...thStyle, width: "34%" }}>Name</th>
+                  <th style={{ ...thStyle, width: "28%" }}>Property / Type</th>
+                  <th style={{ ...thStyle, width: "18%" }}>Date</th>
+                  <th style={{ ...thStyle, width: "20%" }}>Status</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {recentRows.map((item) => (
+                  <tr key={item.key}>
+                    <td style={tdStyle}>
+                      <strong>{item.name || "Unknown"}</strong>
+                      <br />
+                      <small style={{ color: "var(--text-muted)" }}>{item.type}</small>
+                    </td>
+                    <td style={tdStyle}>{item.property}</td>
+                    <td style={tdStyle}>{formatOverviewDate(item.date)}</td>
+                    <td style={tdStyle}><span style={statusPillStyle(String(item.status).toLowerCase())}>{item.status}</span></td>
+                  </tr>
+                ))}
+                {recentRows.length === 0 && (
+                  <tr>
+                    <td style={tdStyle} colSpan={4}>No recent activity yet.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </section>
 
         <section style={overviewCardBase}>

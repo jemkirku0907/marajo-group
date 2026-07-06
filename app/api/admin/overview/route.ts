@@ -117,6 +117,52 @@ export async function GET(req: NextRequest) {
     const occupiedUnits = hasUnits
       ? (await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM units WHERE status IN ('occupied','reserved','sold')"))?.c ?? 0
       : 0;
+    const totalBookings = await sumCounts([
+      hasWorkerBookings ? ((await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM worker_bookings")) ?? { c: 0 }) : { c: 0 },
+      hasCourtBookings ? ((await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM court_bookings")) ?? { c: 0 }) : { c: 0 },
+      hasParkingReservations ? ((await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM parking_reservations")) ?? { c: 0 }) : { c: 0 },
+    ]);
+    const currentMonthInquiries = hasInquiries
+      ? (await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM inquiries WHERE created_at >= date_trunc('month', CURRENT_DATE)"))?.c ?? 0
+      : 0;
+    const previousMonthInquiries = hasInquiries
+      ? (await db.queryOne<{ c: number }>(
+          "SELECT COUNT(*) c FROM inquiries WHERE created_at >= date_trunc('month', CURRENT_DATE) - INTERVAL '1 month' AND created_at < date_trunc('month', CURRENT_DATE)"
+        ))?.c ?? 0
+      : 0;
+    const currentMonthBookings = await sumCounts([
+      hasWorkerBookings
+        ? ((await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM worker_bookings WHERE created_at >= date_trunc('month', CURRENT_DATE)")) ?? { c: 0 })
+        : { c: 0 },
+      hasCourtBookings
+        ? ((await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM court_bookings WHERE created_at >= date_trunc('month', CURRENT_DATE)")) ?? { c: 0 })
+        : { c: 0 },
+      hasParkingReservations
+        ? ((await db.queryOne<{ c: number }>("SELECT COUNT(*) c FROM parking_reservations WHERE created_at >= date_trunc('month', CURRENT_DATE)")) ?? { c: 0 })
+        : { c: 0 },
+    ]);
+    const previousMonthBookings = await sumCounts([
+      hasWorkerBookings
+        ? ((await db.queryOne<{ c: number }>(
+            "SELECT COUNT(*) c FROM worker_bookings WHERE created_at >= date_trunc('month', CURRENT_DATE) - INTERVAL '1 month' AND created_at < date_trunc('month', CURRENT_DATE)"
+          )) ?? { c: 0 })
+        : { c: 0 },
+      hasCourtBookings
+        ? ((await db.queryOne<{ c: number }>(
+            "SELECT COUNT(*) c FROM court_bookings WHERE created_at >= date_trunc('month', CURRENT_DATE) - INTERVAL '1 month' AND created_at < date_trunc('month', CURRENT_DATE)"
+          )) ?? { c: 0 })
+        : { c: 0 },
+      hasParkingReservations
+        ? ((await db.queryOne<{ c: number }>(
+            "SELECT COUNT(*) c FROM parking_reservations WHERE created_at >= date_trunc('month', CURRENT_DATE) - INTERVAL '1 month' AND created_at < date_trunc('month', CURRENT_DATE)"
+          )) ?? { c: 0 })
+        : { c: 0 },
+    ]);
+    const appointmentsThisWeek = hasAppointments
+      ? (await db.queryOne<{ c: number }>(
+          "SELECT COUNT(*) c FROM appointments WHERE status = 'upcoming' AND appt_date >= CURRENT_DATE AND appt_date < CURRENT_DATE + INTERVAL '7 days'"
+        ))?.c ?? 0
+      : 0;
 
     const recentInquiries = hasInquiries
       ? await db.query(
@@ -218,6 +264,24 @@ export async function GET(req: NextRequest) {
            ORDER BY date_trunc('month', created_at)`
         )
       : [];
+    const leadActivity = hasInquiries
+      ? await db.query(
+          `SELECT to_char(created_at::date, 'Mon DD') label, COUNT(*) c
+           FROM inquiries
+           WHERE created_at >= CURRENT_DATE - INTERVAL '29 days'
+           GROUP BY created_at::date
+           ORDER BY created_at::date`
+        )
+      : [];
+    const topProperties = hasInquiries
+      ? await db.query(
+          `SELECT COALESCE(NULLIF(project, ''), NULLIF(unit_name, ''), 'General Inquiry') name, COUNT(*) c
+           FROM inquiries
+           GROUP BY COALESCE(NULLIF(project, ''), NULLIF(unit_name, ''), 'General Inquiry')
+           ORDER BY COUNT(*) DESC, name ASC
+           LIMIT 5`
+        )
+      : [];
 
     const activity = [
       ...recentInquiries.map((item: any) => ({
@@ -251,6 +315,7 @@ export async function GET(req: NextRequest) {
         total_workers: Number(totalWorkers),
         available_workers: Number(availableWorkers),
         active_bookings: Number(activeBookings),
+        total_bookings: Number(totalBookings),
         pending_bookings: Number(pendingBookings),
         completed_bookings: Number(completedBookings),
         cancelled_bookings: Number(cancelledBookings),
@@ -262,11 +327,18 @@ export async function GET(req: NextRequest) {
         occupied_units: Number(occupiedUnits),
         total_properties: Number(totalProperties),
         upcoming_appointments: Number(upcomingAppointments),
+        appointments_this_week: Number(appointmentsThisWeek),
         pending_tasks: Number(pendingTasks),
         total_contacts: Number(totalContacts),
         news_articles: Number(newsArticles),
         reviews: Number(reviews),
         unread_notifications: Number(unreadNotifications),
+      },
+      trends: {
+        current_month_inquiries: Number(currentMonthInquiries),
+        previous_month_inquiries: Number(previousMonthInquiries),
+        current_month_bookings: Number(currentMonthBookings),
+        previous_month_bookings: Number(previousMonthBookings),
       },
       recent_inquiries: recentInquiries,
       upcoming_appointments: upcomingAppointmentsList,
@@ -281,7 +353,9 @@ export async function GET(req: NextRequest) {
         monthly_inquiries: monthlyInquiries,
         monthly_users: monthlyUsers,
         monthly_bookings: monthlyBookings,
+        lead_activity: leadActivity,
       },
+      top_properties: topProperties,
       activity,
     });
     } catch (error) {

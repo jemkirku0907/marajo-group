@@ -1046,89 +1046,8 @@ body.theme-dark .about-hero .hero-copy {
   display: none;
 }
 
-.property-hero-mini-nav {
-  position: absolute;
-  top: clamp(1rem, 2.4vw, 1.75rem);
-  left: clamp(1rem, 2.4vw, 1.75rem);
-  right: clamp(1rem, 2.4vw, 1.75rem);
-  z-index: 5;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: clamp(0.9rem, 2vw, 1.5rem);
-}
-
-.property-hero-brand {
-  display: inline-grid;
-  width: 58px;
-  height: 58px;
-  place-items: center;
-  border-radius: 16px;
-  background: rgba(0, 0, 0, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(14px);
-}
-
-.property-hero-brand img {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-}
-
-.property-hero-nav-links {
-  justify-self: center;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.35rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(16px);
-}
-
-.property-hero-nav-links a {
-  display: inline-flex;
-  min-height: 34px;
-  align-items: center;
-  border-radius: 999px;
-  padding: 0.48rem 0.9rem;
-  color: rgba(255, 255, 255, 0.88);
-  font-size: 0.78rem;
-  font-weight: 800;
-  text-decoration: none;
-  transition: background-color 180ms ease, color 180ms ease;
-}
-
-.property-hero-nav-links a:hover {
-  background: rgba(117, 202, 53, 0.22);
-  color: #ffffff;
-}
-
-.property-hero-nav-cta {
-  justify-self: end;
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-  gap: 0.55rem;
-  border-radius: 999px;
-  padding: 0.76rem 1.1rem;
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid rgba(255, 255, 255, 0.82);
-  color: #09200f;
-  font-size: 0.8rem;
-  font-weight: 900;
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.2);
-}
-
-.property-hero-nav-cta:hover {
-  background: #ffffff;
-  color: #09200f;
-  transform: translateY(-2px);
-}
-
 .property-hero-topline {
-  top: clamp(6.8rem, 12vw, 8.6rem);
+  top: clamp(1.5rem, 3vw, 2.25rem);
   left: clamp(2rem, 5vw, 4.8rem);
   right: clamp(2rem, 5vw, 4.8rem);
   z-index: 4;
@@ -1256,12 +1175,6 @@ body.theme-dark .about-hero .hero-copy {
   white-space: nowrap;
 }
 
-.theme-dark .property-hero-nav-cta {
-  background: rgba(255, 255, 255, 0.94);
-  border-color: rgba(255, 255, 255, 0.82);
-  color: #09200f;
-}
-
 .theme-dark .property-hero-button-primary,
 .theme-dark .property-detail-page .btn-primary {
   background: var(--mg-green, #7dc241);
@@ -1282,22 +1195,8 @@ body.theme-dark .about-hero .hero-copy {
     max-height: 760px;
   }
 
-  .property-hero-mini-nav {
-    grid-template-columns: auto 1fr;
-  }
-
-  .property-hero-nav-links {
-    justify-self: end;
-    max-width: 100%;
-    overflow-x: auto;
-  }
-
-  .property-hero-nav-cta {
-    display: none;
-  }
-
   .property-hero-topline {
-    top: 6.4rem;
+    top: 1.25rem;
     left: 1.25rem;
     right: 1.25rem;
   }
@@ -1346,23 +1245,8 @@ body.theme-dark .about-hero .hero-copy {
     border-radius: 20px;
   }
 
-  .property-hero-brand {
-    width: 50px;
-    height: 50px;
-  }
-
-  .property-hero-brand img {
-    width: 36px;
-    height: 36px;
-  }
-
-  .property-hero-nav-links a {
-    padding: 0.45rem 0.7rem;
-    font-size: 0.72rem;
-  }
-
   .property-hero-topline {
-    top: 5.7rem;
+    top: 1rem;
   }
 
   .property-hero-topline span:last-child {
@@ -1955,6 +1839,39 @@ body:has(.property-detail-page) .sticky-contact {
   margin-top: 2rem;
 }
 
+.property-detail-page #overview .split-grid {
+  align-items: stretch;
+  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 520px);
+}
+
+.property-detail-page #overview .detail-copy {
+  min-width: 0;
+}
+
+.property-detail-page #overview .section-title {
+  margin-bottom: 1.2rem;
+}
+
+.property-detail-page #overview .detail-copy > p {
+  max-width: 68ch;
+  margin: 0;
+  color: var(--text-muted, #475569);
+  font-size: clamp(1rem, 1.2vw, 1.08rem);
+  line-height: 1.75;
+}
+
+.property-detail-page #overview .property-detail-image-frame {
+  align-self: center;
+  justify-self: end;
+  width: 100%;
+  max-width: 520px;
+}
+
+.property-detail-page #overview .property-detail-image-frame img {
+  display: block;
+}
+
 .theme-dark .property-spec-grid .list-item {
   border-color: rgba(117, 202, 53, 0.2);
   background:
@@ -2031,6 +1948,14 @@ body:has(.property-detail-page) .sticky-contact {
 
   .property-hero-bottom-strip {
     min-height: 132px;
+  }
+
+  .property-detail-page #overview .split-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .property-detail-page #overview .property-detail-image-frame {
+    min-height: auto;
   }
 }
 

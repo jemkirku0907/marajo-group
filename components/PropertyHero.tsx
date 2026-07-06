@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Button from "@/components/Button";
 
 type HeroStat = {
@@ -73,25 +72,6 @@ export default function PropertyHero({ name, tagline, category, meta, heroImage,
         }}
         onTouchEnd={(event) => handleTouchEnd(event.changedTouches[0]?.clientX ?? 0)}
       >
-        <div className="property-hero-mini-nav" aria-label={`${name} quick navigation`}>
-          <Link href="/" className="property-hero-brand" aria-label="Marajo Group home">
-            <Image src="/assets/logo.png" alt="Marajo Group" width={72} height={72} priority />
-          </Link>
-          <nav className="property-hero-nav-links" aria-label="Property links">
-            <Link href="/properties">Portfolio</Link>
-            <Link href="#overview">Overview</Link>
-            <Link href="#gallery">Gallery</Link>
-            <Link href="/contact">Contact</Link>
-          </nav>
-          <Button href="/contact" className="property-hero-nav-cta">
-            Inquire Now
-            <svg className="property-hero-button-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M7 17 17 7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M9 7h8v8" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </Button>
-        </div>
-
         <div className="property-hero-carousel" aria-label={`${name} image carousel`}>
           {slides.map((slide, index) => (
             <Image

@@ -9,6 +9,8 @@ export interface PropertyInfoCard {
   action: string;
   ariaLabel?: string;
   icon?: "home" | "wave" | "chart" | "pin";
+  image?: string;
+  specs?: PropertySpec[];
 }
 
 export type FacilityType = "meeting-room" | "overnight-stay" | "storage" | "court";
@@ -754,4 +756,9 @@ export const properties: Property[] = [
 
 export function getProperty(slug: string): Property | undefined {
   return properties.find((p) => p.slug === slug);
+}
+
+export function getPropertyFacility(propertySlug: string, facilitySlug: string): PropertyInfoCard | undefined {
+  const property = getProperty(propertySlug);
+  return property?.facilities?.find((facility) => facility.action === facilitySlug);
 }

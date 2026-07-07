@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Property } from "@/lib/properties";
 import Button from "@/components/Button";
 import PropertyHero from "@/components/PropertyHero";
+import PropertyGalleryCarousel from "@/components/PropertyGalleryCarousel";
 
 const DETAIL_GALLERY_IMAGES = [
   {
@@ -156,7 +158,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
       <section className="section">
         <div className="container info-grid">
           {infoCards.map((card, index) => (
-            <button className="interactive-card" data-action={card.action} aria-label={card.ariaLabel ?? card.title} key={card.action} type="button">
+            <Link className="interactive-card" data-action={card.action} aria-label={card.ariaLabel ?? card.title} key={card.action} href={`/properties/${property.slug}/facilities/${card.action}`}>
               <div className="card-head">
                 <div className="card-icon" aria-hidden>
                   <CardIcon icon={card.icon ?? DEFAULT_INFO_CARDS[index % DEFAULT_INFO_CARDS.length].icon} />
@@ -165,7 +167,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
                 <span className="card-arrow">→</span>
               </div>
               <p>{card.text}</p>
-            </button>
+            </Link>
           ))}
         </div>
       </section>
@@ -176,13 +178,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
             <span>Gallery</span>
             <h2>Experience {property.name}&apos;s architecture, interiors, and community spaces.</h2>
           </div>
-          <div className="gallery-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
-            {DETAIL_GALLERY_IMAGES.map((image) => (
-              <div className="gallery-item" key={image.src}>
-                <Image src={image.src} alt={image.alt} width={900} height={600} unoptimized />
-              </div>
-            ))}
-          </div>
+          <PropertyGalleryCarousel images={DETAIL_GALLERY_IMAGES} />
         </div>
       </section>
 

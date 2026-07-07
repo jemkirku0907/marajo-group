@@ -87,8 +87,12 @@ function statusColorFor(status: string, map: Record<string, string>, fallback = 
 }
 
 const peso = (n: number) => `₱${n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-const fmtDate = (d: string | null) =>
-  d ? new Date(d + "T00:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "N/A";
+const fmtDate = (d: string | Date | null) => {
+  if (!d) return "N/A";
+  const date = d instanceof Date ? d : new Date(`${String(d).slice(0, 10)}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return "N/A";
+  return date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+};
 const fmtTime = (t: string | null) =>
   t ? new Date(`2026-01-01T${t}`).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }) : "N/A";
 const cap = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : "");

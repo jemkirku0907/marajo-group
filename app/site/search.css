@@ -1452,9 +1452,32 @@ body.theme-dark .about-hero .hero-copy {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
-  gap: clamp(1.5rem, 4vw, 3rem);
+  grid-template-columns: minmax(0, 0.92fr) minmax(360px, 1.08fr);
+  gap: clamp(2rem, 4vw, 3.25rem);
   align-items: start;
+}
+
+.contact-intro {
+  width: 100%;
+  max-width: 620px;
+  justify-self: end;
+}
+
+.contact-page .contact-intro .section-title {
+  text-align: left;
+  align-items: flex-start;
+  margin-inline: 0;
+}
+
+.contact-page .contact-intro .section-title span,
+.contact-page .contact-intro .section-title h1 {
+  text-align: left;
+}
+
+.contact-page .contact-intro > p {
+  max-width: 100%;
+  margin-inline: 0;
+  text-align: left;
 }
 
 .contact-info-grid {
@@ -1462,12 +1485,15 @@ body.theme-dark .about-hero .hero-copy {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
   margin-top: 2rem;
+  align-items: stretch;
 }
 
 .contact-info-card {
   display: flex;
+  align-items: center;
   gap: 0.85rem;
   min-height: 118px;
+  height: 100%;
   border: 1px solid var(--border-muted, rgba(17, 24, 39, 0.12));
   border-radius: 18px;
   padding: 1rem;
@@ -1486,8 +1512,9 @@ body.theme-dark .about-hero .hero-copy {
 }
 
 .contact-card.contact-card-modern {
-  margin-top: clamp(-5rem, -7vw, -3rem);
+  margin-top: 0;
   border-radius: 22px;
+  align-self: start;
 }
 
 .floating-field {
@@ -1569,6 +1596,11 @@ body.theme-dark .about-hero .hero-copy {
   .page-hero-inner,
   .contact-modern-grid {
     grid-template-columns: 1fr;
+  }
+
+  .contact-intro {
+    max-width: none;
+    justify-self: stretch;
   }
 
   .page-hero-inner {

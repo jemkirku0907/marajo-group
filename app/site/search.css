@@ -254,16 +254,16 @@ body.theme-dark .btn-outline {
 
 .home-hero {
   background-image:
-    linear-gradient(90deg, rgba(4, 12, 7, 0.88) 0%, rgba(4, 12, 7, 0.7) 42%, rgba(4, 12, 7, 0.24) 100%),
-    linear-gradient(180deg, rgba(4, 12, 7, 0.16) 0%, rgba(4, 12, 7, 0.82) 100%),
+    linear-gradient(90deg, rgba(4, 12, 7, 0.72) 0%, rgba(4, 12, 7, 0.52) 42%, rgba(4, 12, 7, 0.16) 100%),
+    linear-gradient(180deg, rgba(4, 12, 7, 0.08) 0%, rgba(4, 12, 7, 0.62) 100%),
     url("/assets/marajo-tower.jpg");
 }
 
 .about-hero {
   background-color: #071108;
   background-image:
-    linear-gradient(90deg, rgba(4, 12, 7, 0.92) 0%, rgba(4, 12, 7, 0.76) 44%, rgba(4, 12, 7, 0.38) 100%),
-    linear-gradient(180deg, rgba(4, 12, 7, 0.32) 0%, rgba(4, 12, 7, 0.88) 100%),
+    linear-gradient(90deg, rgba(4, 12, 7, 0.76) 0%, rgba(4, 12, 7, 0.58) 44%, rgba(4, 12, 7, 0.24) 100%),
+    linear-gradient(180deg, rgba(4, 12, 7, 0.18) 0%, rgba(4, 12, 7, 0.66) 100%),
     url("/assets/marajo-tower.jpg");
   background-size: cover;
   background-position: center 42%;
@@ -287,8 +287,8 @@ body.theme-dark .btn-outline {
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(90deg, rgba(4, 12, 7, 0.92) 0%, rgba(4, 12, 7, 0.76) 44%, rgba(4, 12, 7, 0.38) 100%),
-    linear-gradient(180deg, rgba(4, 12, 7, 0.22) 0%, rgba(4, 12, 7, 0.88) 100%);
+    linear-gradient(90deg, rgba(4, 12, 7, 0.76) 0%, rgba(4, 12, 7, 0.58) 44%, rgba(4, 12, 7, 0.24) 100%),
+    linear-gradient(180deg, rgba(4, 12, 7, 0.14) 0%, rgba(4, 12, 7, 0.66) 100%);
   pointer-events: none;
 }
 
@@ -1308,8 +1308,8 @@ body.theme-dark .about-hero .hero-copy {
 
 .page-hero--image {
   background:
-    linear-gradient(90deg, rgba(4, 12, 7, 0.9) 0%, rgba(4, 12, 7, 0.68) 45%, rgba(4, 12, 7, 0.34) 100%),
-    linear-gradient(180deg, rgba(4, 12, 7, 0.26) 0%, rgba(4, 12, 7, 0.84) 100%),
+    linear-gradient(90deg, rgba(4, 12, 7, 0.72) 0%, rgba(4, 12, 7, 0.5) 45%, rgba(4, 12, 7, 0.22) 100%),
+    linear-gradient(180deg, rgba(4, 12, 7, 0.14) 0%, rgba(4, 12, 7, 0.64) 100%),
     var(--page-hero-image);
   background-size: cover;
   background-position: var(--page-hero-position, center);
@@ -2049,22 +2049,22 @@ body:has(.property-detail-page) .sticky-contact {
 
 .properties-listing-page .about-hero {
   background-image:
-    linear-gradient(90deg, rgba(5, 20, 9, 0.78), rgba(5, 20, 9, 0.42) 48%, rgba(5, 20, 9, 0.62)),
-    linear-gradient(180deg, rgba(5, 20, 9, 0.08), rgba(5, 20, 9, 0.56)),
+    linear-gradient(90deg, rgba(5, 20, 9, 0.62), rgba(5, 20, 9, 0.28) 48%, rgba(5, 20, 9, 0.45)),
+    linear-gradient(180deg, rgba(5, 20, 9, 0.04), rgba(5, 20, 9, 0.42)),
     url("/assets/Marajo-Share-Social.jpg") !important;
 }
 
 .news-page .about-hero {
   background-image:
-    linear-gradient(90deg, rgba(5, 20, 9, 0.8), rgba(5, 20, 9, 0.36) 48%, rgba(5, 20, 9, 0.64)),
-    linear-gradient(180deg, rgba(5, 20, 9, 0.08), rgba(5, 20, 9, 0.58)),
+    linear-gradient(90deg, rgba(5, 20, 9, 0.64), rgba(5, 20, 9, 0.24) 48%, rgba(5, 20, 9, 0.46)),
+    linear-gradient(180deg, rgba(5, 20, 9, 0.04), rgba(5, 20, 9, 0.44)),
     url("/assets/Post-New.jpg") !important;
 }
 
 .contact-page .about-hero {
   background-image:
-    linear-gradient(90deg, rgba(5, 20, 9, 0.8), rgba(5, 20, 9, 0.36) 48%, rgba(5, 20, 9, 0.62)),
-    linear-gradient(180deg, rgba(5, 20, 9, 0.08), rgba(5, 20, 9, 0.58)),
+    linear-gradient(90deg, rgba(5, 20, 9, 0.64), rgba(5, 20, 9, 0.24) 48%, rgba(5, 20, 9, 0.46)),
+    linear-gradient(180deg, rgba(5, 20, 9, 0.04), rgba(5, 20, 9, 0.44)),
     url("/assets/marajo-tower.jpg") !important;
 }
 

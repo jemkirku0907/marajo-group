@@ -5084,8 +5084,8 @@ table td {
   overflow: hidden;
   background-color: #071108;
   background-image:
-    linear-gradient(90deg, rgba(4, 12, 7, 0.86) 0%, rgba(4, 12, 7, 0.68) 43%, rgba(4, 12, 7, 0.28) 100%),
-    linear-gradient(180deg, rgba(4, 12, 7, 0.12) 0%, rgba(4, 12, 7, 0.8) 100%),
+    linear-gradient(90deg, rgba(4, 12, 7, 0.72) 0%, rgba(4, 12, 7, 0.52) 43%, rgba(4, 12, 7, 0.16) 100%),
+    linear-gradient(180deg, rgba(4, 12, 7, 0.08) 0%, rgba(4, 12, 7, 0.62) 100%),
     url("/assets/marajo-tower.jpg");
   background-size: cover;
   background-position: center 42%;
@@ -5095,8 +5095,8 @@ table td {
 
 .about-hero {
   background-image:
-    linear-gradient(90deg, rgba(4, 12, 7, 0.86) 0%, rgba(4, 12, 7, 0.66) 43%, rgba(4, 12, 7, 0.24) 100%),
-    linear-gradient(180deg, rgba(4, 12, 7, 0.1) 0%, rgba(4, 12, 7, 0.82) 100%),
+    linear-gradient(90deg, rgba(4, 12, 7, 0.76) 0%, rgba(4, 12, 7, 0.58) 43%, rgba(4, 12, 7, 0.24) 100%),
+    linear-gradient(180deg, rgba(4, 12, 7, 0.14) 0%, rgba(4, 12, 7, 0.66) 100%),
     url("/assets/SALCEDO-TOWERS.jpg");
   background-position: center 38%;
 }
@@ -5109,7 +5109,7 @@ table td {
   z-index: -1;
   background:
     radial-gradient(circle at 19% 38%, rgba(125, 194, 65, 0.18), transparent 32%),
-    linear-gradient(180deg, transparent 70%, rgba(4, 12, 7, 0.48) 100%);
+    linear-gradient(180deg, transparent 70%, rgba(4, 12, 7, 0.34) 100%);
   pointer-events: none;
 }
 

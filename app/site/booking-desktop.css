@@ -202,6 +202,16 @@
   color: var(--mg-green);
   flex-shrink: 0;
 }
+.summary-property-icon svg {
+  color: currentColor;
+  fill: currentColor;
+}
+html.theme-dark .summary-property-icon,
+body.theme-dark .summary-property-icon {
+  background: rgba(125, 194, 65, 0.18);
+  border: 1px solid rgba(125, 194, 65, 0.34);
+  color: var(--mg-green-bright, #7dc241);
+}
 .summary-property-info strong {
   display: block;
   font-size: 0.88rem;

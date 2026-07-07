@@ -127,6 +127,22 @@ html.theme-dark {
   transform: translateY(-2px);
 }
 
+.property-hero-button-secondary,
+.property-hero-button-secondary.ui-button--secondary {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.82) !important;
+  color: #ffffff !important;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(12px);
+}
+
+.property-hero-button-secondary:hover,
+.property-hero-button-secondary.ui-button--secondary:hover {
+  background: rgba(255, 255, 255, 0.28) !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
 .ui-button--floating-action,
 .sticky-contact {
   background: var(--button-floating-bg) !important;

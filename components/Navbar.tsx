@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
@@ -79,7 +78,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
     <header className={`site-header${hasHeroBlend ? " site-header--hero" : ""}${scrolled || mobileMenuOpen ? " is-scrolled" : ""}`}>
       <Container className="navbar">
         <Link href="/" className="brand">
-          <Image src="/assets/logo.png" alt="Marajo Group" className="site-logo" width={140} height={40} priority />
+          <img src="/assets/logo.png" alt="Marajo Group" className="site-logo" width={42} height={49} fetchPriority="high" />
           <span className="visually-hidden">Marajo Group</span>
         </Link>
 
@@ -94,6 +93,23 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
         </button>
 
         <nav className="nav-links">
+          <form onSubmit={handleSearch} className="nav-mobile-search" role="search" aria-label="Mobile site search">
+            <input
+              type="search"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="nav-mobile-search-input"
+              aria-label="Search"
+            />
+            <button type="submit" className="nav-mobile-search-button" aria-label="Search">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" />
+              </svg>
+            </button>
+          </form>
+
           {NAV_LINKS.map((l) => (
             <Link key={l.href} href={l.href} className={`nav-link${pathname === l.href ? " active" : ""}`}>
               {l.label}
@@ -134,6 +150,32 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
           {themeControl && (
             <div className="nav-mobile-footer" aria-label="Mobile theme controls">
               {themeControl}
+              {!user ? (
+                <button
+                  type="button"
+                  className="nav-mobile-account-button"
+                  onClick={() => {
+                    openModal("login");
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  Log In
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="nav-mobile-account-button"
+                  onClick={() => {
+                    setAccountOpen(true);
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  <span className="user-avatar nav-mobile-avatar" aria-hidden="true">
+                    {initials(user.name || user.email)}
+                  </span>
+                  My Account
+                </button>
+              )}
             </div>
           )}
         </nav>
@@ -141,7 +183,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
         <form onSubmit={handleSearch} className="nav-search" role="search">
           <input
             type="search"
-            placeholder="Search…"
+            placeholder="Search..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="nav-search-input"

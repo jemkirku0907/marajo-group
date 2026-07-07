@@ -32,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`h-full antialiased ${inter.variable} ${poppins.variable}`} suppressHydrationWarning>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <script
           dangerouslySetInnerHTML={{
             __html: `(()=>{try{const k='marajo_theme';const s=localStorage.getItem(k);const t=s==='dark'||s==='light'?s:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.classList.add('theme-'+t);document.body.classList.add('theme-'+t);document.documentElement.dataset.theme=t;}catch(e){document.documentElement.classList.add('theme-light');document.body.classList.add('theme-light');document.documentElement.dataset.theme='light';}})();`,

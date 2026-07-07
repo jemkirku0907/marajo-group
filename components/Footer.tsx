@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { properties } from "@/lib/properties";
 
@@ -10,7 +9,7 @@ export default function Footer() {
       <div className="container footer-grid">
         <div>
           <p className="footer-logo">
-            <Image src="/assets/logo.png" alt="Marajo Group" width={140} height={40} />
+            <img src="/assets/logo.png" alt="Marajo Group" width={42} height={49} loading="lazy" />
           </p>
           <p className="footer-note">Premium developments, corporate living, and trusted real estate investments.</p>
           <div className="social-squares">

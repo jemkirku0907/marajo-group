@@ -143,6 +143,20 @@ html.theme-dark {
   color: #ffffff !important;
 }
 
+.home-cta .btn-outline,
+.home-cta .btn-outline.ui-button--secondary {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border-color: rgba(255, 255, 255, 0.78) !important;
+  color: #ffffff !important;
+}
+
+.home-cta .btn-outline:hover,
+.home-cta .btn-outline.ui-button--secondary:hover {
+  background: rgba(255, 255, 255, 0.24) !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
 .ui-button--floating-action,
 .sticky-contact {
   background: var(--button-floating-bg) !important;

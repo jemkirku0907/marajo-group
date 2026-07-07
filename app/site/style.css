@@ -4288,6 +4288,10 @@ body.theme-light .home-mosaic {
     color: var(--mg-green);
   }
 
+  body.mobile-open .nav-links .nav-link.active::after {
+    display: none;
+  }
+
   body.mobile-open .nav-mobile-footer {
     display: grid !important;
     grid-template-columns: 44px minmax(0, 1fr);

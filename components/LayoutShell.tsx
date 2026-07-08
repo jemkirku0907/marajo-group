@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ScrollPolish from "@/components/ScrollPolish";
 import ThemeController from "@/components/ThemeController";
+import VisitorCounter from "@/components/VisitorCounter";
 
 export default function LayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -35,6 +36,7 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
             </Button>
           )}
           <Footer />
+          <VisitorCounter />
           <AuthModal />
           <ScrollPolish />
         </>

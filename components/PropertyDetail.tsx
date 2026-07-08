@@ -107,6 +107,12 @@ export default function PropertyDetail({ property }: { property: Property }) {
   const [stat1, stat2] = overview.specs;
   const heroImage = overview.image || property.image;
   const infoCards = property.facilities?.length ? property.facilities : property.infoCards?.length ? property.infoCards : DEFAULT_INFO_CARDS;
+  const galleryImages = property.galleryImages?.length
+    ? property.galleryImages.map((src, index) => ({
+        src,
+        alt: `${property.name} photo ${index + 1}`,
+      }))
+    : DETAIL_GALLERY_IMAGES;
 
   return (
     <main className="property-detail-page">
@@ -178,7 +184,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
             <span>Gallery</span>
             <h2>Experience {property.name}&apos;s architecture, interiors, and community spaces.</h2>
           </div>
-          <PropertyGalleryCarousel images={DETAIL_GALLERY_IMAGES} />
+          <PropertyGalleryCarousel images={galleryImages} />
         </div>
       </section>
 

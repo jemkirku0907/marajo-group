@@ -31,6 +31,7 @@ export interface Property {
   location: string;
   image: string;
   heroImages?: string[];
+  galleryImages?: string[];
   cardDescription: string;
   /** Whether this property has a full dedicated detail page. */
   hasDetailPage: boolean;
@@ -51,6 +52,34 @@ export interface Property {
   infoCards?: PropertyInfoCard[];
 }
 
+const marajoTowerImages = [
+  "/assets/IMG_0359.jpg",
+  "/assets/IMG_0360.jpg",
+  "/assets/IMG_0361.jpg",
+  "/assets/IMG_0362.jpg",
+  "/assets/IMG_0363.jpg",
+  "/assets/IMG_0364.jpg",
+  "/assets/IMG_0365.jpg",
+  "/assets/IMG_0367.jpg",
+  "/assets/IMG_0368.jpg",
+  "/assets/IMG_0369.jpg",
+  "/assets/IMG_0370.jpg",
+  "/assets/IMG_0371.jpg",
+  "/assets/IMG_0372.jpg",
+  "/assets/IMG_0373.jpg",
+  "/assets/IMG_0374.jpg",
+  "/assets/IMG_0375.jpg",
+  "/assets/IMG_0376.jpg",
+  "/assets/IMG_0377.jpg",
+  "/assets/IMG_0378.jpg",
+  "/assets/IMG_0379.jpg",
+  "/assets/IMG_0380.jpg",
+  "/assets/IMG_0381.jpg",
+  "/assets/IMG_0382.jpg",
+  "/assets/IMG_0383.jpg",
+  "/assets/IMG_0384.jpg",
+];
+
 export const properties: Property[] = [
   {
     slug: "marajo-tower",
@@ -59,8 +88,8 @@ export const properties: Property[] = [
     categoryLabel: "Office",
     location: "BGC, Taguig",
     image: "/assets/marajo-tower.jpg",
-    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
-    heroImages: ["/assets/marajo-tower.jpg"],
+    heroImages: marajoTowerImages,
+    galleryImages: marajoTowerImages,
     cardDescription:
       "Contemporary office destination designed for agile teams, premium operations, and business growth.",
     hasDetailPage: true,

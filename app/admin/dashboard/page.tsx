@@ -1699,6 +1699,7 @@ function OverviewTab({ onNavigate }: { onNavigate: (tab: Tab) => void }) {
 
 /* ───────────────────── Units tab ───────────────────── */
 
+// Future integration point: Inventory system (in progress, separate project)
 const UNIT_STATUSES = ["available", "reserved", "sold", "unavailable", "active", "inactive"];
 
 function UnitsTab() {

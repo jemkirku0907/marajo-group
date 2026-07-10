@@ -12,7 +12,7 @@ type Membership = {
   company_name: string;
   organization: string;
   building_name: string;
-  unit_number: string;
+  unit_number?: string;
   floor_number: string;
   membership_status: "pending" | "active" | "inactive" | "rejected";
   verified_at?: string | null;
@@ -97,7 +97,7 @@ export default function MembershipPage() {
             <span className="page-hero-eyebrow">Tenant Access</span>
             <h1>Marajo Tower member verification.</h1>
             <p>
-              Submit your company, floor, and unit details for admin review. Only verified Marajo Tower tenants can
+              Submit your company and floor details for admin review. Only verified Marajo Tower tenants can
               submit facility, parking, and workforce requests.
             </p>
           </div>
@@ -122,8 +122,8 @@ export default function MembershipPage() {
               <strong>{membership?.building_name || "Marajo Tower"}</strong>
               <span>Company</span>
               <strong>{membership?.company_name || "Not submitted"}</strong>
-              <span>Floor / Unit</span>
-              <strong>{membership ? `${membership.floor_number} / ${membership.unit_number}` : "Not submitted"}</strong>
+              <span>Floor</span>
+              <strong>{membership?.floor_number || "Not submitted"}</strong>
             </div>
             {membership?.membership_status === "active" && (
               <Link href="/facilities" className="btn-primary membership-card-action">
@@ -162,14 +162,6 @@ export default function MembershipPage() {
                   Phone
                   <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
                 </label>
-                <label>
-                  Which company are you from?
-                  <select value={form.organization} onChange={(e) => setForm({ ...form, organization: e.target.value })}>
-                    <option value="tenant_company">Tenant company</option>
-                    <option value="marajo_group">Marajo Group</option>
-                    <option value="officium_inc">Officium Inc.</option>
-                  </select>
-                </label>
                 <label className="field-full">
                   Company Name
                   <input value={form.company_name} onChange={(e) => setForm({ ...form, company_name: e.target.value })} required />
@@ -177,10 +169,6 @@ export default function MembershipPage() {
                 <label>
                   Floor Number
                   <input value={form.floor_number} onChange={(e) => setForm({ ...form, floor_number: e.target.value })} required />
-                </label>
-                <label>
-                  Unit Number
-                  <input value={form.unit_number} onChange={(e) => setForm({ ...form, unit_number: e.target.value })} required />
                 </label>
                 <button className="btn-primary field-full" type="submit" disabled={busy}>
                   {busy ? "Submitting..." : membership ? "Update Verification Details" : "Submit for Verification"}

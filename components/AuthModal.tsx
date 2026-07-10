@@ -131,7 +131,7 @@ export default function AuthModal() {
 
         {mode === "register" && (
           <div className="mb-4 rounded-md border px-3 py-2 text-sm theme-info-panel">
-            Account access is for verified Marajo Tower tenants/members only. Your company, floor, and unit details will be sent for admin review.
+            Account access is for verified Marajo Tower tenants/members only. Your company and floor details will be sent for admin review.
           </div>
         )}
 
@@ -190,16 +190,6 @@ export default function AuthModal() {
           )}
           {mode === "register" && (
             <>
-              <select
-                className="w-full rounded-md border px-3 py-2 text-sm theme-input"
-                value={form.organization}
-                onChange={(e) => setForm({ ...form, organization: e.target.value })}
-                aria-label="Company type"
-              >
-                <option value="tenant_company">Tenant company</option>
-                <option value="marajo_group">Marajo Group</option>
-                <option value="officium_inc">Officium Inc.</option>
-              </select>
               <input
                 required
                 placeholder="Company name"
@@ -207,22 +197,13 @@ export default function AuthModal() {
                 value={form.company_name}
                 onChange={(e) => setForm({ ...form, company_name: e.target.value })}
               />
-              <div className="grid grid-cols-2 gap-3">
-                <input
-                  required
-                  placeholder="Floor number"
-                  className="rounded-md border px-3 py-2 text-sm theme-input"
-                  value={form.floor_number}
-                  onChange={(e) => setForm({ ...form, floor_number: e.target.value })}
-                />
-                <input
-                  required
-                  placeholder="Unit number"
-                  className="rounded-md border px-3 py-2 text-sm theme-input"
-                  value={form.unit_number}
-                  onChange={(e) => setForm({ ...form, unit_number: e.target.value })}
-                />
-              </div>
+              <input
+                required
+                placeholder="Floor number"
+                className="w-full rounded-md border px-3 py-2 text-sm theme-input"
+                value={form.floor_number}
+                onChange={(e) => setForm({ ...form, floor_number: e.target.value })}
+              />
             </>
           )}
           <input

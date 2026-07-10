@@ -887,7 +887,7 @@ function TenantsTab() {
               <tr>
                 <th style={thStyle}>Tenant</th>
                 <th style={thStyle}>Company</th>
-                <th style={thStyle}>Floor / Unit</th>
+                <th style={thStyle}>Floor</th>
                 <th style={thStyle}>Status</th>
                 <th style={thStyle}>Updated</th>
                 <th style={thStyle}>Actions</th>
@@ -903,10 +903,9 @@ function TenantsTab() {
                   </td>
                   <td style={tdStyle}>
                     <strong>{row.company_name}</strong>
-                    <div style={{ color: "var(--text-muted)", fontSize: 12 }}>{row.organization}</div>
                   </td>
                   <td style={tdStyle}>
-                    {row.floor_number} / {row.unit_number}
+                    {row.floor_number || "-"}
                   </td>
                   <td style={tdStyle}>
                     <span className={`membership-status-pill status-${row.membership_status}`}>{row.membership_status}</span>

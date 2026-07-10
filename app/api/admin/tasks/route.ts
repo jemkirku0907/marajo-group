@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/staffAuth";
 import { db } from "@/lib/db";
+import { sendWorkerBookingAcceptedNotice } from "@/lib/mail";
 
 function unauthorized() {
   return NextResponse.json({ success: false, message: "Unauthorized. Please log in." }, { status: 401 });
@@ -227,6 +228,8 @@ export async function POST(req: NextRequest) {
     if (!(await ensureWorkerBookingTrackingColumns())) {
       return NextResponse.json({ success: false, message: "worker_bookings table is not available yet." }, { status: 404 });
     }
+    const before = await db.queryOne<{ status: string }>("SELECT status FROM worker_bookings WHERE id = ? LIMIT 1", [id]);
+    const previousStatus = normalizeStatus(before?.status);
 
     const fields = ["status = ?", "updated_at = NOW()"];
     const values: any[] = [status];
@@ -256,6 +259,9 @@ export async function POST(req: NextRequest) {
 
     values.push(id);
     await db.execute(`UPDATE worker_bookings SET ${fields.join(", ")} WHERE id = ?`, values);
+    if (status === "accepted" && previousStatus !== "accepted") {
+      sendWorkerBookingAcceptedNotice(id).catch((e) => console.error("Workforce accepted email failed:", e));
+    }
     return NextResponse.json({ success: true, message: "Workforce request updated." });
   }
 

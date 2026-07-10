@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/staffAuth";
 import { db } from "@/lib/db";
+import { sendInquiryAcceptedNotice } from "@/lib/mail";
 
 function unauthorized() {
   return NextResponse.json({ success: false, message: "Unauthorized. Please log in." }, { status: 401 });
@@ -123,6 +124,9 @@ export async function POST(req: NextRequest) {
     try {
       await conn.beginTransaction();
 
+      const [beforeRows]: any = await conn.execute("SELECT status FROM inquiries WHERE id = ? LIMIT 1", [id]);
+      const previousStatus = String(beforeRows[0]?.status ?? "");
+
       await conn.execute("UPDATE inquiries SET status = ? WHERE id = ?", [status, id]);
 
       const staffId = staff.staff_id;
@@ -147,6 +151,9 @@ export async function POST(req: NextRequest) {
 
       await conn.commit();
       conn.release();
+      if (["Qualified", "Site Visit Scheduled", "Reserved", "Closed Sale"].includes(status) && previousStatus !== status) {
+        sendInquiryAcceptedNotice(id).catch((e) => console.error("Inquiry accepted email failed:", e));
+      }
       return NextResponse.json({ success: true, message: "Status updated." });
     } catch (e: any) {
       await conn.rollback();

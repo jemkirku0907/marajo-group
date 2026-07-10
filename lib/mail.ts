@@ -16,6 +16,106 @@ function getTransport() {
   });
 }
 
+export async function sendInquiryAcceptedNotice(inquiryId: number): Promise<boolean> {
+  const r = await db.queryOne<any>("SELECT * FROM inquiries WHERE id = ? LIMIT 1", [inquiryId]);
+  if (!r || !r.email) return false;
+
+  const property = r.project || r.property_interest || "your selected property";
+  const unit = r.unit_name || r.unit_interest || "";
+  const body = `
+  <div class="section"><h2>Inquiry Details</h2>
+    <div class="row"><span class="label">Name:</span><span class="value">${r.name || "Client"}</span></div>
+    <div class="row"><span class="label">Property:</span><span class="value">${property}</span></div>
+    ${unit ? `<div class="row"><span class="label">Unit:</span><span class="value">${unit}</span></div>` : ""}
+    <div class="row"><span class="label">Status:</span><span class="value">${cap(r.status || "Accepted")}</span></div>
+  </div>
+  <div class="section" style="border-bottom:none">
+    <h2>Next Steps</h2>
+    <p style="font-size:14px;line-height:1.7;color:#374151">Your inquiry has been accepted by the Marajo Group team. A representative will coordinate the next step, including schedule confirmation, documentation, or site visit details where applicable.</p>
+  </div>`;
+
+  const html = layout("OK", "Inquiry Accepted", "Your request has been reviewed", "Accepted", "#16a34a", body, `Your inquiry for <strong style="color:#e5e7eb">${property}</strong> has been accepted. Please keep this email for your records.`);
+  return sendMail(r.email, `Marajo Group Inquiry Accepted - ${property}`, html);
+}
+
+export async function sendParkingAcceptedNotice(reservationId: number): Promise<boolean> {
+  const r = await db.queryOne<any>(
+    `SELECT pr.*, ps.slot_number, pf.name AS facility_name, pf.location AS facility_location
+     FROM parking_reservations pr
+     LEFT JOIN parking_slots ps ON pr.slot_id = ps.id
+     LEFT JOIN parking_facilities pf ON pr.facility_id = pf.id
+     WHERE pr.id = ? LIMIT 1`,
+    [reservationId]
+  );
+  if (!r || !r.email) return false;
+
+  const body = `
+  <div class="section"><h2>Parking Confirmation</h2>
+    <div class="row"><span class="label">Name:</span><span class="value">${r.full_name}</span></div>
+    <div class="row"><span class="label">Facility:</span><span class="value">${r.facility_name || "Marajo Tower Parking"}</span></div>
+    <div class="row"><span class="label">Slot:</span><span class="value">${r.slot_number || "Assigned slot"}</span></div>
+    <div class="row"><span class="label">Date:</span><span class="value">${fmtDate(r.reservation_date)}</span></div>
+    <div class="row"><span class="label">Time:</span><span class="value">${fmtTime(r.entry_time)} - ${fmtTime(r.exit_time)}</span></div>
+  </div>
+  <div class="section" style="border-bottom:none">
+    <h2>Arrival</h2>
+    <p style="font-size:14px;line-height:1.7;color:#374151">Your parking request is confirmed. Please show this email at the parking entrance and follow guard instructions on arrival.</p>
+  </div>`;
+
+  const html = layout("OK", "Parking Request Accepted", "Your slot is confirmed", "Confirmed", "#16a34a", body, "Your parking reservation has been accepted by Marajo Group.");
+  return sendMail(r.email, `Marajo Group Parking Accepted - ${fmtDate(r.reservation_date)}`, html);
+}
+
+export async function sendCourtAcceptedNotice(bookingId: number): Promise<boolean> {
+  const r = await db.queryOne<any>("SELECT * FROM court_bookings WHERE id = ? LIMIT 1", [bookingId]);
+  if (!r || !r.email) return false;
+
+  const body = `
+  <div class="section"><h2>Court Confirmation</h2>
+    <div class="row"><span class="label">Name:</span><span class="value">${r.full_name}</span></div>
+    <div class="row"><span class="label">Date:</span><span class="value">${fmtDate(r.booking_date)}</span></div>
+    <div class="row"><span class="label">Time:</span><span class="value">${fmtTime(r.start_time)} - ${fmtTime(r.end_time)}</span></div>
+    <div class="row"><span class="label">Status:</span><span class="value">${cap(r.booking_status || "confirmed")}</span></div>
+  </div>
+  <div class="section" style="border-bottom:none">
+    <h2>Reminder</h2>
+    <p style="font-size:14px;line-height:1.7;color:#374151">Your court booking has been accepted. Payment and entry instructions will be handled on-site unless otherwise advised by the admin team.</p>
+  </div>`;
+
+  const html = layout("OK", "Court Booking Accepted", "Your booking is confirmed", "Confirmed", "#16a34a", body, "Your court booking has been accepted by Marajo Group.");
+  return sendMail(r.email, `Marajo Court Booking Accepted - ${fmtDate(r.booking_date)}`, html);
+}
+
+export async function sendWorkerBookingAcceptedNotice(bookingId: number): Promise<boolean> {
+  const r = await db.queryOne<any>(
+    `SELECT wb.*, u.first_name AS worker_first_name, u.last_name AS worker_last_name, u.email AS worker_email
+     FROM worker_bookings wb
+     LEFT JOIN workers w ON w.id = wb.assigned_worker_id
+     LEFT JOIN users u ON u.id = w.user_id
+     WHERE wb.id = ? LIMIT 1`,
+    [bookingId]
+  );
+  if (!r || !r.email) return false;
+
+  const workerName = [r.worker_first_name, r.worker_last_name].filter(Boolean).join(" ") || "Assigned by admin";
+  const position = cap((r.position || "").replace(/_/g, " "));
+  const body = `
+  <div class="section"><h2>Workforce Confirmation</h2>
+    <div class="row"><span class="label">Client:</span><span class="value">${r.client_name}</span></div>
+    <div class="row"><span class="label">Role:</span><span class="value">${position}</span></div>
+    <div class="row"><span class="label">Assigned worker:</span><span class="value">${workerName}</span></div>
+    <div class="row"><span class="label">Date:</span><span class="value">${fmtDate(r.job_date)}</span></div>
+    <div class="row"><span class="label">Shift:</span><span class="value">${fmtTime(r.shift_start)} - ${fmtTime(r.shift_end)}</span></div>
+  </div>
+  <div class="section" style="border-bottom:none">
+    <h2>Next Steps</h2>
+    <p style="font-size:14px;line-height:1.7;color:#374151">Your workforce request has been accepted. Please expect the assigned worker according to the approved schedule, or wait for further coordination from Marajo Group if details change.</p>
+  </div>`;
+
+  const html = layout("OK", "Workforce Booking Accepted", "Your worker request is confirmed", "Accepted", "#16a34a", body, "Your workforce booking has been accepted by Marajo Group.");
+  return sendMail(r.email, `Marajo Workforce Booking Accepted - ${position}`, html);
+}
+
 async function sendMail(to: string, subject: string, html: string): Promise<boolean> {
   if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) return false;
   const transport = getTransport();

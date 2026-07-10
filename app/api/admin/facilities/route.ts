@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/staffAuth";
 import { db } from "@/lib/db";
-import { sendCourtBookingReceipt } from "@/lib/mail";
+import { sendCourtAcceptedNotice, sendCourtBookingReceipt } from "@/lib/mail";
 
 function unauthorized() {
   return NextResponse.json({ success: false, message: "Unauthorized." }, { status: 401 });
@@ -94,6 +94,8 @@ export async function POST(req: NextRequest) {
 
     const setParts: string[] = [];
     const params: any[] = [];
+    const before = await db.queryOne<{ booking_status: string }>("SELECT booking_status FROM court_bookings WHERE id = ? LIMIT 1", [id]);
+    const previousStatus = String(before?.booking_status ?? "");
 
     if (data.booking_status) {
       const valid = ["pending", "confirmed", "checked_in", "checked_out", "cancelled"];
@@ -118,6 +120,9 @@ export async function POST(req: NextRequest) {
 
     params.push(id);
     await db.execute(`UPDATE court_bookings SET ${setParts.join(", ")} WHERE id = ?`, params);
+    if (data.booking_status === "confirmed" && previousStatus !== "confirmed") {
+      sendCourtAcceptedNotice(id).catch((e) => console.error("Court accepted email failed:", e));
+    }
     return NextResponse.json({ success: true, message: "Booking updated" });
   }
 

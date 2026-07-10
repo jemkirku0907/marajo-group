@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/staffAuth";
 import { db } from "@/lib/db";
+import { sendWorkerBookingAcceptedNotice } from "@/lib/mail";
 
 async function tableExists(table: string): Promise<boolean> {
   const rows = await db.query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = ?", [table]);
@@ -145,9 +146,14 @@ export async function POST(req: NextRequest) {
     if (!(await tableExists("worker_bookings"))) {
       return NextResponse.json({ success: false, message: "worker_bookings table is missing" }, { status: 404 });
     }
+    const before = await db.queryOne<{ status: string }>("SELECT status FROM worker_bookings WHERE id = ? LIMIT 1", [id]);
+    const previousStatus = String(before?.status ?? "");
     const statusMap: Record<string, string> = { approved: "confirmed", rejected: "cancelled" };
     const status = statusMap[requested] ?? requested;
     await db.execute("UPDATE worker_bookings SET status = ?, updated_at = NOW() WHERE id = ?", [status, id]);
+    if (["confirmed", "accepted", "approved"].includes(status) && previousStatus !== status) {
+      sendWorkerBookingAcceptedNotice(id).catch((e) => console.error("Workforce accepted email failed:", e));
+    }
     return NextResponse.json({ success: true, message: "Booking updated", status });
   }
 

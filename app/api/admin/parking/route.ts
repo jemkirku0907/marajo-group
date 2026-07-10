@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/staffAuth";
 import { db } from "@/lib/db";
+import { sendParkingAcceptedNotice } from "@/lib/mail";
 
 async function tableExists(table: string): Promise<boolean> {
   const rows = await db.query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = ?", [table]);
@@ -144,6 +145,11 @@ export async function POST(req: NextRequest) {
 
     const setParts: string[] = [];
     const params: any[] = [];
+    const before = await db.queryOne<{ reservation_status: string }>(
+      "SELECT reservation_status FROM parking_reservations WHERE id = ? LIMIT 1",
+      [id]
+    );
+    const previousStatus = String(before?.reservation_status ?? "");
 
     if (resStatus) {
       const validRes = ["pending", "confirmed", "active", "completed", "cancelled", "no_show"];
@@ -170,6 +176,9 @@ export async function POST(req: NextRequest) {
         "UPDATE payments SET payment_status = 'paid', payment_date = NOW() WHERE parking_reservation_id = ? AND payment_status != 'paid'",
         [id]
       );
+    }
+    if (resStatus === "confirmed" && previousStatus !== "confirmed") {
+      sendParkingAcceptedNotice(id).catch((e) => console.error("Parking accepted email failed:", e));
     }
 
     return NextResponse.json({ success: true, message: "Reservation updated successfully" });

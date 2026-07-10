@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     }
     return NextResponse.json({
       success: true,
-      staff: { id: staff.staff_id, name: staff.name, role: staff.role, role_code: staff.role_code },
+      staff: { id: staff.staff_id, name: staff.name, role: staff.role, role_code: staff.role_code, company_code: staff.company_code },
     });
   }
 

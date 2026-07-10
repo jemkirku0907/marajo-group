@@ -7,13 +7,16 @@ const JWT_SECRET = process.env.JWT_SECRET || "";
 export const STAFF_COOKIE = "staff_token";
 
 export type StaffRole = "super_admin" | "admin" | "property_manager" | "staff";
+export type StaffCompany = "marajo_group" | "officium_inc";
 export const ADMIN_ROLES: StaffRole[] = ["super_admin", "admin", "property_manager", "staff"];
+export const ADMIN_COMPANY: StaffCompany = "marajo_group";
 
 export type StaffUser = {
   staff_id: number;
   name: string;
   role: string;
   role_code: StaffRole;
+  company_code: StaffCompany;
   type: "staff";
   iat?: number;
   exp?: number;
@@ -24,9 +27,19 @@ type DbStaff = {
   name: string;
   role: string;
   role_code: StaffRole;
+  company_code: StaffCompany | null;
   password_hash: string | null;
   is_active: number;
 };
+
+let staffCompanyColumnReady = false;
+
+async function ensureStaffCompanyColumn() {
+  if (staffCompanyColumnReady) return;
+  await db.execute("ALTER TABLE staff ADD COLUMN IF NOT EXISTS company_code TEXT NOT NULL DEFAULT 'marajo_group'");
+  await db.execute("UPDATE staff SET company_code = 'marajo_group' WHERE company_code IS NULL OR company_code = ''");
+  staffCompanyColumnReady = true;
+}
 
 function requireSecret(): string {
   if (!JWT_SECRET) {
@@ -43,6 +56,7 @@ export function verifyStaffToken(token: string): StaffUser | null {
   try {
     const decoded = jwt.verify(token, requireSecret()) as StaffUser;
     if (decoded.type !== "staff") return null;
+    decoded.company_code = decoded.company_code || ADMIN_COMPANY;
     return decoded;
   } catch {
     return null;
@@ -61,6 +75,7 @@ export function requireAdmin(req: NextRequest): StaffUser | null {
   const staff = getCurrentStaff(req);
   if (!staff) return null;
   if (!ADMIN_ROLES.includes(staff.role_code)) return null;
+  if ((staff.company_code || ADMIN_COMPANY) !== ADMIN_COMPANY) return null;
   return staff;
 }
 
@@ -88,8 +103,9 @@ export function clearStaffLoginFailures(ip: string) {
 }
 
 export async function loginStaff(email: string, password: string) {
+  await ensureStaffCompanyColumn();
   const staff = await db.queryOne<DbStaff>(
-    "SELECT id, name, role, role_code, password_hash, is_active FROM staff WHERE email = ? LIMIT 1",
+    "SELECT id, name, role, role_code, company_code, password_hash, is_active FROM staff WHERE email = ? LIMIT 1",
     [email]
   );
 
@@ -107,6 +123,7 @@ export async function loginStaff(email: string, password: string) {
     name: staff.name,
     role: staff.role,
     role_code: staff.role_code,
+    company_code: staff.company_code || ADMIN_COMPANY,
     type: "staff",
   });
 
@@ -114,6 +131,6 @@ export async function loginStaff(email: string, password: string) {
     success: true,
     message: "Login successful",
     token,
-    staff: { id: staff.id, name: staff.name, role: staff.role, role_code: staff.role_code },
+    staff: { id: staff.id, name: staff.name, role: staff.role, role_code: staff.role_code, company_code: staff.company_code || ADMIN_COMPANY },
   };
 }

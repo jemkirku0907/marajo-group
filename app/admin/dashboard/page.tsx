@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import ThemeController from "@/components/ThemeController";
 
-type Staff = { id: number; name: string; role: string; role_code: string };
+type Staff = { id: number; name: string; role: string; role_code: string; company_code?: string };
 type Tab =
   | "overview"
   | "units"

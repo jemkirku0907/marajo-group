@@ -1819,6 +1819,30 @@ body:has(.property-detail-page) .sticky-contact {
   line-height: 1;
 }
 
+.visitor-counter--inline {
+  position: relative;
+  left: auto;
+  bottom: auto;
+  z-index: 1;
+  justify-self: start;
+  margin-top: 0.25rem;
+  padding: 0.78rem 1rem;
+  border-color: rgba(215, 247, 200, 0.38);
+  background: rgba(255, 255, 255, 0.13);
+  color: rgba(255, 255, 255, 0.88);
+  box-shadow: none;
+}
+
+.visitor-counter--inline strong {
+  color: #d7f7c8;
+  font-size: 1.05rem;
+}
+
+.visitor-counter--inline .visitor-counter-dot {
+  background: #7dc241;
+  box-shadow: 0 0 0 5px rgba(125, 194, 65, 0.22), 0 0 18px rgba(125, 194, 65, 0.58);
+}
+
 .visitor-counter strong {
   font-family: var(--font-head), sans-serif;
   font-size: 1rem;

@@ -25,7 +25,7 @@ function getSessionId() {
   }
 }
 
-export default function VisitorCounter() {
+export default function VisitorCounter({ variant = "fixed" }: { variant?: "fixed" | "inline" }) {
   const pathname = usePathname();
   const [count, setCount] = useState<number | null>(null);
   const [isOnline, setIsOnline] = useState(false);
@@ -72,7 +72,7 @@ export default function VisitorCounter() {
   const label = count === 1 ? "person viewing now" : "people viewing now";
 
   return (
-    <aside className="visitor-counter" aria-live="polite" aria-label={`${count} ${label}`}>
+    <aside className={`visitor-counter visitor-counter--${variant}`} aria-live="polite" aria-label={`${count} ${label}`}>
       <span className="visitor-counter-dot" aria-hidden="true" />
       <strong>{count}</strong>
       <span>{label}</span>

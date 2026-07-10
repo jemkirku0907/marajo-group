@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
+import VisitorCounter from "@/components/VisitorCounter";
 
 export const metadata = {
   title: "Home",
@@ -28,6 +29,7 @@ export default function HomePage() {
                 Our Story
               </Button>
             </div>
+            <VisitorCounter variant="inline" />
           </div>
           <div className="home-hero-media reveal-on-scroll" aria-label="Featured Marajo development preview">
             <Image src="/assets/marajo-tower.jpg" alt="Marajo Tower exterior" width={900} height={1100} priority />

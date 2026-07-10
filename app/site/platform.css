@@ -349,6 +349,182 @@
   border-color: rgba(220,53,69,.22);
 }
 
+.worker-assignment-summary {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.worker-assignment-summary > div,
+.worker-empty-state,
+.worker-assignment-card {
+  border: 1px solid var(--border-muted, rgba(13,13,13,.08));
+  border-radius: var(--control-radius);
+  background: var(--surface, #fff);
+}
+
+.worker-assignment-summary > div {
+  padding: 1rem;
+}
+
+.worker-assignment-summary span,
+.worker-assignment-grid span {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.worker-assignment-summary strong {
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.worker-assignment-section {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+.worker-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.worker-section-heading h3 {
+  margin: 0;
+  color: var(--heading-color, #0d120a);
+  font-size: 1rem;
+}
+
+.worker-section-heading .btn-book-secondary {
+  width: auto;
+  padding: 0.55rem 1rem;
+}
+
+.worker-assignment-list {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.worker-assignment-card {
+  padding: 1rem;
+}
+
+.worker-assignment-main {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.worker-assignment-main h3 {
+  margin: 0.55rem 0 0.15rem;
+  color: var(--heading-color, #0d120a);
+  font-size: 1.05rem;
+}
+
+.worker-assignment-main p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.worker-assignment-ref {
+  color: var(--mg-green);
+  font-size: 0.82rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.worker-assignment-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding: 0.85rem;
+  border-radius: var(--control-radius);
+  background: var(--section-muted, rgba(31,110,52,.04));
+}
+
+.worker-assignment-grid strong {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.worker-assignment-notes {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.85rem;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.worker-assignment-notes p {
+  margin: 0;
+}
+
+.worker-assignment-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.worker-assignment-actions .btn-book-primary,
+.worker-assignment-actions .btn-book-secondary {
+  width: auto;
+  padding: 0.65rem 1.1rem;
+}
+
+.worker-assignment-actions button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.worker-assignment-total {
+  margin-top: 0.85rem;
+  color: var(--mg-green);
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.worker-empty-state {
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.worker-empty-state.compact {
+  padding: 0.85rem;
+}
+
+.worker-empty-state h3 {
+  margin: 0 0 0.4rem;
+  color: var(--heading-color, #0d120a);
+  font-size: 1rem;
+}
+
+.worker-empty-state p {
+  margin: 0 auto 1rem;
+  max-width: 34rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.worker-empty-state.compact p {
+  margin-bottom: 0;
+}
+
 
 /* ════════════════════════════════════════════════════════════════════
    PARKING — fee box + slot board
@@ -488,6 +664,26 @@
 
   .platform-status-strip strong {
     font-size: 1.1rem;
+  }
+
+  .worker-assignment-summary,
+  .worker-assignment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .worker-assignment-main,
+  .worker-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .worker-assignment-actions {
+    justify-content: stretch;
+  }
+
+  .worker-assignment-actions .btn-book-primary,
+  .worker-assignment-actions .btn-book-secondary {
+    width: 100%;
   }
 }
 

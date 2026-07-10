@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth, authHeaders } from "@/lib/AuthContext";
 
 const POSITIONS = [
@@ -13,8 +13,8 @@ const POSITIONS = [
   ["technician", "Technician"],
 ];
 
-const STEPS = ["Browse Workers", "Book a Shift", "Workflow", "What's Included"];
-const mobileLabels = ["Browse", "Book", "Workflow", "Inclusions"];
+const STEPS = ["Browse Workers", "Book a Shift", "Workflow", "My Assignments", "What's Included"];
+const mobileLabels = ["Browse", "Book", "Workflow", "Assigned", "Inclusions"];
 
 type Worker = {
   id: number;
@@ -39,6 +39,24 @@ type BookForm = {
   contact_number: string;
   email: string;
   notes: string;
+};
+
+type WorkerAssignment = {
+  id: number;
+  client_name: string;
+  contact_number?: string;
+  email?: string;
+  position: string;
+  slots_needed: number;
+  job_date: string;
+  shift_start: string;
+  shift_end: string;
+  notes?: string;
+  admin_notes?: string;
+  status: string;
+  status_label: string;
+  current_status_age: string;
+  total_elapsed: string;
 };
 
 function roleLabel(value: string) {
@@ -73,9 +91,73 @@ export default function WorkforcePage() {
   const [bookBusy, setBookBusy] = useState(false);
   const [bookError, setBookError] = useState("");
   const [result, setResult] = useState<any>(null);
+  const [assignmentLoading, setAssignmentLoading] = useState(false);
+  const [assignmentError, setAssignmentError] = useState("");
+  const [assignmentWorker, setAssignmentWorker] = useState<any>(null);
+  const [activeAssignments, setActiveAssignments] = useState<WorkerAssignment[]>([]);
+  const [completedAssignments, setCompletedAssignments] = useState<WorkerAssignment[]>([]);
+  const [updatingAssignmentId, setUpdatingAssignmentId] = useState<number | null>(null);
 
   function goTo(i: number) {
     setStep(i);
+  }
+
+  async function loadAssignments() {
+    if (!token) {
+      setAssignmentWorker(null);
+      setActiveAssignments([]);
+      setCompletedAssignments([]);
+      return;
+    }
+    setAssignmentLoading(true);
+    setAssignmentError("");
+    try {
+      const res = await fetch("/api/worker/tasks", { headers: authHeaders(token) });
+      const data = await res.json();
+      if (!data.success) {
+        setAssignmentError(data.message || "Could not load assignments.");
+        setAssignmentWorker(null);
+        setActiveAssignments([]);
+        setCompletedAssignments([]);
+        return;
+      }
+      setAssignmentWorker(data.worker || null);
+      setActiveAssignments(data.active || []);
+      setCompletedAssignments(data.completed || []);
+    } catch {
+      setAssignmentError("Network error. Please try again.");
+    } finally {
+      setAssignmentLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (step === 3) {
+      loadAssignments();
+    }
+  }, [step, token]);
+
+  async function updateAssignment(id: number, status: "in_progress" | "done") {
+    if (!requireLogin()) return;
+    setUpdatingAssignmentId(id);
+    setAssignmentError("");
+    try {
+      const res = await fetch("/api/worker/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...authHeaders(token) },
+        body: JSON.stringify({ id, status }),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        setAssignmentError(data.message || "Could not update assignment.");
+        return;
+      }
+      loadAssignments();
+    } catch {
+      setAssignmentError("Network error. Please try again.");
+    } finally {
+      setUpdatingAssignmentId(null);
+    }
   }
 
   async function findWorkers(e: React.FormEvent) {
@@ -168,11 +250,66 @@ export default function WorkforcePage() {
     });
   }
 
+  function assignmentCard(assignment: WorkerAssignment, mode: "active" | "completed") {
+    const canStart = assignment.status === "accepted";
+    const canFinish = assignment.status === "in_progress";
+    return (
+      <article key={assignment.id} className="worker-assignment-card">
+        <div className="worker-assignment-main">
+          <div>
+            <span className={`status-pill${assignment.status === "in_progress" ? " warn" : ""}`}>
+              {assignment.status_label}
+            </span>
+            <h3>{roleLabel(assignment.position)}</h3>
+            <p>{assignment.client_name || "Unnamed client"} · {assignment.slots_needed || 1} worker(s)</p>
+          </div>
+          <div className="worker-assignment-ref">WF-{assignment.id}</div>
+        </div>
+        <div className="worker-assignment-grid">
+          <div><span>Date</span><strong>{assignment.job_date ? new Date(assignment.job_date).toLocaleDateString() : "No date"}</strong></div>
+          <div><span>Shift</span><strong>{[assignment.shift_start, assignment.shift_end].filter(Boolean).join(" - ") || "No time"}</strong></div>
+          <div><span>Contact</span><strong>{assignment.contact_number || assignment.email || "No contact"}</strong></div>
+          <div><span>Time</span><strong>{assignment.current_status_age}</strong></div>
+        </div>
+        {(assignment.notes || assignment.admin_notes) && (
+          <div className="worker-assignment-notes">
+            {assignment.admin_notes && <p><strong>Admin note:</strong> {assignment.admin_notes}</p>}
+            {assignment.notes && <p><strong>Client note:</strong> {assignment.notes}</p>}
+          </div>
+        )}
+        {mode === "active" && (
+          <div className="worker-assignment-actions">
+            <button
+              type="button"
+              className="btn-book-secondary"
+              disabled={!canStart || updatingAssignmentId === assignment.id}
+              onClick={() => updateAssignment(assignment.id, "in_progress")}
+            >
+              Start Job
+            </button>
+            <button
+              type="button"
+              className="btn-book-primary"
+              disabled={!canFinish || updatingAssignmentId === assignment.id}
+              onClick={() => updateAssignment(assignment.id, "done")}
+            >
+              Mark Done
+            </button>
+          </div>
+        )}
+        {mode === "completed" && (
+          <div className="worker-assignment-total">Completed in {assignment.total_elapsed}</div>
+        )}
+      </article>
+    );
+  }
+
   const stepIcons = [
     <svg key="0" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>,
     <svg key="1" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>,
     <svg key="2" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>,
     <svg key="3" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>,
+    <svg key="4" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>,
   ];
 
   return (
@@ -505,6 +642,82 @@ export default function WorkforcePage() {
 
             {/* PANEL 3 — What's Included */}
             <div className={`wf-panel${step === 3 ? " is-active" : ""}`} role="tabpanel">
+              <div className="booking-card">
+                <div className="booking-card-header">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>
+                  <h2>My Assigned Jobs</h2>
+                  <span className="header-badge">Employee View</span>
+                </div>
+                <div className="booking-card-body">
+                  {!token ? (
+                    <div className="worker-empty-state">
+                      <h3>Log in with a worker account</h3>
+                      <p>Assigned jobs and completed history are only visible to Marajo workforce employees.</p>
+                      <button type="button" className="btn-book-primary" onClick={() => requireLogin()}>Log In</button>
+                    </div>
+                  ) : assignmentError ? (
+                    <div className="booking-message platform-message is-visible" style={{ background: "rgba(220,38,38,.08)", color: "#dc2626" }}>
+                      {assignmentError}
+                    </div>
+                  ) : assignmentLoading ? (
+                    <div className="worker-empty-state">
+                      <h3>Loading assignments...</h3>
+                      <p>Checking jobs assigned to your workforce profile.</p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="worker-assignment-summary">
+                        <div>
+                          <span>Employee</span>
+                          <strong>
+                            {assignmentWorker
+                              ? [assignmentWorker.first_name, assignmentWorker.last_name].filter(Boolean).join(" ")
+                              : "Worker account"}
+                          </strong>
+                        </div>
+                        <div><span>Active Jobs</span><strong>{activeAssignments.length}</strong></div>
+                        <div><span>Completed</span><strong>{completedAssignments.length}</strong></div>
+                      </div>
+
+                      <div className="worker-assignment-section">
+                        <div className="worker-section-heading">
+                          <h3>Active Assignments</h3>
+                          <button type="button" className="btn-book-secondary" onClick={loadAssignments}>Refresh</button>
+                        </div>
+                        {activeAssignments.length ? (
+                          <div className="worker-assignment-list">
+                            {activeAssignments.map((assignment) => assignmentCard(assignment, "active"))}
+                          </div>
+                        ) : (
+                          <div className="worker-empty-state">
+                            <h3>No active assigned jobs</h3>
+                            <p>When admin assigns an accepted workforce request to you, it will appear here.</p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="worker-assignment-section">
+                        <div className="worker-section-heading">
+                          <h3>Completed History</h3>
+                        </div>
+                        {completedAssignments.length ? (
+                          <div className="worker-assignment-list">
+                            {completedAssignments.map((assignment) => assignmentCard(assignment, "completed"))}
+                          </div>
+                        ) : (
+                          <div className="worker-empty-state compact">
+                            <p>No completed jobs yet.</p>
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* PANEL 4 - What's Included */}
+            <div className={`wf-panel${step === 4 ? " is-active" : ""}`} role="tabpanel">
               <div className="booking-card">
                 <div className="booking-card-header">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>

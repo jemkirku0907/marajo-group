@@ -17,6 +17,7 @@ type Tab =
   | "appointments"
   | "contacts"
   | "tasks"
+  | "receipts"
   | "notifications"
   | "profile";
 
@@ -31,6 +32,7 @@ type AdminIcon =
   | "clock"
   | "mail"
   | "check"
+  | "receipt"
   | "bell"
   | "user"
   | "logOut";
@@ -47,6 +49,7 @@ const ADMIN_NAV_ITEMS: Array<{ id: Tab; label: string; icon: AdminIcon }> = [
   { id: "appointments", label: "Appointments", icon: "clock" },
   { id: "contacts", label: "Contacts", icon: "mail" },
   { id: "tasks", label: "Tasks", icon: "check" },
+  { id: "receipts", label: "Receipts", icon: "receipt" },
   { id: "notifications", label: "Notifications", icon: "bell" },
   { id: "profile", label: "Profile", icon: "user" },
 ];
@@ -144,6 +147,12 @@ function AdminNavIcon({ icon }: { icon: AdminIcon }) {
       <>
         <rect x="5" y="4" width="14" height="17" rx="2" />
         <path d="M9 12l2 2 4-5" />
+      </>
+    ),
+    receipt: (
+      <>
+        <path d="M7 3h10a2 2 0 0 1 2 2v16l-3-1.8-2 1.2-2-1.2-2 1.2-2-1.2L5 21V5a2 2 0 0 1 2-2z" />
+        <path d="M8.5 8h7M8.5 12h7M8.5 16h4" />
       </>
     ),
     bell: (
@@ -352,6 +361,7 @@ export default function AdminDashboardPage() {
                   {tab === "appointments" && "Schedule and update client visits."}
                   {tab === "contacts" && "Keep contact records and inquiries organized."}
                   {tab === "tasks" && "Track pending tasks and follow-ups."}
+                  {tab === "receipts" && "Search, send, and manage booking invoices and receipts."}
                   {tab === "notifications" && "Review system alerts and messages."}
                   {tab === "profile" && "Update your staff profile and credentials."}
                 </p>
@@ -374,6 +384,7 @@ export default function AdminDashboardPage() {
             {tab === "appointments" && <AppointmentsTab />}
             {tab === "contacts" && <ContactsTab />}
             {tab === "tasks" && <TasksTab />}
+            {tab === "receipts" && <ReceiptsTab />}
             {tab === "notifications" && <NotificationsTab />}
             {tab === "profile" && <ProfileTab staff={staff} />}
           </main>
@@ -1378,6 +1389,18 @@ const actionBtn: React.CSSProperties = {
 
 /* ───────────────────── Overview tab ───────────────────── */
 
+function money(value: number | string | null | undefined) {
+  const amount = Number(value || 0);
+  return `PHP ${amount.toLocaleString("en-PH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+function shortDate(value?: string | null) {
+  if (!value) return "N/A";
+  const date = new Date(String(value));
+  if (Number.isNaN(date.getTime())) return String(value).slice(0, 10) || "N/A";
+  return date.toLocaleDateString("en-PH", { month: "short", day: "numeric", year: "numeric" });
+}
+
 function formatOverviewDate(value?: string) {
   if (!value) return "-";
   return new Date(value).toLocaleDateString();
@@ -2379,6 +2402,173 @@ function TasksTab() {
   );
 }
 /* ───────────────────── Notifications tab ───────────────────── */
+
+function ReceiptsTab() {
+  const [receipts, setReceipts] = useState<any[]>([]);
+  const [summary, setSummary] = useState<any>(null);
+  const [filters, setFilters] = useState({
+    search: "",
+    payment_status: "all",
+    source: "all",
+    date_from: "",
+    date_to: "",
+  });
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [savingKey, setSavingKey] = useState("");
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value && value !== "all") params.set(key, value);
+    });
+    const res = await fetch(`/api/admin/receipts?${params.toString()}`, { cache: "no-store" });
+    const data = await res.json();
+    setReceipts(data.success ? data.receipts || [] : []);
+    setSummary(data.summary || null);
+    if (!data.success) setMessage(data.message || "Unable to load receipts.");
+    setLoading(false);
+  }, [filters]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  function setFilter(key: keyof typeof filters, value: string) {
+    setFilters((current) => ({ ...current, [key]: value }));
+  }
+
+  async function receiptAction(row: any, action: string, paymentStatus?: string) {
+    const key = `${row.source}-${row.id}-${action}-${paymentStatus || ""}`;
+    setSavingKey(key);
+    setMessage("");
+    const res = await fetch(`/api/admin/receipts?action=${action}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: row.id, source: row.source, payment_status: paymentStatus }),
+    });
+    const data = await res.json();
+    setMessage(data.message || (data.success ? "Updated." : "Unable to update receipt."));
+    setSavingKey("");
+    if (data.success) load();
+  }
+
+  const pill = (value: string) => {
+    const normalized = String(value || "unpaid").toLowerCase();
+    const paid = normalized === "paid" || normalized === "waived";
+    return <span style={statusPillStyle(paid ? "confirmed" : "pending")}>{paid ? "Paid" : "Unpaid"}</span>;
+  };
+
+  if (loading) return <DashboardSkeleton variant="table" />;
+
+  return (
+    <div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12, marginBottom: 18 }}>
+        <StatCard label="Receipts" value={summary?.total ?? 0} />
+        <StatCard label="Paid" value={summary?.paid ?? 0} />
+        <StatCard label="Unpaid" value={summary?.unpaid ?? 0} />
+        <StatCard label="Total Value" value={money(summary?.amount ?? 0)} />
+      </div>
+
+      <div style={{ ...cardStyle, marginBottom: 16 }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, flexWrap: "wrap", marginBottom: 14 }}>
+          <div>
+            <h3 style={{ margin: 0 }}>Invoices & Receipts</h3>
+            <p style={{ margin: "5px 0 0", color: "var(--text-muted)", fontSize: 13 }}>
+              Search booking receipts by tenant/customer, date, payment status, or booking type.
+            </p>
+          </div>
+          <button onClick={load} style={actionBtn} type="button">Refresh</button>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "minmax(180px, 1.3fr) repeat(4, minmax(130px, .8fr))", gap: 10, marginBottom: 14 }}>
+          <input style={inputStyle} value={filters.search} onChange={(e) => setFilter("search", e.target.value)} placeholder="Search tenant, email, reference" />
+          <select style={inputStyle} value={filters.source} onChange={(e) => setFilter("source", e.target.value)}>
+            <option value="all">All types</option>
+            <option value="parking">Parking</option>
+            <option value="court">Court</option>
+            <option value="workforce">Workforce</option>
+          </select>
+          <select style={inputStyle} value={filters.payment_status} onChange={(e) => setFilter("payment_status", e.target.value)}>
+            <option value="all">All payments</option>
+            <option value="paid">Paid</option>
+            <option value="unpaid">Unpaid</option>
+          </select>
+          <input style={inputStyle} type="date" value={filters.date_from} onChange={(e) => setFilter("date_from", e.target.value)} />
+          <input style={inputStyle} type="date" value={filters.date_to} onChange={(e) => setFilter("date_to", e.target.value)} />
+        </div>
+
+        {message && (
+          <div style={{ marginBottom: 12, padding: 10, borderRadius: 10, background: "var(--surface-soft)", color: "var(--text-primary)", fontSize: 13 }}>
+            {message}
+          </div>
+        )}
+
+        <table style={{ ...tableStyle, minWidth: 980 }}>
+          <thead>
+            <tr>
+              <th style={thStyle}>Reference</th>
+              <th style={thStyle}>Tenant / Customer</th>
+              <th style={thStyle}>Type</th>
+              <th style={thStyle}>Date</th>
+              <th style={thStyle}>Amount</th>
+              <th style={thStyle}>Payment</th>
+              <th style={thStyle}>Request</th>
+              <th style={thStyle}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {receipts.map((row) => {
+              const keyBase = `${row.source}-${row.id}`;
+              const canManagePayment = row.source === "parking" || row.source === "court";
+              return (
+                <tr key={keyBase}>
+                  <td style={tdStyle}>
+                    <div style={{ fontWeight: 800 }}>{row.reference}</div>
+                    <div style={{ color: "var(--text-muted)", fontSize: 12 }}>{row.item_name}</div>
+                  </td>
+                  <td style={tdStyle}>
+                    <div style={{ fontWeight: 700 }}>{row.customer_name || "N/A"}</div>
+                    <div style={{ color: "var(--text-muted)", fontSize: 12 }}>{row.email || "No email"}</div>
+                  </td>
+                  <td style={tdStyle}>{row.source_label}</td>
+                  <td style={tdStyle}>
+                    <div>{shortDate(row.service_date)}</div>
+                    <div style={{ color: "var(--text-muted)", fontSize: 12 }}>Issued {shortDate(row.invoice_date)}</div>
+                  </td>
+                  <td style={tdStyle}>{row.amount == null ? "N/A" : money(row.amount)}</td>
+                  <td style={tdStyle}>{pill(row.payment_status)}</td>
+                  <td style={tdStyle}><span style={statusPillStyle(String(row.request_status || "pending"))}>{row.request_status || "pending"}</span></td>
+                  <td style={tdStyle}>
+                    <button onClick={() => receiptAction(row, "send-receipt")} disabled={savingKey === `${keyBase}-send-receipt-`} style={actionBtn} type="button">
+                      Send receipt
+                    </button>
+                    {canManagePayment && (
+                      <>
+                        <button onClick={() => receiptAction(row, "set-payment-status", "paid")} disabled={savingKey === `${keyBase}-set-payment-status-paid`} style={{ ...actionBtn, background: "#2563eb", borderColor: "#2563eb" }} type="button">
+                          Mark paid
+                        </button>
+                        <button onClick={() => receiptAction(row, "set-payment-status", "pending")} disabled={savingKey === `${keyBase}-set-payment-status-pending`} style={{ ...actionBtn, background: "transparent", color: "var(--text-primary)", borderColor: "var(--border-muted)" }} type="button">
+                          Mark unpaid
+                        </button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+            {receipts.length === 0 && (
+              <tr>
+                <td style={tdStyle} colSpan={8}>No invoices or receipts match the current filters.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
 
 function NotificationsTab() {
   const [notifications, setNotifications] = useState<any[]>([]);

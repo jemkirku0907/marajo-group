@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { sendCourtBookingReceipt } from "@/lib/mail";
+import { requireActiveTenant } from "@/lib/tenantMembership";
 
 function courtHours(start: string, end: string): number {
   let s = new Date(`2026-01-01T${start}`).getTime();
@@ -65,6 +66,10 @@ export async function POST(req: NextRequest) {
   const user = getCurrentUser(req);
   if (!user) {
     return NextResponse.json({ success: false, message: "You must be logged in to book a facility." }, { status: 401 });
+  }
+  const tenant = await requireActiveTenant(user.user_id);
+  if (!tenant.ok) {
+    return NextResponse.json({ success: false, message: tenant.message, membership_status: tenant.status }, { status: 403 });
   }
   const userId = user.user_id;
   const data = await req.json().catch(() => ({}));

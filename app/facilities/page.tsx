@@ -67,6 +67,7 @@ export default function FacilitiesPage() {
   const [bookMsg, setBookMsg] = useState<{ text: string; ok: boolean } | null>(null);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<any>(null);
+  const [tenantStatus, setTenantStatus] = useState<{ verified: boolean; status: string; message: string } | null>(null);
 
   const eligibleProperties = useMemo(() => propertiesForFacility(facilityType), [facilityType]);
   const selectedProperty = eligibleProperties.find((property) => property.slug === propertySlug) || eligibleProperties[0];
@@ -80,6 +81,19 @@ export default function FacilitiesPage() {
     if (!selectedProperty) return;
     if (selectedProperty.slug !== propertySlug) setPropertySlug(selectedProperty.slug);
   }, [propertySlug, selectedProperty]);
+
+  useEffect(() => {
+    if (!token) {
+      setTenantStatus(null);
+      return;
+    }
+    fetch("/api/tenant-membership?action=status", { headers: authHeaders(token), cache: "no-store" })
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success) setTenantStatus({ verified: !!data.verified, status: data.status, message: data.message });
+      })
+      .catch(() => setTenantStatus(null));
+  }, [token]);
 
   function resetAvailability(nextType = facilityType) {
     setStep(0);
@@ -98,6 +112,10 @@ export default function FacilitiesPage() {
       return;
     }
     if (!requireLogin()) return;
+    if (tenantStatus && !tenantStatus.verified) {
+      setAvailMsg({ text: tenantStatus.message, ok: false });
+      return;
+    }
     setAvailMsg(null);
     setBusy(true);
     try {
@@ -267,6 +285,16 @@ export default function FacilitiesPage() {
 
       <section id="reserve" className="booking-section">
         <div className="container">
+          {token && tenantStatus && !tenantStatus.verified && (
+            <div className="tenant-access-banner">
+              <div>
+                <span className="membership-status-pill status-pending">{tenantStatus.status}</span>
+                <h2>Tenant verification required</h2>
+                <p>{tenantStatus.message} Submit your Marajo Tower tenant details before using request forms.</p>
+              </div>
+              <a className="btn-primary" href="/membership">Verify Tenant Access</a>
+            </div>
+          )}
           <nav className="booking-steps" role="tablist" aria-label="Facilities booking steps">
             {STEPS.map((label, i) => (
               <button key={label} className={`booking-step-btn${step === i ? " active" : ""}`} role="tab" aria-selected={step === i} onClick={() => setStep(i)} type="button">

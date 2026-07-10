@@ -9,6 +9,7 @@ type Tab =
   | "overview"
   | "units"
   | "leads"
+  | "tenants"
   | "parking"
   | "facilities"
   | "workers"
@@ -38,6 +39,7 @@ const ADMIN_NAV_ITEMS: Array<{ id: Tab; label: string; icon: AdminIcon }> = [
   { id: "overview", label: "Overview", icon: "layout" },
   { id: "units", label: "Units", icon: "building" },
   { id: "leads", label: "Leads", icon: "users" },
+  { id: "tenants", label: "Tenants", icon: "users" },
   { id: "parking", label: "Parking", icon: "car" },
   { id: "facilities", label: "Court Bookings", icon: "court" },
   { id: "workers", label: "Workers", icon: "tool" },
@@ -287,7 +289,7 @@ export default function AdminDashboardPage() {
               Main
             </div>
             <div style={{ display: "grid", gap: 6 }}>
-              {ADMIN_NAV_ITEMS.slice(0, 8).map((item) => (
+              {ADMIN_NAV_ITEMS.slice(0, 9).map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleTabChange(item.id)}
@@ -306,7 +308,7 @@ export default function AdminDashboardPage() {
               Tools
             </div>
             <div style={{ display: "grid", gap: 6 }}>
-              {ADMIN_NAV_ITEMS.slice(8).map((item) => (
+              {ADMIN_NAV_ITEMS.slice(9).map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleTabChange(item.id)}
@@ -342,6 +344,7 @@ export default function AdminDashboardPage() {
                   {tab === "overview" && "Sales pipeline summary and portal activity."}
                   {tab === "units" && "Manage assigned units across all buildings."}
                   {tab === "leads" && "Track leads, inquiries, and status updates."}
+                  {tab === "tenants" && "Verify Marajo Tower tenant/member access."}
                   {tab === "parking" && "Manage parking reservations and occupancy."}
                   {tab === "facilities" && "Handle court bookings and facility schedules."}
                   {tab === "workers" && "Manage workforce approvals and assignments."}
@@ -363,6 +366,7 @@ export default function AdminDashboardPage() {
             {tab === "overview" && <OverviewTab onNavigate={handleTabChange} />}
             {tab === "units" && <UnitsTab />}
             {tab === "leads" && <LeadsTab />}
+            {tab === "tenants" && <TenantsTab />}
             {tab === "parking" && <ParkingTab />}
             {tab === "facilities" && <FacilitiesTab />}
             {tab === "workers" && <WorkersTab />}
@@ -791,6 +795,144 @@ function LeadDrawer({ id, onClose, onChanged }: { id: number; onClose: () => voi
 }
 
 /* ───────────────────── Parking tab ───────────────────── */
+
+function TenantsTab() {
+  const [rows, setRows] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState("");
+  const [search, setSearch] = useState("");
+  const [message, setMessage] = useState("");
+
+  const load = useCallback(() => {
+    setLoading(true);
+    const params = new URLSearchParams();
+    if (status) params.set("status", status);
+    if (search.trim()) params.set("search", search.trim());
+    fetch(`/api/admin/tenants?${params.toString()}`, { cache: "no-store" })
+      .then((r) => r.json())
+      .then((data) => {
+        setRows(data.success ? data.tenants || [] : []);
+        if (!data.success) setMessage(data.message || "Unable to load tenant memberships.");
+      })
+      .finally(() => setLoading(false));
+  }, [search, status]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  async function updateTenant(id: number, action: "approve" | "reject" | "deactivate" | "pending") {
+    setMessage("");
+    const res = await fetch(`/api/admin/tenants?action=${action}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    const data = await res.json();
+    setMessage(data.message || (data.success ? "Tenant updated." : "Unable to update tenant."));
+    if (data.success) load();
+  }
+
+  return (
+    <div style={{ display: "grid", gap: 18 }}>
+      <div style={cardStyle}>
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", justifyContent: "space-between" }}>
+          <div>
+            <h3 style={{ margin: 0, color: "var(--heading-color)" }}>Tenant Verification</h3>
+            <p style={{ margin: "6px 0 0", color: "var(--text-muted)", fontSize: 13 }}>
+              Approve verified Marajo Tower tenants before they can submit facility, parking, and workforce requests.
+            </p>
+          </div>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <input
+              style={inputStyle}
+              placeholder="Search tenant, company, unit"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <select style={inputStyle} value={status} onChange={(e) => setStatus(e.target.value)}>
+              <option value="">All statuses</option>
+              <option value="pending">Pending</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <button className="btn-primary" type="button" onClick={load}>
+              Refresh
+            </button>
+          </div>
+        </div>
+        {message && <p style={{ margin: "12px 0 0", color: "var(--mg-green)", fontWeight: 700 }}>{message}</p>}
+      </div>
+
+      <div style={cardStyle}>
+        {loading ? (
+          <DashboardSkeleton variant="table" />
+        ) : rows.length === 0 ? (
+          <p style={{ margin: 0, color: "var(--text-muted)" }}>No tenant membership records found.</p>
+        ) : (
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Tenant</th>
+                <th style={thStyle}>Company</th>
+                <th style={thStyle}>Floor / Unit</th>
+                <th style={thStyle}>Status</th>
+                <th style={thStyle}>Updated</th>
+                <th style={thStyle}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row) => (
+                <tr key={row.id}>
+                  <td style={tdStyle}>
+                    <strong>{row.full_name}</strong>
+                    <div style={{ color: "var(--text-muted)", fontSize: 12 }}>{row.email}</div>
+                    <div style={{ color: "var(--text-muted)", fontSize: 12 }}>{row.phone || "No phone"}</div>
+                  </td>
+                  <td style={tdStyle}>
+                    <strong>{row.company_name}</strong>
+                    <div style={{ color: "var(--text-muted)", fontSize: 12 }}>{row.organization}</div>
+                  </td>
+                  <td style={tdStyle}>
+                    {row.floor_number} / {row.unit_number}
+                  </td>
+                  <td style={tdStyle}>
+                    <span className={`membership-status-pill status-${row.membership_status}`}>{row.membership_status}</span>
+                  </td>
+                  <td style={tdStyle}>{row.updated_at ? new Date(row.updated_at).toLocaleString() : "-"}</td>
+                  <td style={tdStyle}>
+                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                      {row.membership_status !== "active" && (
+                        <button className="btn-primary" type="button" onClick={() => updateTenant(row.id, "approve")}>
+                          Approve
+                        </button>
+                      )}
+                      {row.membership_status === "active" ? (
+                        <button className="btn-secondary" type="button" onClick={() => updateTenant(row.id, "deactivate")}>
+                          Deactivate
+                        </button>
+                      ) : (
+                        <button className="btn-secondary" type="button" onClick={() => updateTenant(row.id, "reject")}>
+                          Reject
+                        </button>
+                      )}
+                      {row.membership_status !== "pending" && (
+                        <button className="btn-secondary" type="button" onClick={() => updateTenant(row.id, "pending")}>
+                          Mark Pending
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function ParkingTab() {
   const [analytics, setAnalytics] = useState<any>(null);

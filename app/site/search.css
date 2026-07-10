@@ -2127,6 +2127,206 @@ html.theme-dark .visitor-counter strong {
   }
 }
 
+.membership-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.42fr) minmax(0, 0.58fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+}
+
+.membership-status-card,
+.membership-form-card {
+  border: 1px solid var(--border-muted);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.membership-status-card {
+  position: sticky;
+  top: 96px;
+}
+
+.membership-status-card h2,
+.membership-form-card h2 {
+  margin-top: 0.75rem;
+}
+
+.membership-status-card p,
+.membership-note,
+.membership-login-panel p {
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.membership-status-pill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--mg-green);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.membership-status-pill.status-active {
+  background: rgba(22, 163, 74, 0.14);
+  color: #15803d;
+}
+
+.membership-status-pill.status-pending {
+  background: rgba(245, 158, 11, 0.16);
+  color: #b45309;
+}
+
+.membership-status-pill.status-rejected,
+.membership-status-pill.status-inactive {
+  background: rgba(220, 38, 38, 0.12);
+  color: #dc2626;
+}
+
+.membership-status-list {
+  display: grid;
+  grid-template-columns: minmax(100px, 0.4fr) 1fr;
+  gap: 0.75rem 1rem;
+  margin: 1.5rem 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-muted);
+}
+
+.membership-status-list span {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+}
+
+.membership-status-list strong {
+  color: var(--heading-color);
+}
+
+.membership-card-action {
+  width: 100%;
+  justify-content: center;
+}
+
+.membership-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.membership-form label {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.membership-form input,
+.membership-form select {
+  min-height: 46px;
+  border: 1px solid var(--border-muted);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  color: var(--text-primary);
+  padding: 0 0.9rem;
+  font: inherit;
+}
+
+.membership-form .field-full,
+.membership-message,
+.membership-login-panel {
+  grid-column: 1 / -1;
+}
+
+.membership-message {
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  font-weight: 700;
+}
+
+.membership-message.is-ok {
+  background: rgba(22, 163, 74, 0.1);
+  color: #15803d;
+  border: 1px solid rgba(22, 163, 74, 0.2);
+}
+
+.membership-message.is-error {
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.membership-login-panel {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+  border: 1px solid var(--border-muted);
+  border-radius: 14px;
+  padding: 1.25rem;
+  background: var(--surface-soft);
+}
+
+.tenant-access-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(245, 158, 11, 0.24);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(31, 110, 52, 0.08));
+  padding: 1.1rem 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.tenant-access-banner h2 {
+  margin: 0.45rem 0 0.25rem;
+  color: var(--heading-color);
+  font-size: 1.1rem;
+}
+
+.tenant-access-banner p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.tenant-access-banner .btn-primary {
+  flex: 0 0 auto;
+}
+
+body.theme-dark .membership-status-pill.status-active,
+html.theme-dark .membership-status-pill.status-active {
+  color: var(--mg-green-bright);
+}
+
+@media (max-width: 860px) {
+  .membership-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .membership-status-card {
+    position: static;
+  }
+}
+
+@media (max-width: 620px) {
+  .membership-form {
+    grid-template-columns: 1fr;
+  }
+
+  .tenant-access-banner {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
 /* Real image-backed heroes for listing/news/contact pages. */
 .properties-listing-page .about-hero,
 .news-page .about-hero,

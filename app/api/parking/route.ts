@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { sendParkingReceipt } from "@/lib/mail";
+import { requireActiveTenant } from "@/lib/tenantMembership";
 
 function calcHours(entry: string, exit: string): number {
   let start = new Date(`2026-01-01T${entry}`).getTime();
@@ -74,6 +75,10 @@ export async function POST(req: NextRequest) {
   const user = getCurrentUser(req);
   if (!user) {
     return NextResponse.json({ success: false, message: "Your session has expired. Please log in again and rebook." }, { status: 401 });
+  }
+  const tenant = await requireActiveTenant(user.user_id);
+  if (!tenant.ok) {
+    return NextResponse.json({ success: false, message: tenant.message, membership_status: tenant.status }, { status: 403 });
   }
   const userId = user.user_id;
   const data = await req.json().catch(() => ({}));

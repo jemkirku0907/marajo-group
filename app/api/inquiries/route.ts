@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { requireActiveTenant } from "@/lib/tenantMembership";
 
 const CONTACT_TO = "jemkirku0907@gmail.com";
 
@@ -156,6 +158,17 @@ export async function POST(req: NextRequest) {
   const sourcePageUrl = val(data, ["source_page_url", "source_url"], req.headers.get("referer") || "");
   const leadSource = val(data, ["lead_source"], "Website");
   const action = val(data, ["action", "inquiry_type"]).toLowerCase();
+
+  if (leadSource === "Facilities Booking") {
+    const user = getCurrentUser(req);
+    if (!user) {
+      return NextResponse.json({ success: false, message: "Please log in before submitting a facility request." }, { status: 401 });
+    }
+    const tenant = await requireActiveTenant(user.user_id);
+    if (!tenant.ok) {
+      return NextResponse.json({ success: false, message: tenant.message, membership_status: tenant.status }, { status: 403 });
+    }
+  }
 
   const prefContact = val(data, ["preferred_contact_method", "contact_method"]);
   const budgetRange = val(data, ["budget_range", "budget"]);

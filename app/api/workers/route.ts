@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { sendWorkerBookingReceipt } from "@/lib/mail";
+import { requireActiveTenant } from "@/lib/tenantMembership";
 import { filterFallbackWorkers } from "@/lib/workforce";
 
 export async function GET(req: NextRequest) {
@@ -58,6 +59,10 @@ export async function POST(req: NextRequest) {
     const user = getCurrentUser(req);
     if (!user) {
       return NextResponse.json({ success: false, message: "You must be logged in to book a worker." }, { status: 401 });
+    }
+    const tenant = await requireActiveTenant(user.user_id);
+    if (!tenant.ok) {
+      return NextResponse.json({ success: false, message: tenant.message, membership_status: tenant.status }, { status: 403 });
     }
     const data = await req.json().catch(() => ({}));
 

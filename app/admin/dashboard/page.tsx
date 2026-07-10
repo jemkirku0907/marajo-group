@@ -2171,127 +2171,213 @@ function ContactsTab() {
 
 /* ───────────────────── Tasks tab ───────────────────── */
 
-const TASK_PRIORITIES = ["high", "medium", "low"];
-const priorityColor: Record<string, string> = { high: "#ef4444", medium: "#f59e0b", low: "var(--text-muted)" };
+const WORK_REQUEST_STATUSES = [
+  { value: "pending", label: "Pending" },
+  { value: "accepted", label: "Accepted" },
+  { value: "in_progress", label: "In Progress" },
+  { value: "done", label: "Done" },
+];
+
+const requestStatusColor: Record<string, string> = {
+  pending: "#f59e0b",
+  accepted: "#2563eb",
+  in_progress: "var(--mg-green)",
+  done: "#16a34a",
+};
 
 function TasksTab() {
-  const [tasks, setTasks] = useState<any[]>([]);
+  const [requests, setRequests] = useState<any[]>([]);
+  const [employees, setEmployees] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState<any>({ task: "", due_date: "", priority: "medium" });
-  const [saving, setSaving] = useState(false);
+  const [savingId, setSavingId] = useState<number | null>(null);
+  const [filters, setFilters] = useState({
+    status: "all",
+    employee: "all",
+    date_from: "",
+    date_to: "",
+    sort: "oldest-active",
+  });
 
   const load = useCallback(async () => {
     setLoading(true);
-    const r = await fetch("/api/admin/tasks?action=list").then((res) => res.json());
-    setTasks(r.tasks || []);
+    const params = new URLSearchParams({
+      action: "list",
+      status: filters.status,
+      employee: filters.employee,
+      date_from: filters.date_from,
+      date_to: filters.date_to,
+      sort: filters.sort,
+    });
+    const [requestRes, employeeRes] = await Promise.all([
+      fetch(`/api/admin/tasks?${params.toString()}`).then((res) => res.json()),
+      fetch("/api/admin/tasks?action=employees").then((res) => res.json()),
+    ]);
+    setRequests(requestRes.requests || []);
+    setEmployees(employeeRes.employees || []);
     setLoading(false);
-  }, []);
+  }, [filters]);
 
   useEffect(() => {
     load();
   }, [load]);
 
-  async function createTask() {
-    if (!form.task.trim()) return;
-    setSaving(true);
-    const r = await fetch("/api/admin/tasks?action=create", {
+  async function updateRequest(id: number, patch: Record<string, any>) {
+    setSavingId(id);
+    const r = await fetch("/api/admin/tasks?action=update-request", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify({ id, ...patch }),
     }).then((res) => res.json());
-    setSaving(false);
-    if (r.success) {
-      setForm({ task: "", due_date: "", priority: "medium" });
-      setShowForm(false);
-      load();
-    } else {
-      alert(r.message || "Failed to create task.");
+    setSavingId(null);
+    if (!r.success) {
+      alert(r.message || "Failed to update request.");
+      return;
     }
-  }
-
-  async function toggleTask(id: number) {
-    await fetch("/api/admin/tasks?action=toggle", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    load();
-  }
-
-  async function deleteTask(id: number) {
-    if (!confirm("Delete this task?")) return;
-    await fetch("/api/admin/tasks?action=delete", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
     load();
   }
 
   if (loading) return <DashboardSkeleton variant="list" />;
 
+  const counts = WORK_REQUEST_STATUSES.reduce((acc, s) => {
+    acc[s.value] = requests.filter((r) => r.status === s.value).length;
+    return acc;
+  }, {} as Record<string, number>);
+
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
         <div>
-          <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>Tasks</h2>
-          <p style={{ color: "var(--text-muted)", fontSize: 13 }}>To-dos and follow-ups.</p>
+          <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>Workforce Request Tracking</h2>
+          <p style={{ color: "var(--text-muted)", fontSize: 13 }}>Monitor client requests, assignments, and elapsed time by status.</p>
         </div>
-        <button onClick={() => setShowForm((v) => !v)} style={actionBtn}>
-          {showForm ? "Cancel" : "+ Add Task"}
-        </button>
       </div>
 
-      {showForm && (
-        <div style={{ ...cardStyle, marginBottom: 16, display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: 10 }}>
-          <input style={inputStyle} placeholder="Task description" value={form.task} onChange={(e) => setForm({ ...form, task: e.target.value })} />
-          <input style={inputStyle} type="date" value={form.due_date} onChange={(e) => setForm({ ...form, due_date: e.target.value })} />
-          <select style={inputStyle} value={form.priority} onChange={(e) => setForm({ ...form, priority: e.target.value })}>
-            {TASK_PRIORITIES.map((p) => (
-              <option key={p} value={p}>{p}</option>
-            ))}
-          </select>
-          <button onClick={createTask} disabled={saving} style={{ ...actionBtn, gridColumn: "1 / -1" }}>
-            {saving ? "Saving…" : "Save Task"}
-          </button>
-        </div>
-      )}
-
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        {tasks.map((t) => (
-          <div
-            key={t.id}
-            style={{
-              ...cardStyle,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "12px 16px",
-              opacity: t.done ? 0.6 : 1,
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <input type="checkbox" checked={!!t.done} onChange={() => toggleTask(t.id)} />
-              <div>
-                <div style={{ fontWeight: 600, textDecoration: t.done ? "line-through" : "none" }}>{t.task}</div>
-                <div style={{ fontSize: 12, color: "var(--text-muted)" }}>
-                  Due: {t.due_date || "—"} ·{" "}
-                  <span style={{ color: priorityColor[t.priority] || "var(--text-muted)", fontWeight: 600 }}>{t.priority}</span>
-                </div>
-              </div>
-            </div>
-            <button onClick={() => deleteTask(t.id)} style={{ ...actionBtn, background: "#ef4444" }}>
-              Delete
-            </button>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 12, marginBottom: 16 }}>
+        {WORK_REQUEST_STATUSES.map((s) => (
+          <div key={s.value} style={{ ...cardStyle, padding: 16, borderLeft: `4px solid ${requestStatusColor[s.value]}` }}>
+            <div style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 6 }}>{s.label}</div>
+            <div style={{ fontSize: 28, fontWeight: 800, color: "var(--text-primary)" }}>{counts[s.value] || 0}</div>
           </div>
         ))}
-        {tasks.length === 0 && <div style={cardStyle}>No tasks found.</div>}
+      </div>
+
+      <div style={{ ...cardStyle, marginBottom: 16, display: "grid", gridTemplateColumns: "repeat(5, minmax(0, 1fr))", gap: 10 }}>
+        <select style={inputStyle} value={filters.status} onChange={(e) => setFilters({ ...filters, status: e.target.value })}>
+          <option value="all">All statuses</option>
+          {WORK_REQUEST_STATUSES.map((s) => (
+            <option key={s.value} value={s.value}>{s.label}</option>
+          ))}
+        </select>
+        <select style={inputStyle} value={filters.employee} onChange={(e) => setFilters({ ...filters, employee: e.target.value })}>
+          <option value="all">All employees</option>
+          {employees.map((e) => (
+            <option key={e.id} value={e.id}>
+              {[e.first_name, e.last_name].filter(Boolean).join(" ")}{e.position ? ` - ${e.position}` : ""}
+            </option>
+          ))}
+        </select>
+        <input style={inputStyle} type="date" value={filters.date_from} onChange={(e) => setFilters({ ...filters, date_from: e.target.value })} />
+        <input style={inputStyle} type="date" value={filters.date_to} onChange={(e) => setFilters({ ...filters, date_to: e.target.value })} />
+        <select style={inputStyle} value={filters.sort} onChange={(e) => setFilters({ ...filters, sort: e.target.value })}>
+          <option value="oldest-active">Oldest active first</option>
+          <option value="newest">Newest first</option>
+          <option value="status">Status order</option>
+        </select>
+      </div>
+
+      <div style={cardStyle}>
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={thStyle}>Client Request</th>
+              <th style={thStyle}>Schedule</th>
+              <th style={thStyle}>Assigned Employee</th>
+              <th style={thStyle}>Status</th>
+              <th style={thStyle}>Timing</th>
+              <th style={thStyle}>Admin Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {requests.map((request) => (
+              <tr key={request.id}>
+                <td style={tdStyle}>
+                  <div style={{ fontWeight: 700 }}>{request.client_name || "Unnamed client"}</div>
+                  <div style={{ color: "var(--text-muted)", fontSize: 12 }}>
+                    {request.position} - {request.slots_needed || 1} worker(s)
+                  </div>
+                  <div style={{ color: "var(--text-muted)", fontSize: 12 }}>{request.email || request.contact_number || "No contact"}</div>
+                </td>
+                <td style={tdStyle}>
+                  <div>{request.job_date ? new Date(request.job_date).toLocaleDateString() : "No date"}</div>
+                  <div style={{ color: "var(--text-muted)", fontSize: 12 }}>
+                    {[request.shift_start, request.shift_end].filter(Boolean).join(" - ") || "No shift time"}
+                  </div>
+                </td>
+                <td style={tdStyle}>
+                  <select
+                    style={{ ...inputStyle, minWidth: 160 }}
+                    value={request.assigned_worker_id || ""}
+                    disabled={savingId === request.id}
+                    onChange={(e) => updateRequest(request.id, { assigned_worker_id: e.target.value || null })}
+                  >
+                    <option value="">Unassigned</option>
+                    {employees.map((e) => (
+                      <option key={e.id} value={e.id}>
+                        {[e.first_name, e.last_name].filter(Boolean).join(" ")}{e.position ? ` - ${e.position}` : ""}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+                <td style={tdStyle}>
+                  <select
+                    style={{ ...inputStyle, minWidth: 130, borderColor: requestStatusColor[request.status] || "var(--border)" }}
+                    value={request.status}
+                    disabled={savingId === request.id}
+                    onChange={(e) => updateRequest(request.id, { status: e.target.value })}
+                  >
+                    {WORK_REQUEST_STATUSES.map((s) => (
+                      <option key={s.value} value={s.value}>{s.label}</option>
+                    ))}
+                  </select>
+                </td>
+                <td style={tdStyle}>
+                  <div style={{ fontWeight: 700 }}>{request.current_status_age} in {request.status_label}</div>
+                  <div style={{ color: "var(--text-muted)", fontSize: 12 }}>Total: {request.total_elapsed}</div>
+                  <div style={{ color: "var(--text-muted)", fontSize: 12 }}>
+                    Pending {request.pending_time} - Accepted {request.accepted_time} - Active {request.in_progress_time}
+                  </div>
+                </td>
+                <td style={tdStyle}>
+                  <input
+                    style={{ ...inputStyle, minWidth: 180 }}
+                    defaultValue={request.admin_notes || ""}
+                    placeholder="Reminder or note"
+                    onBlur={(e) => {
+                      if (e.target.value !== (request.admin_notes || "")) {
+                        updateRequest(request.id, { admin_notes: e.target.value });
+                      }
+                    }}
+                  />
+                </td>
+              </tr>
+            ))}
+            {requests.length === 0 && (
+              <tr>
+                <td style={tdStyle} colSpan={6}>
+                  No workforce requests match the current filters.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      <div style={{ ...cardStyle, marginTop: 16, fontSize: 13, color: "var(--text-muted)" }}>
+        Tip: sort by oldest active first to find requests that need a reminder. Timing is computed from submitted, accepted, in-progress, and done timestamps.
       </div>
     </div>
   );
 }
-
 /* ───────────────────── Notifications tab ───────────────────── */
 
 function NotificationsTab() {
@@ -2473,3 +2559,4 @@ function ProfileTab({ staff }: { staff: Staff }) {
     </div>
   );
 }
+

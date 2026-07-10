@@ -17,7 +17,6 @@ const NAV_LINKS = [
 ];
 
 const SERVICE_LINKS = [
-  { href: "/membership", label: "Tenant Access" },
   { href: "/parking", label: "Parking" },
   { href: "/workforce", label: "Workforce" },
   { href: "/facilities", label: "Facilities" },

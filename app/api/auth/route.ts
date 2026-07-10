@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { loginUser, registerUser, getCurrentUser } from "@/lib/auth";
+import { upsertTenantMembership } from "@/lib/tenantMembership";
 import { turnstileEnabled, turnstileSiteKey, verifyTurnstileToken } from "@/lib/turnstile";
 import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 
@@ -41,6 +42,15 @@ export async function POST(req: NextRequest) {
     if (!data.email || !data.password) {
       return NextResponse.json({ success: false, message: "Missing required field" }, { status: 400 });
     }
+    if (!data.company_name || !data.floor_number || !data.unit_number) {
+      return NextResponse.json(
+        { success: false, message: "Company name, floor number, and unit number are required for tenant access." },
+        { status: 400 }
+      );
+    }
+    if (!["tenant_company", "marajo_group", "officium_inc"].includes(String(data.organization || "tenant_company"))) {
+      return NextResponse.json({ success: false, message: "Invalid company type." }, { status: 400 });
+    }
 
     if (!(await verifyTurnstileToken(data.turnstile_token, ip))) {
       return NextResponse.json(
@@ -54,6 +64,15 @@ export async function POST(req: NextRequest) {
     const result = await registerUser(data.email, data.password, firstName, lastName, data.phone || "", "customer");
 
     if (result.success) {
+      await upsertTenantMembership(Number((result as any).user_id), {
+        full_name: `${firstName} ${lastName}`.trim(),
+        email: data.email,
+        phone: data.phone || "",
+        company_name: String(data.company_name || "").trim(),
+        organization: String(data.organization || "tenant_company").trim(),
+        floor_number: String(data.floor_number || "").trim(),
+        unit_number: String(data.unit_number || "").trim(),
+      });
       const loginResult = await loginUser(data.email, data.password);
       if (loginResult.success && "token" in loginResult) {
         (result as any).token = loginResult.token;

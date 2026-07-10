@@ -6,7 +6,17 @@ import { useAuth } from "@/lib/AuthContext";
 export default function AuthModal() {
   const { isModalOpen, modalMode, closeModal, login, openModal } = useAuth();
   const [mode, setMode] = useState<"login" | "register">(modalMode);
-  const [form, setForm] = useState({ email: "", password: "", first_name: "", last_name: "", phone: "" });
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    first_name: "",
+    last_name: "",
+    phone: "",
+    company_name: "",
+    organization: "tenant_company",
+    floor_number: "",
+    unit_number: "",
+  });
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [turnstileEnabled, setTurnstileEnabled] = useState(false);
@@ -111,13 +121,19 @@ export default function AuthModal() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-md rounded-xl border p-6 shadow-2xl theme-panel">
+      <div className="max-h-[calc(100vh-2rem)] w-full max-w-md overflow-y-auto rounded-xl border p-6 shadow-2xl theme-panel">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold theme-heading">{mode === "login" ? "Log In" : "Create Account"}</h2>
+          <h2 className="text-xl font-bold theme-heading">{mode === "login" ? "Log In" : "Create Tenant Account"}</h2>
           <button onClick={closeModal} className="theme-muted" aria-label="Close">
             ✕
           </button>
         </div>
+
+        {mode === "register" && (
+          <div className="mb-4 rounded-md border px-3 py-2 text-sm theme-info-panel">
+            Account access is for verified Marajo Tower tenants/members only. Your company, floor, and unit details will be sent for admin review.
+          </div>
+        )}
 
         {error && <div className="mb-4 rounded-md px-3 py-2 text-sm theme-error-panel">{error}</div>}
 
@@ -172,6 +188,43 @@ export default function AuthModal() {
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
             />
           )}
+          {mode === "register" && (
+            <>
+              <select
+                className="w-full rounded-md border px-3 py-2 text-sm theme-input"
+                value={form.organization}
+                onChange={(e) => setForm({ ...form, organization: e.target.value })}
+                aria-label="Company type"
+              >
+                <option value="tenant_company">Tenant company</option>
+                <option value="marajo_group">Marajo Group</option>
+                <option value="officium_inc">Officium Inc.</option>
+              </select>
+              <input
+                required
+                placeholder="Company name"
+                className="w-full rounded-md border px-3 py-2 text-sm theme-input"
+                value={form.company_name}
+                onChange={(e) => setForm({ ...form, company_name: e.target.value })}
+              />
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  required
+                  placeholder="Floor number"
+                  className="rounded-md border px-3 py-2 text-sm theme-input"
+                  value={form.floor_number}
+                  onChange={(e) => setForm({ ...form, floor_number: e.target.value })}
+                />
+                <input
+                  required
+                  placeholder="Unit number"
+                  className="rounded-md border px-3 py-2 text-sm theme-input"
+                  value={form.unit_number}
+                  onChange={(e) => setForm({ ...form, unit_number: e.target.value })}
+                />
+              </div>
+            </>
+          )}
           <input
             type="password"
             required
@@ -192,7 +245,7 @@ export default function AuthModal() {
             disabled={busy || (turnstileEnabled && !turnstileToken)}
             className="w-full rounded-md py-2.5 text-sm font-semibold text-white disabled:opacity-60 theme-primary-button"
           >
-            {busy ? "Please wait…" : mode === "login" ? "Log In" : "Create Account"}
+            {busy ? "Please wait..." : mode === "login" ? "Log In" : "Create Tenant Account"}
           </button>
         </form>
         )}
@@ -200,9 +253,9 @@ export default function AuthModal() {
         <p className="mt-4 text-center text-sm theme-muted">
           {mode === "login" ? (
             <>
-              Don&apos;t have an account?{" "}
+              Are you a Marajo Tower tenant/member?{" "}
               <button className="font-semibold theme-link underline" onClick={() => openModal("register")}>
-                Sign up
+                Create account
               </button>
             </>
           ) : (

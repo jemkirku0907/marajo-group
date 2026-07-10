@@ -118,6 +118,12 @@
   color: var(--danger, #b91c1c);
 }
 
+.theme-info-panel {
+  background: rgba(31, 110, 52, 0.1);
+  border-color: rgba(31, 110, 52, 0.24);
+  color: var(--text-primary);
+}
+
 .theme-error-text {
   color: var(--danger, #b91c1c);
 }
@@ -126,6 +132,12 @@
   background: rgba(127, 29, 29, 0.24);
   border-color: rgba(248, 113, 113, 0.38);
   color: #fecaca;
+}
+
+.theme-dark .theme-info-panel {
+  background: rgba(125, 194, 65, 0.12);
+  border-color: rgba(125, 194, 65, 0.32);
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .theme-dark .theme-error-text {

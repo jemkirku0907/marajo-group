@@ -2199,6 +2199,7 @@ const WORK_REQUEST_STATUSES = [
   { value: "accepted", label: "Accepted" },
   { value: "in_progress", label: "In Progress" },
   { value: "done", label: "Done" },
+  { value: "declined", label: "Declined" },
 ];
 
 const requestStatusColor: Record<string, string> = {
@@ -2206,6 +2207,7 @@ const requestStatusColor: Record<string, string> = {
   accepted: "#2563eb",
   in_progress: "var(--mg-green)",
   done: "#16a34a",
+  declined: "#dc2626",
 };
 
 function TasksTab() {
@@ -2275,7 +2277,7 @@ function TasksTab() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 12, marginBottom: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(5, minmax(0, 1fr))", gap: 12, marginBottom: 16 }}>
         {WORK_REQUEST_STATUSES.map((s) => (
           <div key={s.value} style={{ ...cardStyle, padding: 16, borderLeft: `4px solid ${requestStatusColor[s.value]}` }}>
             <div style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 6 }}>{s.label}</div>
@@ -2381,6 +2383,11 @@ function TasksTab() {
                       }
                     }}
                   />
+                  {request.worker_notes && (
+                    <div style={{ marginTop: 8, color: "var(--text-muted)", fontSize: 12 }}>
+                      Worker note: {request.worker_notes}
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}

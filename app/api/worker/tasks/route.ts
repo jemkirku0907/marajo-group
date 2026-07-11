@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 
-const WORKER_VISIBLE_STATUSES = ["accepted", "confirmed", "approved", "in_progress", "done", "completed"];
-const WORKER_UPDATE_STATUSES = ["in_progress", "done"] as const;
+const WORKER_VISIBLE_STATUSES = ["accepted", "confirmed", "approved", "in_progress", "done", "completed", "declined"];
+const WORKER_UPDATE_STATUSES = ["in_progress", "done", "declined"] as const;
 type WorkerUpdateStatus = (typeof WORKER_UPDATE_STATUSES)[number];
 
 function unauthorized(message = "You must be logged in as a worker.") {
@@ -27,7 +27,9 @@ async function ensureTrackingColumns() {
   await db.execute("ALTER TABLE worker_bookings ADD COLUMN IF NOT EXISTS accepted_at TIMESTAMPTZ NULL");
   await db.execute("ALTER TABLE worker_bookings ADD COLUMN IF NOT EXISTS in_progress_at TIMESTAMPTZ NULL");
   await db.execute("ALTER TABLE worker_bookings ADD COLUMN IF NOT EXISTS done_at TIMESTAMPTZ NULL");
+  await db.execute("ALTER TABLE worker_bookings ADD COLUMN IF NOT EXISTS declined_at TIMESTAMPTZ NULL");
   await db.execute("ALTER TABLE worker_bookings ADD COLUMN IF NOT EXISTS admin_notes TEXT NULL");
+  await db.execute("ALTER TABLE worker_bookings ADD COLUMN IF NOT EXISTS worker_notes TEXT NULL");
   return true;
 }
 
@@ -48,6 +50,7 @@ function normalizeStatus(status: string | null | undefined) {
   const value = String(status ?? "pending").toLowerCase();
   if (value === "confirmed" || value === "approved" || value === "accepted") return "accepted";
   if (value === "completed" || value === "done") return "done";
+  if (value === "declined" || value === "rejected") return "declined";
   if (value === "in_progress") return "in_progress";
   return "pending";
 }
@@ -71,14 +74,22 @@ function mapAssignment(row: any) {
   const currentSince =
     status === "accepted" ? row.accepted_at || row.updated_at || row.created_at :
     status === "in_progress" ? row.in_progress_at || row.accepted_at || row.created_at :
+    status === "declined" ? row.declined_at || row.updated_at || row.created_at :
     row.done_at || row.in_progress_at || row.accepted_at || row.created_at;
 
   return {
     ...row,
     status,
-    status_label: status === "in_progress" ? "In Progress" : status === "done" ? "Done" : "Accepted",
-    current_status_age: durationLabel(currentSince, status === "done" ? row.done_at : null),
-    total_elapsed: durationLabel(row.created_at, row.done_at),
+    status_label:
+      status === "in_progress" ? "In Progress" :
+      status === "done" ? "Done" :
+      status === "declined" ? "Declined" :
+      "Accepted",
+    current_status_age: durationLabel(
+      currentSince,
+      status === "done" ? row.done_at : status === "declined" ? row.declined_at : null
+    ),
+    total_elapsed: durationLabel(row.created_at, status === "declined" ? row.declined_at : row.done_at),
   };
 }
 
@@ -98,7 +109,7 @@ export async function GET(req: NextRequest) {
   const rows = await db.query<any>(
     `SELECT id, client_name, contact_number, email, position, slots_needed, job_date,
             shift_start, shift_end, notes, status, created_at, updated_at, accepted_at,
-            in_progress_at, done_at, admin_notes
+            in_progress_at, done_at, declined_at, admin_notes, worker_notes
      FROM worker_bookings
      WHERE assigned_worker_id = ?
        AND status = ANY(?::text[])
@@ -111,8 +122,8 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     success: true,
     worker,
-    active: mapped.filter((row) => row.status !== "done"),
-    completed: mapped.filter((row) => row.status === "done"),
+    active: mapped.filter((row) => row.status !== "done" && row.status !== "declined"),
+    completed: mapped.filter((row) => row.status === "done" || row.status === "declined"),
     count: mapped.length,
   });
 }
@@ -133,6 +144,7 @@ export async function POST(req: NextRequest) {
   const data = await req.json().catch(() => ({}));
   const id = Number(data.id ?? 0);
   const status = String(data.status ?? "").toLowerCase() as WorkerUpdateStatus;
+  const workerNote = data.worker_note !== undefined ? String(data.worker_note ?? "").trim() : undefined;
   if (!id || !WORKER_UPDATE_STATUSES.includes(status)) {
     return NextResponse.json({ success: false, message: "A valid assignment id and status are required." }, { status: 400 });
   }
@@ -152,6 +164,9 @@ export async function POST(req: NextRequest) {
   if (status === "done" && currentStatus !== "in_progress") {
     return NextResponse.json({ success: false, message: "Only in-progress jobs can be marked done." }, { status: 400 });
   }
+  if (status === "declined" && currentStatus !== "accepted") {
+    return NextResponse.json({ success: false, message: "Only accepted jobs can be declined before starting." }, { status: 400 });
+  }
 
   if (status === "in_progress") {
     await db.execute(
@@ -159,21 +174,23 @@ export async function POST(req: NextRequest) {
        SET status = 'in_progress',
            accepted_at = COALESCE(accepted_at, NOW()),
            in_progress_at = COALESCE(in_progress_at, NOW()),
+           worker_notes = COALESCE(?, worker_notes),
            updated_at = NOW()
        WHERE id = ? AND assigned_worker_id = ?`,
-      [id, worker.id]
+      [workerNote ?? null, id, worker.id]
     );
     await db.execute("UPDATE workers SET availability_status = 'on_job' WHERE id = ?", [worker.id]);
-  } else {
+  } else if (status === "done") {
     await db.execute(
       `UPDATE worker_bookings
        SET status = 'done',
            accepted_at = COALESCE(accepted_at, NOW()),
            in_progress_at = COALESCE(in_progress_at, NOW()),
            done_at = COALESCE(done_at, NOW()),
+           worker_notes = COALESCE(?, worker_notes),
            updated_at = NOW()
        WHERE id = ? AND assigned_worker_id = ?`,
-      [id, worker.id]
+      [workerNote ?? null, id, worker.id]
     );
     await db.execute(
       `UPDATE workers
@@ -187,6 +204,17 @@ export async function POST(req: NextRequest) {
        WHERE id = ?`,
       [worker.id, id, worker.id]
     );
+  } else {
+    await db.execute(
+      `UPDATE worker_bookings
+       SET status = 'declined',
+           declined_at = COALESCE(declined_at, NOW()),
+           worker_notes = COALESCE(?, worker_notes),
+           updated_at = NOW()
+       WHERE id = ? AND assigned_worker_id = ?`,
+      [workerNote ?? null, id, worker.id]
+    );
+    await db.execute("UPDATE workers SET availability_status = 'available' WHERE id = ?", [worker.id]);
   }
 
   return NextResponse.json({ success: true, message: "Assignment updated." });

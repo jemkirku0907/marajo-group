@@ -8,7 +8,7 @@ function unauthorized() {
 }
 
 const PRIORITIES = ["high", "medium", "low"];
-const TRACKED_STATUSES = ["pending", "accepted", "in_progress", "done"] as const;
+const TRACKED_STATUSES = ["pending", "accepted", "in_progress", "done", "declined"] as const;
 type TrackedStatus = (typeof TRACKED_STATUSES)[number];
 
 async function tableExists(tableName: string) {
@@ -29,7 +29,9 @@ async function ensureWorkerBookingTrackingColumns() {
   await db.execute("ALTER TABLE worker_bookings ADD COLUMN IF NOT EXISTS accepted_at TIMESTAMPTZ NULL");
   await db.execute("ALTER TABLE worker_bookings ADD COLUMN IF NOT EXISTS in_progress_at TIMESTAMPTZ NULL");
   await db.execute("ALTER TABLE worker_bookings ADD COLUMN IF NOT EXISTS done_at TIMESTAMPTZ NULL");
+  await db.execute("ALTER TABLE worker_bookings ADD COLUMN IF NOT EXISTS declined_at TIMESTAMPTZ NULL");
   await db.execute("ALTER TABLE worker_bookings ADD COLUMN IF NOT EXISTS admin_notes TEXT NULL");
+  await db.execute("ALTER TABLE worker_bookings ADD COLUMN IF NOT EXISTS worker_notes TEXT NULL");
   return true;
 }
 
@@ -37,6 +39,7 @@ function normalizeStatus(status: string | null | undefined): TrackedStatus {
   const value = String(status ?? "pending").toLowerCase();
   if (value === "confirmed" || value === "approved" || value === "accepted") return "accepted";
   if (value === "completed" || value === "done") return "done";
+  if (value === "declined" || value === "rejected") return "declined";
   if (value === "in_progress") return "in_progress";
   return "pending";
 }
@@ -47,6 +50,7 @@ function statusLabel(status: TrackedStatus) {
     accepted: "Accepted",
     in_progress: "In Progress",
     done: "Done",
+    declined: "Declined",
   };
   return labels[status];
 }
@@ -71,21 +75,23 @@ function trackingFor(row: any) {
   const acceptedAt = row.accepted_at ?? null;
   const inProgressAt = row.in_progress_at ?? null;
   const doneAt = row.done_at ?? null;
+  const declinedAt = row.declined_at ?? null;
 
-  const pendingEnd = acceptedAt || inProgressAt || doneAt || (status === "pending" ? null : row.updated_at);
-  const acceptedEnd = inProgressAt || doneAt || (status === "accepted" ? null : row.updated_at);
-  const progressEnd = doneAt || (status === "in_progress" ? null : row.updated_at);
+  const pendingEnd = acceptedAt || inProgressAt || doneAt || declinedAt || (status === "pending" ? null : row.updated_at);
+  const acceptedEnd = inProgressAt || doneAt || declinedAt || (status === "accepted" ? null : row.updated_at);
+  const progressEnd = doneAt || declinedAt || (status === "in_progress" ? null : row.updated_at);
   const currentSince =
     status === "pending" ? createdAt :
     status === "accepted" ? acceptedAt || createdAt :
     status === "in_progress" ? inProgressAt || acceptedAt || createdAt :
+    status === "declined" ? declinedAt || acceptedAt || createdAt :
     doneAt || inProgressAt || acceptedAt || createdAt;
 
   return {
     status,
     status_label: statusLabel(status),
-    total_elapsed: durationLabel(createdAt, doneAt),
-    current_status_age: durationLabel(currentSince, status === "done" ? doneAt : null),
+    total_elapsed: durationLabel(createdAt, doneAt || declinedAt),
+    current_status_age: durationLabel(currentSince, status === "done" ? doneAt : status === "declined" ? declinedAt : null),
     pending_time: durationLabel(createdAt, pendingEnd),
     accepted_time: acceptedAt ? durationLabel(acceptedAt, acceptedEnd) : "Not started",
     in_progress_time: inProgressAt ? durationLabel(inProgressAt, progressEnd) : "Not started",
@@ -147,6 +153,8 @@ export async function GET(req: NextRequest) {
         where.push("wb.status IN ('accepted', 'confirmed', 'approved')");
       } else if (status === "done") {
         where.push("wb.status IN ('done', 'completed')");
+      } else if (status === "declined") {
+        where.push("wb.status IN ('declined', 'rejected')");
       } else {
         where.push("wb.status = ?");
         params.push(status);
@@ -167,14 +175,14 @@ export async function GET(req: NextRequest) {
 
     const orderBy =
       sort === "newest" ? "wb.created_at DESC" :
-      sort === "status" ? "CASE WHEN wb.status = 'pending' THEN 1 WHEN wb.status IN ('accepted','confirmed','approved') THEN 2 WHEN wb.status = 'in_progress' THEN 3 ELSE 4 END, wb.created_at ASC" :
-      "CASE WHEN wb.status IN ('done','completed') THEN 2 ELSE 1 END, wb.created_at ASC";
+      sort === "status" ? "CASE WHEN wb.status = 'pending' THEN 1 WHEN wb.status IN ('accepted','confirmed','approved') THEN 2 WHEN wb.status = 'in_progress' THEN 3 WHEN wb.status IN ('done','completed') THEN 4 ELSE 5 END, wb.created_at ASC" :
+      "CASE WHEN wb.status IN ('done','completed','declined','rejected') THEN 2 ELSE 1 END, wb.created_at ASC";
 
     const rows = await db.query(
       `SELECT wb.id, wb.client_name, wb.email, wb.contact_number, wb.position, wb.slots_needed,
               wb.job_date, wb.shift_start, wb.shift_end, wb.notes, wb.status, wb.created_at,
               wb.updated_at, wb.assigned_worker_id, wb.accepted_at, wb.in_progress_at,
-              wb.done_at, wb.admin_notes,
+              wb.done_at, wb.declined_at, wb.admin_notes, wb.worker_notes,
               u.first_name AS worker_first_name, u.last_name AS worker_last_name,
               w.position AS worker_position
        FROM worker_bookings wb
@@ -251,10 +259,14 @@ export async function POST(req: NextRequest) {
       fields.push("in_progress_at = COALESCE(in_progress_at, NOW())");
       fields.push("done_at = COALESCE(done_at, NOW())");
     }
+    if (status === "declined") {
+      fields.push("declined_at = COALESCE(declined_at, NOW())");
+    }
     if (status === "pending") {
       fields.push("accepted_at = NULL");
       fields.push("in_progress_at = NULL");
       fields.push("done_at = NULL");
+      fields.push("declined_at = NULL");
     }
 
     values.push(id);

@@ -59,24 +59,31 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
   }, [pathname]);
 
   React.useEffect(() => {
-    const hasHeroBlend = pathname === "/" || pathname === "/about" || pathname === "/properties" || pathname === "/news" || pathname === "/contact";
+    const isPropertyDetail = Boolean(pathname?.startsWith("/properties/"));
+    const hasHeroBlend = pathname === "/" || pathname === "/about" || pathname === "/properties" || pathname === "/news" || pathname === "/contact" || isPropertyDetail;
     document.body.classList.toggle("has-hero-header", hasHeroBlend);
+    document.body.classList.toggle("has-property-hero-header", isPropertyDetail);
 
-    const updateScrolled = () => setScrolled(window.scrollY > 24);
+    const updateScrolled = () => {
+      const propertyHeroThreshold = Math.min(window.innerHeight * 0.78, 720);
+      setScrolled(window.scrollY > (isPropertyDetail ? propertyHeroThreshold : 24));
+    };
     updateScrolled();
     window.addEventListener("scroll", updateScrolled, { passive: true });
 
     return () => {
       document.body.classList.remove("has-hero-header");
+      document.body.classList.remove("has-property-hero-header");
       window.removeEventListener("scroll", updateScrolled);
     };
   }, [pathname]);
 
   const isServiceActive = SERVICE_LINKS.some((l) => pathname?.startsWith(l.href));
-  const hasHeroBlend = pathname === "/" || pathname === "/about" || pathname === "/properties" || pathname === "/news" || pathname === "/contact";
+  const isPropertyDetail = Boolean(pathname?.startsWith("/properties/"));
+  const hasHeroBlend = pathname === "/" || pathname === "/about" || pathname === "/properties" || pathname === "/news" || pathname === "/contact" || isPropertyDetail;
 
   return (
-    <header className={`site-header${hasHeroBlend ? " site-header--hero" : ""}${scrolled || mobileMenuOpen ? " is-scrolled" : ""}`}>
+    <header className={`site-header${hasHeroBlend ? " site-header--hero" : ""}${isPropertyDetail ? " site-header--property" : ""}${scrolled || mobileMenuOpen ? " is-scrolled" : ""}`}>
       <Container className="navbar">
         <Link href="/" className="brand">
           <img src="/assets/logo.png" alt="Marajo Group" className="site-logo" width={42} height={49} fetchPriority="high" />

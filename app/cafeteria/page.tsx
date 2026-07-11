@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CafeteriaHeroSlider from "./CafeteriaHeroSlider";
 
 const cafeteriaImages = [
   {
@@ -17,31 +18,102 @@ const cafeteriaImages = [
 
 export default function CafeteriaPage() {
   return (
-    <main className="cafeteria-page">
-      <section className="cafeteria-hero">
-        <div className="container cafeteria-hero-grid">
-          <div className="cafeteria-copy">
-            <span className="hero-label">Marajo Cafeteria</span>
-            <h1>Fresh meals and daily convenience inside the building.</h1>
+    <main className="booking-page cafeteria-page">
+      <section className="platform-hero cafeteria-platform-hero">
+        <div className="container platform-hero-grid">
+          <div>
+            <span className="platform-eyebrow">Marajo Cafeteria</span>
+            <h1>Meals, snacks, and tenant convenience in one place.</h1>
             <p>
-              A simple cafeteria preview for tenants, staff, and guests. Online ordering will connect to Enstack once the store link is ready.
+              Preview the cafeteria space today. Online ordering will connect to Enstack once the store link is ready.
             </p>
-            <div className="hero-actions">
-              <a className="btn-primary" href="#cafeteria-ordering">
+            <div className="platform-hero-actions">
+              <a href="#order" className="btn-primary">
                 Order via Enstack
               </a>
-              <Link className="btn-secondary" href="/contact">
+              <Link href="/contact" className="btn-secondary">
                 Ask About Cafeteria
               </Link>
             </div>
           </div>
 
-          <div className="cafeteria-feature-photo">
-            <img src="/assets/cafeteria1.jpg" alt="Marajo cafeteria dining area" />
-            <div className="cafeteria-photo-chip">
-              <span>Now Previewing</span>
-              <strong>Cafeteria</strong>
+          <div className="platform-preview cafeteria-preview">
+            <CafeteriaHeroSlider />
+            <div className="platform-status-strip">
+              <span>
+                <strong>Location</strong>
+                Marajo Tower
+              </span>
+              <span>
+                <strong>Status</strong>
+                Preview Only
+              </span>
+              <span>
+                <strong>Ordering</strong>
+                Enstack Soon
+              </span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="order" className="booking-section cafeteria-booking-section">
+        <div className="container">
+          <nav className="booking-steps" aria-label="Cafeteria ordering steps">
+            {["Preview Menu", "Order Online", "Pick Up"].map((label, index) => (
+              <button key={label} className={`booking-step-btn${index === 0 ? " active" : ""}`} type="button">
+                <span className="booking-step-num">{index + 1}</span>
+                <span>{label}</span>
+              </button>
+            ))}
+          </nav>
+
+          <div className="booking-columns">
+            <div className="booking-card">
+              <div className="booking-card-header">
+                <h2>Cafeteria Ordering</h2>
+                <span className="status-pill warn">Coming Soon</span>
+              </div>
+              <div className="booking-card-body cafeteria-order-body">
+                <p>
+                  For now, this page is a visual preview of the cafeteria. The ordering button is ready as the future entry point for Enstack.
+                </p>
+                <div className="cafeteria-order-actions">
+                  <a className="btn-primary" href="#" aria-disabled="true">
+                    Order via Enstack
+                  </a>
+                  <Link className="btn-secondary" href="/contact">
+                    Contact Admin
+                  </Link>
+                </div>
+                <div className="booking-message platform-message is-visible cafeteria-note">
+                  Enstack URL not connected yet. Once available, this button will go directly to online ordering.
+                </div>
+              </div>
+            </div>
+
+            <aside className="booking-summary-card">
+              <div className="summary-card-head">
+                <h3>Cafeteria Summary</h3>
+                <span className="status-pill">Available Preview</span>
+              </div>
+              <div className="summary-row">
+                <span className="summary-row-label">Service</span>
+                <span className="summary-row-value">Cafeteria</span>
+              </div>
+              <div className="summary-row">
+                <span className="summary-row-label">Ordering</span>
+                <span className="summary-row-value">Enstack</span>
+              </div>
+              <div className="summary-row">
+                <span className="summary-row-label">Payment</span>
+                <span className="summary-row-value">Coming Soon</span>
+              </div>
+              <div className="summary-next-step">
+                <h4>Next Step</h4>
+                <p>Send the Enstack store link when ready and this CTA can be switched from placeholder to live ordering.</p>
+              </div>
+            </aside>
           </div>
         </div>
       </section>
@@ -61,21 +133,6 @@ export default function CafeteriaPage() {
               </figure>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="section" id="cafeteria-ordering">
-        <div className="container cafeteria-order-panel">
-          <div>
-            <span className="hero-label">Ordering</span>
-            <h2>Enstack ordering link coming soon.</h2>
-            <p>
-              This button is ready as the ordering entry point. Once the Enstack store URL is available, this will point directly to the cafeteria ordering page.
-            </p>
-          </div>
-          <a className="btn-primary" href="#" aria-disabled="true">
-            Order via Enstack
-          </a>
         </div>
       </section>
     </main>

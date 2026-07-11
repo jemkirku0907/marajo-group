@@ -5449,92 +5449,122 @@ table td {
   text-decoration: none;
 }
 
-/* Cafeteria preview */
-.cafeteria-page {
-  background:
-    radial-gradient(circle at 12% 10%, rgba(122, 201, 67, 0.12), transparent 32%),
-    linear-gradient(180deg, var(--surface), var(--surface-soft));
+/* Cafeteria booking preview */
+.cafeteria-platform-hero {
+  min-height: auto;
+  padding: clamp(3.5rem, 7vh, 5.5rem) 0 clamp(2.5rem, 6vh, 4rem);
 }
 
-.cafeteria-hero {
-  min-height: calc(100svh - 88px);
-  display: flex;
-  align-items: center;
-  padding: clamp(5rem, 9vh, 7rem) 0 clamp(3rem, 7vh, 5rem);
-  background:
-    linear-gradient(135deg, rgba(5, 30, 16, 0.92), rgba(18, 72, 35, 0.74)),
-    url("/assets/cafeteria1.jpg") center / cover;
-  color: #fff;
-}
-
-.cafeteria-hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
-  gap: clamp(2rem, 5vw, 5rem);
+.cafeteria-platform-hero .platform-hero-grid {
   align-items: center;
 }
 
-.cafeteria-copy {
-  max-width: 720px;
+.cafeteria-platform-hero h1 {
+  max-width: 760px;
+  font-size: clamp(2.7rem, 5.4vw, 5.25rem);
+  line-height: 0.98;
 }
 
-.cafeteria-copy h1 {
-  margin: 1.2rem 0;
-  font-size: clamp(3rem, 7vw, 6.4rem);
-  line-height: 0.95;
-  color: #fff;
+.cafeteria-platform-hero p {
+  max-width: 640px;
 }
 
-.cafeteria-copy p {
-  max-width: 620px;
-  margin: 0 0 1.8rem;
-  color: rgba(255, 255, 255, 0.86);
-  font-size: clamp(1rem, 1.3vw, 1.2rem);
-  line-height: 1.8;
+.cafeteria-preview {
+  overflow: hidden;
+  padding: 0;
 }
 
-.cafeteria-feature-photo {
+.cafeteria-slider {
   position: relative;
   overflow: hidden;
-  min-height: clamp(420px, 62vh, 680px);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 24px;
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
+  width: 100%;
+  min-height: clamp(340px, 44vw, 540px);
+  border-radius: 24px 24px 0 0;
+  background: #07140d;
 }
 
-.cafeteria-feature-photo img,
-.cafeteria-card img {
+.cafeteria-slide {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
+  opacity: 0;
+  transform: scale(1.035);
+  transition: opacity 700ms ease, transform 1600ms ease;
 }
 
-.cafeteria-photo-chip {
+.cafeteria-slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.cafeteria-slider::after {
+  content: "";
   position: absolute;
-  right: 1.25rem;
-  bottom: 1.25rem;
-  width: min(260px, calc(100% - 2.5rem));
-  padding: 1rem 1.15rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 16px;
-  background: rgba(8, 32, 18, 0.78);
-  color: #fff;
-  backdrop-filter: blur(14px);
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(4, 22, 11, 0.05), rgba(4, 22, 11, 0.28));
 }
 
-.cafeteria-photo-chip span {
-  display: block;
-  margin-bottom: 0.3rem;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.cafeteria-slider-dots {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 2;
+  display: inline-flex;
+  gap: 0.45rem;
+  padding: 0.45rem;
+  border-radius: 999px;
+  background: rgba(6, 30, 15, 0.62);
+  backdrop-filter: blur(12px);
 }
 
-.cafeteria-photo-chip strong {
-  font-size: 1.45rem;
+.cafeteria-slider-dots button {
+  width: 0.58rem;
+  height: 0.58rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+  cursor: pointer;
+  transition: width 220ms ease, background-color 220ms ease;
+}
+
+.cafeteria-slider-dots button.is-active {
+  width: 1.35rem;
+  background: var(--mg-green-bright);
+}
+
+.cafeteria-preview .platform-status-strip {
+  border-radius: 0;
+}
+
+.cafeteria-booking-section {
+  padding-top: clamp(2rem, 5vh, 3.5rem);
+}
+
+.cafeteria-order-body {
+  display: grid;
+  gap: 1rem;
+}
+
+.cafeteria-order-body p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.cafeteria-order-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.cafeteria-note {
+  margin-top: 0.25rem;
+  background: rgba(245, 158, 11, 0.1);
+  color: #92400e;
 }
 
 .cafeteria-gallery {
@@ -5544,7 +5574,7 @@ table td {
 }
 
 .cafeteria-card {
-  min-height: 420px;
+  min-height: 340px;
   margin: 0;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -5553,36 +5583,18 @@ table td {
   box-shadow: var(--shadow-soft);
 }
 
+.cafeteria-card img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
 .cafeteria-card:first-child {
   grid-column: span 2;
 }
 
-.cafeteria-order-panel {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-  justify-content: space-between;
-  padding: clamp(1.5rem, 4vw, 2.5rem);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  background: var(--surface);
-  box-shadow: var(--shadow-soft);
-}
-
-.cafeteria-order-panel h2 {
-  margin: 0.85rem 0 0.65rem;
-  font-size: clamp(2rem, 4vw, 3.8rem);
-}
-
-.cafeteria-order-panel p {
-  max-width: 680px;
-  margin: 0;
-  color: var(--text-muted);
-  line-height: 1.7;
-}
-
 @media (max-width: 980px) {
-  .cafeteria-hero-grid,
   .cafeteria-gallery {
     grid-template-columns: 1fr;
   }
@@ -5591,28 +5603,20 @@ table td {
     grid-column: auto;
   }
 
-  .cafeteria-feature-photo,
   .cafeteria-card {
     min-height: 360px;
-  }
-
-  .cafeteria-order-panel {
-    align-items: flex-start;
-    flex-direction: column;
   }
 }
 
 @media (max-width: 560px) {
-  .cafeteria-hero {
-    min-height: auto;
-    padding-top: 4rem;
+  .cafeteria-platform-hero h1 {
+    font-size: clamp(2.25rem, 12vw, 3.4rem);
   }
 
-  .cafeteria-copy h1 {
-    font-size: clamp(2.55rem, 14vw, 4rem);
+  .cafeteria-slider {
+    min-height: 280px;
   }
 
-  .cafeteria-feature-photo,
   .cafeteria-card {
     min-height: 300px;
     border-radius: 18px;

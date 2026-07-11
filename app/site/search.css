@@ -1754,10 +1754,10 @@ button[type="submit"].btn-primary:hover {
 }
 
 .property-hero-content {
-  bottom: clamp(5.6rem, 9vw, 6.7rem);
+  bottom: clamp(6.2rem, 8vw, 7.2rem);
   display: grid;
-  gap: clamp(0.9rem, 1.7vw, 1.25rem);
-  width: min(650px, calc(100% - clamp(2.5rem, 10vw, 9.6rem)));
+  gap: clamp(0.65rem, 1.2vw, 1rem);
+  width: min(620px, calc(100% - clamp(2.5rem, 10vw, 9.6rem)));
 }
 
 .property-hero-wordmark {
@@ -1767,7 +1767,7 @@ button[type="submit"].btn-primary:hover {
   gap: 0 0.24em;
   margin: 0;
   color: #ffffff;
-  font-size: clamp(2.5rem, 6vw, 6rem);
+  font-size: clamp(2.35rem, 5vw, 4.8rem);
   font-weight: 900;
   line-height: 1.02;
   letter-spacing: 0;

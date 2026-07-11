@@ -1,21 +1,6 @@
 import Link from "next/link";
 import CafeteriaHeroSlider from "./CafeteriaHeroSlider";
 
-const cafeteriaImages = [
-  {
-    src: "/assets/cafeteria1.jpg",
-    alt: "Marajo cafeteria dining area with tables and seating",
-  },
-  {
-    src: "/assets/cafeteria%202.jpg",
-    alt: "Marajo cafeteria serving counter with prepared food",
-  },
-  {
-    src: "/assets/cafeteria3.jpg",
-    alt: "Marajo cafeteria food counter and kitchen service area",
-  },
-];
-
 export default function CafeteriaPage() {
   return (
     <main className="booking-page cafeteria-page">
@@ -40,18 +25,18 @@ export default function CafeteriaPage() {
           <div className="platform-preview cafeteria-preview">
             <CafeteriaHeroSlider />
             <div className="platform-status-strip">
-              <span>
+              <div>
                 <strong>Location</strong>
-                Marajo Tower
-              </span>
-              <span>
+                <span>Marajo Tower</span>
+              </div>
+              <div>
                 <strong>Status</strong>
-                Preview Only
-              </span>
-              <span>
+                <span>Preview Only</span>
+              </div>
+              <div>
                 <strong>Ordering</strong>
-                Enstack Soon
-              </span>
+                <span>Enstack Soon</span>
+              </div>
             </div>
           </div>
         </div>
@@ -71,10 +56,16 @@ export default function CafeteriaPage() {
           <div className="booking-columns">
             <div className="booking-card">
               <div className="booking-card-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M4 10h16" />
+                  <path d="M5 10l1.5 9h11L19 10" />
+                  <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                </svg>
                 <h2>Cafeteria Ordering</h2>
-                <span className="status-pill warn">Coming Soon</span>
+                <span className="header-badge">Step 1</span>
               </div>
               <div className="booking-card-body cafeteria-order-body">
+                <p className="form-section-label">Ordering Status</p>
                 <p>
                   For now, this page is a visual preview of the cafeteria. The ordering button is ready as the future entry point for Enstack.
                 </p>
@@ -93,10 +84,26 @@ export default function CafeteriaPage() {
             </div>
 
             <aside className="booking-summary-card">
-              <div className="summary-card-head">
+              <div className="summary-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M3 11h18" />
+                  <path d="M5 11l1 8h12l1-8" />
+                  <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                </svg>
                 <h3>Cafeteria Summary</h3>
-                <span className="status-pill">Available Preview</span>
               </div>
+              <div className="summary-property">
+                <div className="summary-property-icon">
+                  <svg fill="currentColor" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 3h16v4H4V3Zm1 6h14l-1.2 12H6.2L5 9Zm4 2v7h2v-7H9Zm4 0v7h2v-7h-2Z" />
+                  </svg>
+                </div>
+                <div className="summary-property-info">
+                  <strong>Marajo Cafeteria</strong>
+                  <span>Marajo Tower tenant dining</span>
+                </div>
+              </div>
+              <div className="summary-rows">
               <div className="summary-row">
                 <span className="summary-row-label">Service</span>
                 <span className="summary-row-value">Cafeteria</span>
@@ -109,29 +116,12 @@ export default function CafeteriaPage() {
                 <span className="summary-row-label">Payment</span>
                 <span className="summary-row-value">Coming Soon</span>
               </div>
+              </div>
               <div className="summary-next-step">
                 <h4>Next Step</h4>
                 <p>Send the Enstack store link when ready and this CTA can be switched from placeholder to live ordering.</p>
               </div>
             </aside>
-          </div>
-        </div>
-      </section>
-
-      <section className="section cafeteria-gallery-section">
-        <div className="container">
-          <div className="section-heading">
-            <span>Dining Space</span>
-            <h2>Cafeteria photos</h2>
-            <p>Current preview images while online ordering is being prepared.</p>
-          </div>
-
-          <div className="cafeteria-gallery">
-            {cafeteriaImages.map((image) => (
-              <figure className="cafeteria-card" key={image.src}>
-                <img src={image.src} alt={image.alt} loading="lazy" />
-              </figure>
-            ))}
           </div>
         </div>
       </section>

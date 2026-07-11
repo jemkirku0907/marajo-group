@@ -5452,7 +5452,7 @@ table td {
 /* Cafeteria booking preview */
 .cafeteria-platform-hero {
   min-height: auto;
-  padding: clamp(3.5rem, 7vh, 5.5rem) 0 clamp(2.5rem, 6vh, 4rem);
+  padding: 5rem 0 4rem;
 }
 
 .cafeteria-platform-hero .platform-hero-grid {
@@ -5461,8 +5461,8 @@ table td {
 
 .cafeteria-platform-hero h1 {
   max-width: 760px;
-  font-size: clamp(2.7rem, 5.4vw, 5.25rem);
-  line-height: 0.98;
+  font-size: clamp(1.65rem, 3.5vw, 2.5rem);
+  line-height: 1.2;
 }
 
 .cafeteria-platform-hero p {
@@ -5478,7 +5478,8 @@ table td {
   position: relative;
   overflow: hidden;
   width: 100%;
-  min-height: clamp(340px, 44vw, 540px);
+  height: 280px;
+  min-height: 0;
   border-radius: 24px 24px 0 0;
   background: #07140d;
 }
@@ -5490,6 +5491,7 @@ table td {
   height: 100%;
   display: block;
   object-fit: cover;
+  object-position: center 58%;
   opacity: 0;
   transform: scale(1.035);
   transition: opacity 700ms ease, transform 1600ms ease;
@@ -5540,8 +5542,21 @@ table td {
   border-radius: 0;
 }
 
+.cafeteria-preview .platform-status-strip > div {
+  min-width: 0;
+}
+
 .cafeteria-booking-section {
   padding-top: clamp(2rem, 5vh, 3.5rem);
+}
+
+.cafeteria-booking-section .booking-columns {
+  align-items: stretch;
+}
+
+.cafeteria-booking-section .booking-card,
+.cafeteria-booking-section .booking-summary-card {
+  min-height: 100%;
 }
 
 .cafeteria-order-body {
@@ -5567,58 +5582,18 @@ table td {
   color: #92400e;
 }
 
-.cafeteria-gallery {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1rem, 2vw, 1.5rem);
-}
-
-.cafeteria-card {
-  min-height: 340px;
-  margin: 0;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  background: var(--surface);
-  box-shadow: var(--shadow-soft);
-}
-
-.cafeteria-card img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-}
-
-.cafeteria-card:first-child {
-  grid-column: span 2;
-}
-
 @media (max-width: 980px) {
-  .cafeteria-gallery {
-    grid-template-columns: 1fr;
-  }
-
-  .cafeteria-card:first-child {
-    grid-column: auto;
-  }
-
-  .cafeteria-card {
-    min-height: 360px;
+  .cafeteria-slider {
+    height: 240px;
   }
 }
 
 @media (max-width: 560px) {
   .cafeteria-platform-hero h1 {
-    font-size: clamp(2.25rem, 12vw, 3.4rem);
+    font-size: clamp(1.8rem, 9vw, 2.45rem);
   }
 
   .cafeteria-slider {
-    min-height: 280px;
-  }
-
-  .cafeteria-card {
-    min-height: 300px;
-    border-radius: 18px;
+    height: 220px;
   }
 }

@@ -2480,7 +2480,7 @@ body.mobile-open.has-property-hero-header .site-header.site-header--property {
 .property-detail-page .property-hero-content {
   left: clamp(1.25rem, 6vw, 6.5rem);
   right: clamp(1.25rem, 6vw, 6.5rem);
-  bottom: clamp(7.25rem, 13vh, 9.5rem);
+  bottom: clamp(9.5rem, 15vh, 11.75rem);
   width: min(690px, calc(100vw - clamp(2.5rem, 12vw, 13rem)));
 }
 
@@ -2499,7 +2499,7 @@ body.mobile-open.has-property-hero-header .site-header.site-header--property {
 
 .property-detail-page .property-hero-carousel-controls {
   right: clamp(1rem, 5vw, 5.5rem);
-  bottom: clamp(7rem, 12vh, 8.5rem);
+  bottom: clamp(9.25rem, 14vh, 10.75rem);
 }
 
 @media (max-width: 900px) {

@@ -1749,8 +1749,8 @@ button[type="submit"].btn-primary:hover {
 
 /* Site-wide property detail fixes: normal heading flow, single stat strip, consistent media sizing. */
 .property-hero-card {
-  height: clamp(560px, 68svh, 680px);
-  max-height: 680px;
+  height: clamp(430px, 54svh, 540px);
+  max-height: 540px;
 }
 
 .property-hero-content {
@@ -2065,8 +2065,8 @@ html.theme-dark .visitor-counter strong {
 
 @media (max-width: 900px) {
   .property-hero-card {
-    height: 700px;
-    max-height: 700px;
+    height: clamp(480px, 68svh, 560px);
+    max-height: 560px;
   }
 
   .property-hero-content {
@@ -2103,8 +2103,8 @@ html.theme-dark .visitor-counter strong {
   }
 
   .property-hero-card {
-    height: clamp(660px, 176vw, 720px);
-    max-height: 720px;
+    height: clamp(540px, 142vw, 620px);
+    max-height: 620px;
     border-radius: 22px;
   }
 

@@ -20,6 +20,7 @@ const SERVICE_LINKS = [
   { href: "/parking", label: "Parking" },
   { href: "/workforce", label: "Workforce" },
   { href: "/facilities", label: "Facilities" },
+  { href: "/cafeteria", label: "Cafeteria" },
 ];
 
 function initials(name: string) {

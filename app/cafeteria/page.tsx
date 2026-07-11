@@ -104,22 +104,18 @@ export default function CafeteriaPage() {
                 </div>
               </div>
               <div className="summary-rows">
-              <div className="summary-row">
-                <span className="summary-row-label">Service</span>
-                <span className="summary-row-value">Cafeteria</span>
-              </div>
-              <div className="summary-row">
-                <span className="summary-row-label">Ordering</span>
-                <span className="summary-row-value">Enstack</span>
-              </div>
-              <div className="summary-row">
-                <span className="summary-row-label">Payment</span>
-                <span className="summary-row-value">Coming Soon</span>
-              </div>
-              </div>
-              <div className="summary-next-step">
-                <h4>Next Step</h4>
-                <p>Send the Enstack store link when ready and this CTA can be switched from placeholder to live ordering.</p>
+                <div className="summary-row">
+                  <span className="summary-row-label">Service</span>
+                  <span className="summary-row-value">Cafeteria</span>
+                </div>
+                <div className="summary-row">
+                  <span className="summary-row-label">Ordering</span>
+                  <span className="summary-row-value">Enstack</span>
+                </div>
+                <div className="summary-row">
+                  <span className="summary-row-label">Payment</span>
+                  <span className="summary-row-value">Coming Soon</span>
+                </div>
               </div>
             </aside>
           </div>

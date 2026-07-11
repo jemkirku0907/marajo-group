@@ -53,31 +53,98 @@ export interface Property {
 }
 
 const marajoTowerImages = [
-  "/assets/IMG_0359.jpg",
-  "/assets/IMG_0360.jpg",
-  "/assets/IMG_0361.jpg",
-  "/assets/IMG_0362.jpg",
-  "/assets/IMG_0363.jpg",
-  "/assets/IMG_0364.jpg",
-  "/assets/IMG_0365.jpg",
-  "/assets/IMG_0367.jpg",
-  "/assets/IMG_0368.jpg",
-  "/assets/IMG_0369.jpg",
-  "/assets/IMG_0370.jpg",
-  "/assets/IMG_0371.jpg",
-  "/assets/IMG_0372.jpg",
-  "/assets/IMG_0373.jpg",
-  "/assets/IMG_0374.jpg",
-  "/assets/IMG_0375.jpg",
-  "/assets/IMG_0376.jpg",
-  "/assets/IMG_0377.jpg",
-  "/assets/IMG_0378.jpg",
-  "/assets/IMG_0379.jpg",
-  "/assets/IMG_0380.jpg",
-  "/assets/IMG_0381.jpg",
-  "/assets/IMG_0382.jpg",
-  "/assets/IMG_0383.jpg",
-  "/assets/IMG_0384.jpg",
+  "/images/properties/marajo-tower/01-marajo-tower-full.jpg",
+  "/images/properties/marajo-tower/03-marajo-tower-8.jpg",
+  "/images/properties/marajo-tower/05-marajo-tower-2.jpg",
+  "/images/properties/marajo-tower/07-marajo-tower-1.jpg",
+  "/images/properties/marajo-tower/09-marajo-tower-4.jpg",
+  "/images/properties/marajo-tower/11-marajo-tower-3.jpg",
+  "/images/properties/marajo-tower/13-marajo-tower-5.jpg",
+  "/images/properties/marajo-tower/15-marajo-tower-7.jpg",
+];
+
+const salcedoTowersImages = [
+  "/images/properties/salcedo-towers/01-salcedo-towers-16.jpg",
+  "/images/properties/salcedo-towers/03-salcedo-towers-7.jpg",
+  "/images/properties/salcedo-towers/05-salcedo-towers-8.jpg",
+  "/images/properties/salcedo-towers/07-salcedo-towers-9.jpg",
+  "/images/properties/salcedo-towers/09-salcedo-towers-1.jpg",
+  "/images/properties/salcedo-towers/11-salcedo-towers-2.jpg",
+  "/images/properties/salcedo-towers/13-salcedo-towers-3.jpg",
+  "/images/properties/salcedo-towers/15-salcedo-towers-4.jpg",
+  "/images/properties/salcedo-towers/17-salcedo-towers-6.jpg",
+  "/images/properties/salcedo-towers/19-salcedo-towers-14.jpg",
+  "/images/properties/salcedo-towers/21-salcedo-towers-10.jpg",
+  "/images/properties/salcedo-towers/23-salcedo-towers-11.jpg",
+];
+
+const mrjCenterImages = [
+  "/images/properties/mrj-center/01-mrj-center.jpg",
+  "/images/properties/mrj-center/03-mrj-center-a.jpg",
+  "/images/properties/mrj-center/05-marajo-corporate-center-1.jpg",
+  "/images/properties/mrj-center/07-marajo-corporate-center-2.jpg",
+  "/images/properties/mrj-center/09-marajo-corporate-center-3.jpg",
+  "/images/properties/mrj-center/11-marajo-corporate-center-5.jpg",
+];
+
+const ceoFlatsImages = [
+  "/images/properties/ceo-flats/01-ceo-flats-1.jpg",
+  "/images/properties/ceo-flats/03-ceo-flats-2.jpg",
+  "/images/properties/ceo-flats/05-ceo-flats-6.jpg",
+  "/images/properties/ceo-flats/07-ceo-flats-7.jpg",
+];
+
+const hightownQuartersBurgosImages = [
+  "/images/properties/hightown-quarters-burgos/01-hightown-quarters-burgos-1.jpg",
+  "/images/properties/hightown-quarters-burgos/03-hightown-quarters-burgos-2.jpg",
+  "/images/properties/hightown-quarters-burgos/05-hightown-quarters-burgos-5.jpg",
+  "/images/properties/hightown-quarters-burgos/07-hightown-quarters-burgos-4.jpg",
+  "/images/properties/hightown-quarters-burgos/09-hightown-quarters-burgos-3.jpg",
+];
+
+const muroSiargaoImages = [
+  "/images/properties/muro-siargao/01-main-photo.jpg",
+  "/images/properties/muro-siargao/03-muro-siargao-1.jpg",
+  "/images/properties/muro-siargao/05-muro-siargao-2.jpg",
+  "/images/properties/muro-siargao/07-muro-siargao-3.jpg",
+  "/images/properties/muro-siargao/09-muro-siargao-4.jpg",
+  "/images/properties/muro-siargao/11-muro-siargao-5.jpg",
+  "/images/properties/muro-siargao/13-muro-siargao-6.jpg",
+  "/images/properties/muro-siargao/15-muro-siargao-7.jpg",
+  "/images/properties/muro-siargao/17-muro-siargao-8.jpg",
+  "/images/properties/muro-siargao/19-muro-siargao-9.jpg",
+  "/images/properties/muro-siargao/21-muro-siargao-10.jpg",
+  "/images/properties/muro-siargao/23-muro-siargao-11.jpg",
+  "/images/properties/muro-siargao/25-muro-siargao-12.jpg",
+];
+
+const hightownQuartersPalmaImages = [
+  "/images/properties/hightown-quarters-palma/01-hq-palma-ver2.jpg",
+  "/images/properties/hightown-quarters-palma/03-entrance.jpg",
+  "/images/properties/hightown-quarters-palma/04-lobby.jpg",
+  "/images/properties/hightown-quarters-palma/06-indoor-open-area.jpg",
+  "/images/properties/hightown-quarters-palma/08-function-area.jpg",
+  "/images/properties/hightown-quarters-palma/10-roof-deck-b.jpg",
+  "/images/properties/hightown-quarters-palma/12-roof-deck-a.jpg",
+  "/images/properties/hightown-quarters-palma/14-basement-parking.jpg",
+];
+
+const spaceSolutionsImages = [
+  "/images/properties/space-solutions/01-space-solution-a.jpg",
+  "/images/properties/space-solutions/03-main-lobby-view-01.jpg",
+  "/images/properties/space-solutions/05-typ-2f-3f-view-01.jpg",
+];
+
+const hightownQuartersAlfonsoImages = [
+  "/images/properties/hightown-quarters-alfonso/01-hightown-quarters-alfonso-1.jpg",
+  "/images/properties/hightown-quarters-alfonso/03-hightown-quarters-alfonso-2.jpg",
+];
+
+const hightownQuartersAlbertImages = [
+  "/images/properties/hightown-quarters-albert/01-hightown-quarters-albert-1.jpg",
+  "/images/properties/hightown-quarters-albert/03-hightown-quarters-albert-2.jpg",
+  "/images/properties/hightown-quarters-albert/05-hightown-quarters-albert-3.jpg",
+  "/images/properties/hightown-quarters-albert/07-hightown-quarters-albert-4.jpg",
 ];
 
 export const properties: Property[] = [
@@ -87,7 +154,7 @@ export const properties: Property[] = [
     category: "office",
     categoryLabel: "Office",
     location: "BGC, Taguig",
-    image: "/assets/marajo-tower.jpg",
+    image: marajoTowerImages[0],
     heroImages: marajoTowerImages,
     galleryImages: marajoTowerImages,
     cardDescription:
@@ -103,7 +170,7 @@ export const properties: Property[] = [
       heading: "Exceptional residential living with premium amenities and thoughtful planning.",
       paragraph:
         "Marajo Tower offers a refined collection of studio, one-bedroom, and two-bedroom suites with expansive city views, generous amenity spaces, and elevated finishes throughout.",
-      image: "/assets/marajo-tower.jpg",
+      image: marajoTowerImages[0],
       specs: [
         { label: "Floors", value: "30 storeys" },
         { label: "Units", value: "220 premium residences" },
@@ -147,14 +214,14 @@ export const properties: Property[] = [
         label: "Meeting Room",
         description: "Professional meeting space for tenant briefings, client sessions, and team planning.",
         rateLabel: "PHP 1,500 / hour",
-        image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&h=600&fit=crop&auto=format",
+        image: marajoTowerImages[2],
       },
       {
         type: "court",
         label: "Multi-Purpose Court",
         description: "Hourly court reservation at Marajo Tower with instant availability checking.",
         rateLabel: "PHP 1,000 / hour",
-        image: "/assets/marajo-tower.jpg",
+        image: marajoTowerImages[0],
       },
     ],
   },
@@ -164,9 +231,9 @@ export const properties: Property[] = [
     category: "mixed",
     categoryLabel: "Mixed-Use",
     location: "Salcedo Village",
-    image: "/assets/SALCEDO-TOWERS.jpg",
-    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
-    heroImages: ["/assets/SALCEDO-TOWERS.jpg"],
+    image: salcedoTowersImages[0],
+    heroImages: salcedoTowersImages,
+    galleryImages: salcedoTowersImages,
     cardDescription:
       "Elevated mixed-use development with residential suites and office spaces in a prime Makati address.",
     hasDetailPage: true,
@@ -180,7 +247,7 @@ export const properties: Property[] = [
       heading: "Designed for executives, professionals, and modern families seeking a central premium base.",
       paragraph:
         "Salcedo Towers provides a distinctive mixed-use environment with residential units, office-ready floors, amenity terraces, and immediate access to Makati's business and lifestyle districts.",
-      image: "/assets/SALCEDO-TOWERS.jpg",
+      image: salcedoTowersImages[0],
       specs: [
         { label: "Location", value: "Salcedo Village, Makati" },
         { label: "Type", value: "Mixed-use residential and office" },
@@ -224,7 +291,7 @@ export const properties: Property[] = [
         label: "Residential Suite",
         description: "Overnight stay request for Salcedo Towers residential suites in Makati.",
         rateLabel: "Rate on request",
-        image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&h=600&fit=crop&auto=format",
+        image: salcedoTowersImages[2],
       },
     ],
   },
@@ -234,9 +301,9 @@ export const properties: Property[] = [
     category: "office",
     categoryLabel: "Office",
     location: "Makati City",
-    image: "/assets/mrj.jpg",
-    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
-    heroImages: ["/assets/mrj.jpg"],
+    image: mrjCenterImages[0],
+    heroImages: mrjCenterImages,
+    galleryImages: mrjCenterImages,
     cardDescription:
       "Office and commercial building in Makati Poblacion designed for business operations, service teams, and client-facing work.",
     hasDetailPage: true,
@@ -250,7 +317,7 @@ export const properties: Property[] = [
       heading: "Office and commercial spaces built for practical business use in Makati.",
       paragraph:
         "MRJ Center is an office/commercial building in the developing vicinity of Makati Poblacion. It supports business operations with accessible commercial spaces, efficient floor planning, and a location suited for teams, tenants, and client-facing services.",
-      image: "/assets/mrj.jpg",
+      image: mrjCenterImages[0],
       specs: [
         { label: "Category", value: "Office / Commercial Building" },
         { label: "Location", value: "Makati Poblacion" },
@@ -295,9 +362,9 @@ export const properties: Property[] = [
     category: "residential",
     categoryLabel: "Residential",
     location: "Makati City",
-    image: "/assets/ceoflats.jpg",
-    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
-    heroImages: ["/assets/ceoflats.jpg"],
+    image: ceoFlatsImages[0],
+    heroImages: ceoFlatsImages,
+    galleryImages: ceoFlatsImages,
     cardDescription: "Executive residences offering privacy, premium interiors, and refined urban living.",
     hasDetailPage: true,
     hero: {
@@ -310,7 +377,7 @@ export const properties: Property[] = [
       heading: "Designed for executive comfort, premium finishes, and an elevated residential lifestyle with reliable service.",
       paragraph:
         "CEO Flats blends refined residential spaces with business-friendly amenities and a location that keeps you connected to the city's best neighborhoods.",
-      image: "/assets/ceoflats.jpg",
+      image: ceoFlatsImages[0],
       specs: [
         { label: "Type", value: "Luxury residential suites" },
         { label: "Floor Plans", value: "1–3 bedroom layouts with expansive living areas" },
@@ -354,7 +421,7 @@ export const properties: Property[] = [
         label: "Executive Studio / Suite",
         description: "Overnight stay request for CEO Flats residential units and executive suites.",
         rateLabel: "Rate on request",
-        image: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=900&h=600&fit=crop&auto=format",
+        image: ceoFlatsImages[1],
       },
     ],
   },
@@ -364,9 +431,9 @@ export const properties: Property[] = [
     category: "residential",
     categoryLabel: "Residential",
     location: "Burgos, Makati",
-    image: "/assets/HQ-Burgos.jpg",
-    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
-    heroImages: ["/assets/HQ-Burgos.jpg"],
+    image: hightownQuartersBurgosImages[0],
+    heroImages: hightownQuartersBurgosImages,
+    galleryImages: hightownQuartersBurgosImages,
     cardDescription:
       "Residential quarters designed for convenient city living near Makati's dining, work, and lifestyle destinations. The Burgos address offers practical layouts for professionals and long-stay residents.",
     hasDetailPage: true,
@@ -380,7 +447,7 @@ export const properties: Property[] = [
       heading: "Compact, flexible residences in a walkable Poblacion address.",
       paragraph:
         "Hightown Quarters Burgos is an 11-storey residential condominium building at 5093 P. Burgos corner San Agustin Streets, Poblacion, Makati City 1210. The property combines efficient studio layouts, loft options, and secure parking access for modern city living.",
-      image: "/assets/HQ-Burgos.jpg",
+      image: hightownQuartersBurgosImages[0],
       specs: [
         { label: "Land Area", value: "492 square meters" },
         { label: "Gross Floor Area", value: "5,128.38 square meters" },
@@ -426,7 +493,7 @@ export const properties: Property[] = [
         label: "Studio Unit",
         description: "Overnight stay request for Hightown Quarters Burgos studio and loft-style units.",
         rateLabel: "Rate on request",
-        image: "https://images.unsplash.com/photo-1462558813106-4a58a3287273?w=900&h=600&fit=crop&auto=format",
+        image: hightownQuartersBurgosImages[1],
       },
     ],
   },
@@ -436,10 +503,9 @@ export const properties: Property[] = [
     category: "hospitality",
     categoryLabel: "Hospitality",
     location: "Siargao Island",
-    // Real Muro Siargao asset is not in the current project bundle; keep this distinct remote image until supplied.
-    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&h=900&fit=crop&auto=format",
-    // Interior carousel photos are not yet available in the project bundle; using the current property image as fallback.
-    heroImages: ["https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&h=900&fit=crop&auto=format"],
+    image: muroSiargaoImages[0],
+    heroImages: muroSiargaoImages,
+    galleryImages: muroSiargaoImages,
     cardDescription:
       "A refined coastal destination offering island-inspired homes, boutique hospitality, and exceptional natural surroundings.",
     hasDetailPage: true,
@@ -453,7 +519,7 @@ export const properties: Property[] = [
       heading: "Luxury residences curated to the island lifestyle with premium community spaces and coastal comforts.",
       paragraph:
         "Muro Siargao is a boutique coastal development designed for retreat living with modern comforts, landscape-rich courtyards, and direct access to the island's celebrated coast.",
-      image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&h=900&fit=crop&auto=format",
+      image: muroSiargaoImages[0],
       specs: [
         { label: "Location", value: "Siargao Island" },
         { label: "Type", value: "Boutique residential resort" },
@@ -497,7 +563,7 @@ export const properties: Property[] = [
         label: "Island Suite",
         description: "Overnight stay request for Muro Siargao boutique hospitality suites.",
         rateLabel: "Rate on request",
-        image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=900&h=600&fit=crop&auto=format",
+        image: muroSiargaoImages[1],
       },
     ],
   },
@@ -507,9 +573,9 @@ export const properties: Property[] = [
     category: "residential",
     categoryLabel: "Residential",
     location: "Palma, Makati",
-    image: "/assets/HQ-Palma.jpg",
-    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
-    heroImages: ["/assets/HQ-Palma.jpg"],
+    image: hightownQuartersPalmaImages[0],
+    heroImages: hightownQuartersPalmaImages,
+    galleryImages: hightownQuartersPalmaImages,
     cardDescription:
       "A compact residential address shaped around comfort, accessibility, and everyday city routines. Hightown Quarters Palma supports modern tenants seeking a well-connected Makati base.",
     hasDetailPage: false,
@@ -523,7 +589,7 @@ export const properties: Property[] = [
       heading: "Practical city residences in a well-connected Makati location.",
       paragraph:
         "Hightown Quarters Palma is part of Marajo Group's Makati residential portfolio, offering efficient layouts and convenient access for long-stay residents and city professionals.",
-      image: "/assets/HQ-Palma.jpg",
+      image: hightownQuartersPalmaImages[0],
       specs: [
         { label: "Type", value: "Residential condominium" },
         { label: "Height", value: "5 storeys" },
@@ -567,7 +633,7 @@ export const properties: Property[] = [
         label: "Compact Residence",
         description: "Overnight stay request for Hightown Quarters Palma residential units.",
         rateLabel: "Rate on request",
-        image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=900&h=600&fit=crop&auto=format",
+        image: hightownQuartersPalmaImages[1],
       },
     ],
   },
@@ -577,9 +643,9 @@ export const properties: Property[] = [
     category: "commercial",
     categoryLabel: "Commercial",
     location: "Makati City",
-    image: "/assets/Space-Solution-A.jpg",
-    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
-    heroImages: ["/assets/Space-Solution-A.jpg"],
+    image: spaceSolutionsImages[0],
+    heroImages: spaceSolutionsImages,
+    galleryImages: spaceSolutionsImages,
     cardDescription:
       "Flexible storage and business space in Makati for teams that need practical, secure, and accessible facilities. The development supports commercial operations with adaptable space planning.",
     hasDetailPage: false,
@@ -593,7 +659,7 @@ export const properties: Property[] = [
       heading: "Modern storage facilities designed for practical commercial operations.",
       paragraph:
         "Space Solutions is a first-class modern storage facility in Makati, extending Marajo Group's portfolio into secure, adaptable space for commercial and operational needs.",
-      image: "/assets/Space-Solution-A.jpg",
+      image: spaceSolutionsImages[0],
       specs: [
         { label: "Type", value: "Modern storage facility" },
         { label: "Location", value: "Makati City" },
@@ -637,7 +703,7 @@ export const properties: Property[] = [
         label: "Storage Unit",
         description: "Storage reservation request for secure commercial storage space.",
         rateLabel: "Rate on request",
-        image: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=900&h=600&fit=crop&auto=format",
+        image: spaceSolutionsImages[1],
       },
     ],
   },
@@ -647,9 +713,9 @@ export const properties: Property[] = [
     category: "residential",
     categoryLabel: "Residential",
     location: "Alfonso, Makati",
-    image: "/assets/HQ-Alfonso.jpg",
-    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
-    heroImages: ["/assets/HQ-Alfonso.jpg"],
+    image: hightownQuartersAlfonsoImages[0],
+    heroImages: hightownQuartersAlfonsoImages,
+    galleryImages: hightownQuartersAlfonsoImages,
     cardDescription:
       "A residential property in the Hightown Quarters collection, positioned for residents who value Makati access and efficient city living. Alfonso adds another neighborhood option within the portfolio.",
     hasDetailPage: false,
@@ -663,7 +729,7 @@ export const properties: Property[] = [
       heading: "Neighborhood residential access with efficient layouts and practical Makati connectivity.",
       paragraph:
         "Hightown Quarters Alfonso adds another Makati option within Marajo Group's Hightown Quarters collection, shaped around access, comfort, and everyday city routines.",
-      image: "/assets/HQ-Alfonso.jpg",
+      image: hightownQuartersAlfonsoImages[0],
       specs: [
         { label: "Type", value: "Residential condominium" },
         { label: "Height", value: "5 storeys" },
@@ -707,7 +773,7 @@ export const properties: Property[] = [
         label: "Residential Unit",
         description: "Overnight stay request for Hightown Quarters Alfonso residential units.",
         rateLabel: "Rate on request",
-        image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&h=600&fit=crop&auto=format",
+        image: hightownQuartersAlfonsoImages[1],
       },
     ],
   },
@@ -717,9 +783,9 @@ export const properties: Property[] = [
     category: "residential",
     categoryLabel: "Residential",
     location: "Albert, Makati",
-    image: "/assets/HQ-Albert.jpg",
-    // Interior carousel photos are not yet available in the project bundle; using the verified property image as fallback.
-    heroImages: ["/assets/HQ-Albert.jpg"],
+    image: hightownQuartersAlbertImages[0],
+    heroImages: hightownQuartersAlbertImages,
+    galleryImages: hightownQuartersAlbertImages,
     cardDescription:
       "Part of Marajo Group's Makati residential portfolio, Hightown Quarters Albert offers a straightforward urban address for long-stay renters and city professionals.",
     hasDetailPage: false,
@@ -733,7 +799,7 @@ export const properties: Property[] = [
       heading: "Reliable urban residences for long-stay city routines.",
       paragraph:
         "Hightown Quarters Albert offers a practical residential address within the Marajo Group portfolio, supporting city professionals who need access, comfort, and dependable everyday space.",
-      image: "/assets/HQ-Albert.jpg",
+      image: hightownQuartersAlbertImages[0],
       specs: [
         { label: "Type", value: "Residential condominium" },
         { label: "Height", value: "5 storeys" },
@@ -777,7 +843,7 @@ export const properties: Property[] = [
         label: "Residential Unit",
         description: "Overnight stay request for Hightown Quarters Albert residential units.",
         rateLabel: "Rate on request",
-        image: "https://images.unsplash.com/photo-1494526585095-e8aeecc6e179?w=900&h=600&fit=crop&auto=format",
+        image: hightownQuartersAlbertImages[1],
       },
     ],
   },

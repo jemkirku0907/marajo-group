@@ -7,20 +7,20 @@ import PropertyGalleryCarousel from "@/components/PropertyGalleryCarousel";
 
 const DETAIL_GALLERY_IMAGES = [
   {
-    src: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&h=600&fit=crop&auto=format",
-    alt: "Tower exterior",
+    src: "/images/properties/marajo-tower/01-marajo-tower-full.jpg",
+    alt: "Marajo Tower exterior",
   },
   {
-    src: "https://images.unsplash.com/photo-1494526585095-c41746248156?w=900&h=600&fit=crop&auto=format",
-    alt: "Lobby",
+    src: "/images/properties/marajo-tower/03-marajo-tower-8.jpg",
+    alt: "Marajo Tower lobby",
   },
   {
-    src: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=900&h=600&fit=crop&auto=format",
-    alt: "Gym",
+    src: "/images/properties/marajo-tower/05-marajo-tower-2.jpg",
+    alt: "Marajo Tower interior",
   },
   {
-    src: "https://images.unsplash.com/photo-1462558813106-ae2d242f4ff8?w=900&h=600&fit=crop&auto=format",
-    alt: "Rooftop lounge",
+    src: "/images/properties/marajo-tower/15-marajo-tower-7.jpg",
+    alt: "Marajo Tower amenity area",
   },
 ];
 

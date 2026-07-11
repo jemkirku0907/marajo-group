@@ -1767,31 +1767,65 @@ body.mobile-open .nav-toggle .hamb::after { transform: rotate(-45deg) translate(
 
 .property-gallery-carousel {
   position: relative;
-  overflow: hidden;
-  width: min(100%, 760px);
+  overflow: visible;
+  width: min(100%, 840px);
   margin-inline: auto;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-muted);
-  background: var(--surface);
-  box-shadow: var(--shadow);
+  min-height: clamp(270px, 36vw, 370px);
+  border-radius: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
   touch-action: pan-y;
   user-select: none;
 }
 
 .property-gallery-track {
-  display: flex;
-  transition: transform 360ms cubic-bezier(0.2, 0, 0, 1);
-  will-change: transform;
+  position: relative;
+  height: clamp(240px, 34vw, 340px);
+  isolation: isolate;
 }
 
 .property-gallery-slide {
-  min-width: 100%;
-  aspect-ratio: 16 / 9;
-  height: clamp(260px, 38vh, 360px);
-  max-height: 360px;
-  border-radius: 0;
+  --gallery-offset: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(46vw, 360px);
+  height: clamp(220px, 30vw, 330px);
+  padding: 0;
   border: 0;
-  box-shadow: none;
+  border-radius: 16px;
+  background: transparent;
+  box-shadow: 0 24px 60px rgba(8, 20, 11, 0.18);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform:
+    translate(-50%, -50%)
+    translateX(calc(var(--gallery-offset) * 158px))
+    scale(calc(1 - (var(--gallery-abs-offset) * 0.08)));
+  transition: transform 320ms cubic-bezier(0.2, 0, 0, 1), opacity 220ms ease, filter 220ms ease;
+}
+
+.property-gallery-slide[aria-hidden="false"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.property-gallery-slide:not(.is-active) {
+  filter: saturate(0.92) brightness(0.86);
+}
+
+.property-gallery-slide.is-active {
+  width: min(48vw, 390px);
+  height: clamp(250px, 33vw, 360px);
+  filter: none;
+  box-shadow: 0 30px 70px rgba(8, 20, 11, 0.24);
+}
+
+.property-gallery-slide img {
+  display: block;
+  border-radius: inherit;
 }
 
 .property-gallery-arrow {
@@ -1823,18 +1857,19 @@ body.mobile-open .nav-toggle .hamb::after { transform: rotate(-45deg) translate(
 }
 
 .property-gallery-arrow-prev {
-  left: 1rem;
+  left: clamp(0.4rem, 5vw, 4rem);
 }
 
 .property-gallery-arrow-next {
-  right: 1rem;
+  right: clamp(0.4rem, 5vw, 4rem);
 }
 
 .property-gallery-status {
   position: absolute;
-  left: 1rem;
-  bottom: 1rem;
+  left: 50%;
+  bottom: 0.2rem;
   z-index: 2;
+  transform: translateX(-50%);
   padding: 0.45rem 0.75rem;
   border-radius: 10px;
   background: rgba(8, 20, 11, 0.68);
@@ -1845,9 +1880,10 @@ body.mobile-open .nav-toggle .hamb::after { transform: rotate(-45deg) translate(
 
 .property-gallery-dots {
   position: absolute;
-  right: 1rem;
-  bottom: 1.1rem;
+  right: 50%;
+  bottom: -1.35rem;
   z-index: 2;
+  transform: translateX(50%);
   display: inline-flex;
   gap: 0.45rem;
 }
@@ -1911,9 +1947,17 @@ body.mobile-open .nav-toggle .hamb::after { transform: rotate(-45deg) translate(
   }
 
   .property-gallery-slide {
-    aspect-ratio: 4 / 3;
-    height: clamp(220px, 52vw, 320px);
-    max-height: 320px;
+    width: min(58vw, 240px);
+    height: clamp(190px, 56vw, 270px);
+    transform:
+      translate(-50%, -50%)
+      translateX(calc(var(--gallery-offset) * 86px))
+      scale(calc(1 - (var(--gallery-abs-offset) * 0.075)));
+  }
+
+  .property-gallery-slide.is-active {
+    width: min(62vw, 260px);
+    height: clamp(210px, 62vw, 300px);
   }
 
   .property-gallery-arrow {

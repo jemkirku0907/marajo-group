@@ -1768,6 +1768,8 @@ body.mobile-open .nav-toggle .hamb::after { transform: rotate(-45deg) translate(
 .property-gallery-carousel {
   position: relative;
   overflow: hidden;
+  width: min(100%, 760px);
+  margin-inline: auto;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-muted);
   background: var(--surface);
@@ -1785,6 +1787,8 @@ body.mobile-open .nav-toggle .hamb::after { transform: rotate(-45deg) translate(
 .property-gallery-slide {
   min-width: 100%;
   aspect-ratio: 16 / 9;
+  height: clamp(260px, 38vh, 360px);
+  max-height: 360px;
   border-radius: 0;
   border: 0;
   box-shadow: none;
@@ -1908,6 +1912,8 @@ body.mobile-open .nav-toggle .hamb::after { transform: rotate(-45deg) translate(
 
   .property-gallery-slide {
     aspect-ratio: 4 / 3;
+    height: clamp(220px, 52vw, 320px);
+    max-height: 320px;
   }
 
   .property-gallery-arrow {

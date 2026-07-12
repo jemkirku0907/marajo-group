@@ -1481,11 +1481,10 @@ body.theme-dark .about-hero .hero-copy {
 }
 
 .contact-info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.15rem, 1.8vw, 1.55rem);
   margin-top: 2rem;
-  align-items: stretch;
 }
 
 .contact-info-card {
@@ -1493,8 +1492,7 @@ body.theme-dark .about-hero .hero-copy {
   align-items: center;
   gap: 0.85rem;
   min-width: 0;
-  min-height: 118px;
-  height: 100%;
+  min-height: clamp(132px, 11vw, 158px);
   border: 1px solid var(--border-muted, rgba(17, 24, 39, 0.12));
   border-radius: 18px;
   padding: 1rem;

@@ -2383,8 +2383,8 @@ html.theme-dark .membership-status-pill.status-active {
 }
 
 .contact-page .about-hero {
-  min-height: calc(100svh - var(--header-height, 88px)) !important;
-  padding-top: clamp(3rem, 7vh, 5rem) !important;
+  min-height: 100svh !important;
+  padding-top: calc(var(--header-height, 88px) + clamp(1.75rem, 4vh, 3rem)) !important;
   padding-bottom: clamp(2.5rem, 6vh, 4rem) !important;
   background-image:
     linear-gradient(90deg, rgba(5, 20, 9, 0.64), rgba(5, 20, 9, 0.24) 48%, rgba(5, 20, 9, 0.46)),
@@ -2438,8 +2438,8 @@ html.theme-dark .membership-status-pill.status-active {
 
 @media (max-width: 640px) {
   .contact-page .about-hero {
-    min-height: calc(100svh - var(--header-height, 72px)) !important;
-    padding-top: clamp(2.25rem, 7vh, 3.5rem) !important;
+    min-height: 100svh !important;
+    padding-top: calc(var(--header-height, 72px) + 1.5rem) !important;
   }
 }
 

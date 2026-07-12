@@ -2382,10 +2382,11 @@ html.theme-dark .membership-status-pill.status-active {
     url("/assets/Post-New.jpg") !important;
 }
 
-.gallery-page .about-hero {
+.gallery-page .about-hero,
+.gallery-hero {
   background-image:
-    linear-gradient(90deg, rgba(5, 20, 9, 0.7), rgba(5, 20, 9, 0.34) 50%, rgba(5, 20, 9, 0.58)),
-    linear-gradient(180deg, rgba(5, 20, 9, 0.18), rgba(5, 20, 9, 0.58)),
+    linear-gradient(90deg, rgba(5, 20, 9, 0.58), rgba(5, 20, 9, 0.22) 50%, rgba(5, 20, 9, 0.5)),
+    linear-gradient(180deg, rgba(5, 20, 9, 0.08), rgba(5, 20, 9, 0.5)),
     url("/assets/gallery-hero.jpg") !important;
   background-size: cover !important;
   background-position: center !important;

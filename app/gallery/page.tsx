@@ -54,7 +54,13 @@ export default function GalleryPage() {
 
   return (
     <main className="gallery-page">
-      <section className="hero about-hero">
+      <section
+        className="hero about-hero gallery-hero"
+        style={{
+          backgroundImage:
+            'linear-gradient(90deg, rgba(5, 20, 9, 0.58), rgba(5, 20, 9, 0.22) 50%, rgba(5, 20, 9, 0.5)), linear-gradient(180deg, rgba(5, 20, 9, 0.08), rgba(5, 20, 9, 0.5)), url("/assets/gallery-hero.jpg")',
+        }}
+      >
         <div className="container">
           <div className="hero-content">
             <span className="hero-label">Project Gallery</span>

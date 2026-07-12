@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { requireActiveTenant } from "@/lib/tenantMembership";
 
-const CONTACT_TO = "jemkirku0907@gmail.com";
+const CONTACT_TO = "admin@marajogroup.com";
 
 function val(data: Record<string, any>, keys: string[], def = ""): string {
   for (const k of keys) {

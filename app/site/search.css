@@ -1459,7 +1459,7 @@ body.theme-dark .about-hero .hero-copy {
 
 .contact-intro {
   width: 100%;
-  max-width: 620px;
+  max-width: 760px;
   justify-self: end;
 }
 
@@ -1482,7 +1482,7 @@ body.theme-dark .about-hero .hero-copy {
 
 .contact-info-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
   gap: 1rem;
   margin-top: 2rem;
   align-items: stretch;
@@ -1492,6 +1492,7 @@ body.theme-dark .about-hero .hero-copy {
   display: flex;
   align-items: center;
   gap: 0.85rem;
+  min-width: 0;
   min-height: 118px;
   height: 100%;
   border: 1px solid var(--border-muted, rgba(17, 24, 39, 0.12));
@@ -1500,6 +1501,15 @@ body.theme-dark .about-hero .hero-copy {
   background: var(--surface, #ffffff);
   box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
   transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.contact-info-card > span:last-child {
+  min-width: 0;
+}
+
+.contact-info-card .value {
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .contact-info-card:hover {

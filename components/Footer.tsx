@@ -12,11 +12,6 @@ export default function Footer() {
             <img src="/assets/logo.png" alt="Marajo Group" width={42} height={49} loading="lazy" />
           </p>
           <p className="footer-note">Premium developments, corporate living, and trusted real estate investments.</p>
-          <div className="social-squares">
-            <span className="square" />
-            <span className="square" />
-            <span className="square" />
-          </div>
         </div>
         <div>
           <h4>Company</h4>

@@ -94,6 +94,24 @@
   border-color: var(--border-muted);
 }
 
+.auth-modal-backdrop {
+  padding-top: calc(var(--header-height, 88px) + 1.25rem);
+}
+
+.auth-modal-panel {
+  max-height: calc(100vh - var(--header-height, 88px) - 2.5rem);
+}
+
+@media (max-width: 640px) {
+  .auth-modal-backdrop {
+    padding-top: calc(var(--header-height, 72px) + 1rem);
+  }
+
+  .auth-modal-panel {
+    max-height: calc(100vh - var(--header-height, 72px) - 2rem);
+  }
+}
+
 .theme-subpanel {
   background: var(--surface-soft);
   color: var(--text-primary);

@@ -101,7 +101,7 @@ export default function ContactPage() {
                   </span>
                   <span>
                     <span className="label">Email</span>
-                    <a className="value contact-link" href="mailto:jemkirku0907@gmail.com">jemkirku0907@gmail.com</a>
+                    <a className="value contact-link" href="mailto:admin@marajogroup.com">admin@marajogroup.com</a>
                   </span>
                 </div>
                 <div className="contact-info-item contact-info-card">
@@ -110,7 +110,7 @@ export default function ContactPage() {
                   </span>
                   <span>
                     <span className="label">Phone</span>
-                    <a className="value contact-link" href="tel:+639924562100">09924562100</a>
+                    <a className="value contact-link" href="tel:+63288567176">8856-7176</a>
                   </span>
                 </div>
                 <div
@@ -125,18 +125,8 @@ export default function ContactPage() {
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
                   </span>
                   <span>
-                    <span className="label">Office</span>
-                    <span className="value">26th St cor 4th Ave, BGC, Taguig <span className="map-hint">· View map →</span></span>
-                  </span>
-                </div>
-
-                <div className="contact-info-item contact-info-card">
-                  <span className="contact-info-icon" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" /></svg>
-                  </span>
-                  <span>
-                    <span className="label">Social</span>
-                    <span className="value">Follow Marajo Group updates and project announcements.</span>
+                    <span className="label">Location</span>
+                    <span className="value">Marajo Tower, BGC, Taguig, Metro Manila <span className="map-hint">View map</span></span>
                   </span>
                 </div>
 
@@ -168,7 +158,7 @@ export default function ContactPage() {
                     </div>
                     <div className="map-modal-footer">
                       <a href="https://maps.google.com/?q=Marajo+Tower,+26th+Street+corner+4th+Ave,+Bonifacio+Global+City,+Taguig,+1634+Metro+Manila,+Philippines" target="_blank" rel="noopener" className="map-open-link">
-                        Open in Google Maps →
+                        Open in Google Maps
                       </a>
                     </div>
                   </div>
@@ -182,7 +172,7 @@ export default function ContactPage() {
 
               {done ? (
                 <div className="form-field field-full" style={{ background: "rgba(22,163,74,.08)", color: "#15803d", border: "1px solid rgba(22,163,74,.2)", borderRadius: "10px", padding: ".9rem 1.1rem" }}>
-                  Thanks — we got your inquiry! Our team will get back to you within 2 business days.
+                  Thanks - we got your inquiry! Our team will get back to you within 2 business days.
                 </div>
               ) : (
                 <form onSubmit={submit} className="form-grid">
@@ -194,22 +184,22 @@ export default function ContactPage() {
                   <div className="form-field field-full floating-field">
                     <label htmlFor="contact-name">Full Name</label>
                     <input id="contact-name" type="text" className="form-control" placeholder="Juan Dela Cruz" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-                    <span className="field-check" aria-hidden="true">✓</span>
+                    <span className="field-check" aria-hidden="true">OK</span>
                   </div>
                   <div className="form-field floating-field">
                     <label htmlFor="contact-email">Email Address</label>
                     <input id="contact-email" type="email" className="form-control" placeholder="you@email.com" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-                    <span className="field-check" aria-hidden="true">✓</span>
+                    <span className="field-check" aria-hidden="true">OK</span>
                   </div>
                   <div className="form-field floating-field">
                     <label htmlFor="contact-phone">Phone Number</label>
                     <input id="contact-phone" type="tel" className="form-control" placeholder="09XX XXX XXXX" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
-                    <span className="field-check" aria-hidden="true">✓</span>
+                    <span className="field-check" aria-hidden="true">OK</span>
                   </div>
                   <div className="form-field field-full floating-field">
                     <label htmlFor="contact-subject">Subject</label>
                     <input id="contact-subject" type="text" className="form-control" placeholder="Property inquiry" required value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} />
-                    <span className="field-check" aria-hidden="true">✓</span>
+                    <span className="field-check" aria-hidden="true">OK</span>
                   </div>
                   <div className="form-field">
                     <label htmlFor="contact-project">Project Interest</label>
@@ -234,7 +224,7 @@ export default function ContactPage() {
                     <textarea id="contact-message" className="form-control" rows={5} placeholder="Tell us your inquiry and preferred schedule" required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
                   </div>
                   <button className="btn-primary field-full" type="submit" disabled={busy}>
-                    {busy ? "Sending…" : "Send Inquiry"}
+                    {busy ? "Sending..." : "Send Inquiry"}
                   </button>
                 </form>
               )}

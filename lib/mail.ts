@@ -176,7 +176,7 @@ function layout(
   <div class="header"><h1>${emoji} ${title}</h1><p>Marajo Group &nbsp;|&nbsp; ${subtitle}</p></div>
   <div class="status-bar"><div class="ref">Issued: ${issued}</div><span class="status-badge">${statusLabel}</span></div>
   ${bodyHtml}
-  <div class="footer"><p>${footerNote}<br>For inquiries, contact us at <a href="mailto:info@marajogroup.com">info@marajogroup.com</a><br>or visit <a href="https://marajogroup.com">marajogroup.com</a></p></div>
+  <div class="footer"><p>${footerNote}<br>For inquiries, contact us at <a href="mailto:admin@marajogroup.com">admin@marajogroup.com</a><br>or visit <a href="https://marajogroup.com">marajogroup.com</a></p></div>
 </div>
 </body>
 </html>`;

@@ -120,8 +120,8 @@ export default function AuthModal() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="max-h-[calc(100vh-2rem)] w-full max-w-md overflow-y-auto rounded-xl border p-6 shadow-2xl theme-panel">
+    <div className="auth-modal-backdrop fixed inset-0 z-50 flex items-start justify-center bg-black/50 px-4 pb-4">
+      <div className="auth-modal-panel w-full max-w-md overflow-y-auto rounded-xl border p-6 shadow-2xl theme-panel">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold theme-heading">{mode === "login" ? "Log In" : "Create Tenant Account"}</h2>
           <button onClick={closeModal} className="theme-muted" aria-label="Close">

@@ -44,7 +44,7 @@ export default function AboutPage() {
   }
 
   return (
-    <main>
+    <main className="about-page">
       <section className="hero about-hero reveal-on-scroll">
         <Image
           src="/assets/marajo-tower.jpg"

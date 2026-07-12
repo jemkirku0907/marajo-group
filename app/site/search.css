@@ -2392,6 +2392,10 @@ html.theme-dark .membership-status-pill.status-active {
     url("/assets/marajo-tower.jpg") !important;
 }
 
+.about-page .about-hero {
+  padding-top: calc(var(--header-height, 88px) + clamp(1.75rem, 4vh, 3rem)) !important;
+}
+
 .contact-page .about-hero-copy .hero-title {
   font-size: clamp(2.8rem, 5.6vw, 5.4rem) !important;
   max-width: 820px;
@@ -2437,6 +2441,7 @@ html.theme-dark .membership-status-pill.status-active {
 }
 
 @media (max-width: 640px) {
+  .about-page .about-hero,
   .contact-page .about-hero {
     min-height: 100svh !important;
     padding-top: calc(var(--header-height, 72px) + 1.5rem) !important;

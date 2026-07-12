@@ -53,7 +53,7 @@ export default function GalleryPage() {
   );
 
   return (
-    <main>
+    <main className="gallery-page">
       <section className="hero about-hero">
         <div className="container">
           <div className="hero-content">

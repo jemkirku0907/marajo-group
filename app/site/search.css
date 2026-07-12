@@ -2575,62 +2575,19 @@ body.mobile-open.has-property-hero-header .site-header.site-header--property {
   }
 }
 
-/* Standard hero height system.
-   Keep each page's first viewport focused on its own hero before the next section begins. */
+/* Scoped hero height corrections.
+   Keep property detail and contact heroes focused without changing service booking heroes. */
 :root {
-  --standard-hero-min-height: 100svh;
-}
-
-.home-hero,
-.about-hero,
-.platform-hero,
-.page-hero {
-  min-height: var(--standard-hero-min-height) !important;
-}
-
-.home-hero,
-.about-hero,
-.page-hero {
-  overflow: hidden;
-}
-
-.home-hero,
-.about-hero {
-  display: flex;
-  align-items: center;
-  padding-top: max(clamp(4.5rem, 9vh, 7rem), calc(var(--header-height, 88px) + 2rem)) !important;
-  padding-bottom: clamp(3rem, 7vh, 5rem) !important;
-}
-
-body.has-hero-header .home-hero,
-body.has-hero-header .about-hero {
-  min-height: var(--standard-hero-min-height) !important;
+  --focused-hero-height: calc(100svh - var(--header-height, 88px));
 }
 
 .contact-page .about-hero {
-  padding-top: calc(var(--header-height, 88px) + clamp(2.75rem, 6vh, 4.75rem)) !important;
-}
-
-.platform-hero {
+  min-height: var(--focused-hero-height) !important;
   display: flex;
   align-items: center;
-  padding-top: max(5rem, calc(var(--header-height, 88px) + 2.25rem)) !important;
-  padding-bottom: clamp(3rem, 7vh, 5rem) !important;
-}
-
-.platform-hero-grid {
-  width: 100%;
-}
-
-.page-hero {
-  display: flex;
-  align-items: center;
-  padding-top: max(clamp(6.25rem, 10vw, 8rem), calc(var(--header-height, 88px) + 2.25rem)) !important;
-  padding-bottom: clamp(1.25rem, 3vw, 2.25rem) !important;
-}
-
-.page-hero-inner {
-  min-height: calc(var(--standard-hero-min-height) - clamp(7.5rem, 13vw, 10.25rem)) !important;
+  overflow: hidden;
+  padding-top: clamp(2rem, 5vh, 4rem) !important;
+  padding-bottom: clamp(2.25rem, 5vh, 4rem) !important;
 }
 
 .property-detail-page .property-hero-frame {
@@ -2638,56 +2595,31 @@ body.has-hero-header .about-hero {
 }
 
 .property-detail-page .property-hero-card {
-  height: var(--standard-hero-min-height) !important;
-  min-height: 700px;
+  height: var(--focused-hero-height) !important;
+  min-height: 640px;
 }
 
 @media (max-width: 900px) {
-  .home-hero,
-  .about-hero,
-  .platform-hero,
-  .page-hero {
-    min-height: var(--standard-hero-min-height) !important;
-  }
-
-  .home-hero,
-  .about-hero,
-  .platform-hero {
-    padding-top: calc(var(--header-height, 72px) + 1.5rem) !important;
+  .contact-page .about-hero {
+    min-height: calc(100svh - var(--header-height, 72px)) !important;
+    padding-top: clamp(1.5rem, 5vh, 3rem) !important;
     padding-bottom: 2.5rem !important;
   }
 
-  .page-hero {
-    padding-top: calc(var(--header-height, 72px) + 1.5rem) !important;
-    padding-bottom: 1.25rem !important;
-  }
-
-  .page-hero-inner {
-    min-height: calc(var(--standard-hero-min-height) - 5.5rem) !important;
-  }
-
   .property-detail-page .property-hero-card {
-    height: var(--standard-hero-min-height) !important;
-    min-height: 680px;
+    height: calc(100svh - var(--header-height, 72px)) !important;
+    min-height: 620px;
   }
 }
 
 @media (max-width: 560px) {
-  .home-hero,
-  .about-hero,
-  .platform-hero,
-  .page-hero {
-    min-height: var(--standard-hero-min-height) !important;
-  }
-
-  .home-hero,
-  .about-hero,
-  .platform-hero {
-    padding-top: calc(var(--header-height, 68px) + 1.25rem) !important;
+  .contact-page .about-hero {
+    min-height: calc(100svh - var(--header-height, 68px)) !important;
+    padding-top: 1.25rem !important;
   }
 
   .property-detail-page .property-hero-card {
-    height: var(--standard-hero-min-height) !important;
-    min-height: 680px;
+    height: calc(100svh - var(--header-height, 68px)) !important;
+    min-height: 620px;
   }
 }

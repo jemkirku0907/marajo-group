@@ -2383,6 +2383,7 @@ html.theme-dark .membership-status-pill.status-active {
 }
 
 .contact-page .about-hero {
+  padding-top: calc(var(--header-height, 88px) + clamp(2rem, 5vh, 4rem));
   background-image:
     linear-gradient(90deg, rgba(5, 20, 9, 0.64), rgba(5, 20, 9, 0.24) 48%, rgba(5, 20, 9, 0.46)),
     linear-gradient(180deg, rgba(5, 20, 9, 0.04), rgba(5, 20, 9, 0.44)),
@@ -2425,6 +2426,12 @@ html.theme-dark .membership-status-pill.status-active {
   .contact-page .about-hero-media {
     justify-self: stretch;
     width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .contact-page .about-hero {
+    padding-top: calc(var(--header-height, 72px) + 1.5rem);
   }
 }
 

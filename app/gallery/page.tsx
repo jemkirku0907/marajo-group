@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 interface GalleryItem {
   year: number;
@@ -10,25 +9,24 @@ interface GalleryItem {
   category: "residential" | "commercial" | "hospitality" | "storage";
   image: string;
   description: string;
-  href?: string;
 }
 
 const GALLERY_DATA: GalleryItem[] = [
   { year: 1978, name: "Aguirre", category: "residential", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/aquirre.jpg", description: "Unit 6 State Condominium II at 117 Aguirre Street in Legaspi Village became the first acquisition where succeeding structures until 1998 were conceptualized, designed, and finalized." },
   { year: 1981, name: "La Mirada", category: "residential", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/1981-LA-MIRADA.jpg", description: "La Mirada was constructed when the term condominium was not yet widely present in public consciousness, marking an early move into urban residential development." },
   { year: 1992, name: "Gabriel", category: "residential", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/1992-GABRIEL.jpg", description: "A high-rise condominium complex was built in what was then an unpopulated Ortigas area in Pasig City, ahead of the district's continued growth." },
-  { year: 1996, name: "Salcedo Towers", category: "commercial", image: "https://www.marajogroup.com/wp-content/uploads/2024/01/Salcedo-Towers.jpg", description: "Salcedo Towers, a modern 27-storey office building, rose in the very heart of the Makati Central Business District.", href: "/properties/salcedo-towers" },
+  { year: 1996, name: "Salcedo Towers", category: "commercial", image: "https://www.marajogroup.com/wp-content/uploads/2024/01/Salcedo-Towers.jpg", description: "Salcedo Towers, a modern 27-storey office building, rose in the very heart of the Makati Central Business District." },
   { year: 1996, name: "Neptune Orient Lines Building", category: "commercial", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/1996-NOL-TOWER.jpg", description: "Situated at the gateway of the hardly occupied Madrigal Park Business Center." },
   { year: 1998, name: "Libran House", category: "commercial", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/1998-LIBRAN-HOUSE.jpg", description: "An eight-storey office building was developed at 144 Legaspi Street corner V.A. Rufino Street in Legaspi Village, Makati City." },
   { year: 1998, name: "CEO Suites", category: "hospitality", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/ceo-suites-fulll.jpg", description: "A 26-room boutique hotel located in Bel-Air Village." },
-  { year: 2008, name: "Marajo Tower", category: "commercial", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/marajo-tower-full.jpg", description: "A 23-storey PEZA-accredited office building was developed in Bonifacio Global City, Taguig.", href: "/properties/marajo-tower" },
-  { year: 2010, name: "CEO Flats", category: "hospitality", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/ceo-flats-full.jpg", description: "A 55-unit serviced apartment opened in Bel-Air Village, expanding the company's hospitality and serviced-living portfolio.", href: "/properties/ceo-flats" },
-  { year: 2012, name: "HQ Alfonso", category: "residential", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/alfonso-cover.jpg", description: "A 5-storey residential condominium building in Makati.", href: "/properties/hightown-quarters-alfonso" },
-  { year: 2012, name: "HQ Albert", category: "residential", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/hq-albert-full.jpg", description: "A 5-storey residential condominium building in Makati.", href: "/properties/hightown-quarters-albert" },
-  { year: 2012, name: "HQ Palma", category: "residential", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/hq-palma.jpg", description: "A 5-storey residential condominium building in Makati.", href: "/properties/hightown-quarters-palma" },
-  { year: 2014, name: "HQ Burgos", category: "residential", image: "https://www.marajogroup.com/wp-content/uploads/2023/09/HQ-Burgos.jpg", description: "An 11-storey residential condominium building in Makati.", href: "/properties/hightown-quarters-burgos" },
-  { year: 2015, name: "MRJ Corporate Center", category: "commercial", image: "https://www.marajogroup.com/wp-content/uploads/2023/09/MRJ-Center.jpg", description: "A premium commercial and office building located in the fast developing vicinity of Makati Poblacion.", href: "/properties/mrj-center" },
-  { year: 2017, name: "Space Solutions", category: "storage", image: "https://www.marajogroup.com/wp-content/uploads/2023/09/Space-solution-7.jpg", description: "A first-class modern storage facility opened in Makati, extending Marajo Group's reach into storage properties.", href: "/properties/space-solutions" },
+  { year: 2008, name: "Marajo Tower", category: "commercial", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/marajo-tower-full.jpg", description: "A 23-storey PEZA-accredited office building was developed in Bonifacio Global City, Taguig." },
+  { year: 2010, name: "CEO Flats", category: "hospitality", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/ceo-flats-full.jpg", description: "A 55-unit serviced apartment opened in Bel-Air Village, expanding the company's hospitality and serviced-living portfolio." },
+  { year: 2012, name: "HQ Alfonso", category: "residential", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/alfonso-cover.jpg", description: "A 5-storey residential condominium building in Makati." },
+  { year: 2012, name: "HQ Albert", category: "residential", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/hq-albert-full.jpg", description: "A 5-storey residential condominium building in Makati." },
+  { year: 2012, name: "HQ Palma", category: "residential", image: "https://www.marajogroup.com/wp-content/uploads/2023/12/hq-palma.jpg", description: "A 5-storey residential condominium building in Makati." },
+  { year: 2014, name: "HQ Burgos", category: "residential", image: "https://www.marajogroup.com/wp-content/uploads/2023/09/HQ-Burgos.jpg", description: "An 11-storey residential condominium building in Makati." },
+  { year: 2015, name: "MRJ Corporate Center", category: "commercial", image: "https://www.marajogroup.com/wp-content/uploads/2023/09/MRJ-Center.jpg", description: "A premium commercial and office building located in the fast developing vicinity of Makati Poblacion." },
+  { year: 2017, name: "Space Solutions", category: "storage", image: "https://www.marajogroup.com/wp-content/uploads/2023/09/Space-solution-7.jpg", description: "A first-class modern storage facility opened in Makati, extending Marajo Group's reach into storage properties." },
   { year: 2003, name: "Urdaneta Village", category: "residential", image: "https://www.marajogroup.com/wp-content/uploads/2024/01/Urdaneta-Village.jpg", description: "A residential development offering modern living spaces in a strategic location." },
   { year: 2005, name: "United Coconut Planters Bank Executive Dining", category: "commercial", image: "https://www.marajogroup.com/wp-content/uploads/2024/01/United-Coconut-Planters-Bank-Executive-Dining.jpg", description: "An executive dining facility designed for premium corporate hospitality." },
   { year: 2006, name: "The Ritz", category: "hospitality", image: "https://www.marajogroup.com/wp-content/uploads/2024/01/The-Ritz.jpg", description: "A luxury hospitality space offering premium amenities and services." },
@@ -46,7 +44,6 @@ const FILTERS = [
 ] as const;
 
 export default function GalleryPage() {
-  const router = useRouter();
   const [filter, setFilter] = useState<string>("all");
   const [active, setActive] = useState<GalleryItem | null>(null);
 
@@ -101,15 +98,8 @@ export default function GalleryPage() {
               <button
                 key={item.name}
                 className="gallery-card"
-                aria-label={item.href ? `Open ${item.name} property page` : `View details for ${item.name}`}
-                onClick={() => {
-                  if (item.href) {
-                    router.push(item.href);
-                    return;
-                  }
-
-                  setActive(item);
-                }}
+                aria-label={`View details for ${item.name}`}
+                onClick={() => setActive(item)}
                 type="button"
               >
                 <span className="gallery-card-image-wrap">

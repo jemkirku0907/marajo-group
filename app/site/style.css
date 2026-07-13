@@ -821,17 +821,6 @@ body.mobile-open .nav-toggle .hamb::after { transform: rotate(-45deg) translate(
   width: auto;
   display: block;
   object-fit: contain;
-  box-sizing: border-box;
-  transition: background-color 180ms ease, box-shadow 180ms ease, padding 180ms ease;
-}
-
-body.theme-dark .site-logo,
-body.theme-dark .footer .footer-logo img,
-body.theme-dark .footer-logo-img {
-  padding: 4px;
-  border-radius: 6px;
-  background: #ffffff;
-  box-shadow: 0 8px 22px rgba(255, 255, 255, 0.12);
 }
 
 .visually-hidden {

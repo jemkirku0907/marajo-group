@@ -2166,6 +2166,9 @@ body.mobile-open .nav-toggle .hamb::after { transform: rotate(-45deg) translate(
 
 #gallery-modal .modal {
   position: relative;
+  width: min(92vw, 820px);
+  max-height: min(86vh, 760px);
+  overflow: auto;
 }
 
 #gallery-modal .modal-meta {
@@ -2186,10 +2189,14 @@ body.mobile-open .nav-toggle .hamb::after { transform: rotate(-45deg) translate(
 
 .modal-image {
   width: 100%;
-  max-height: 60vh;
+  max-height: min(38vh, 340px);
   object-fit: cover;
   margin-bottom: 1rem;
   border-radius: var(--radius);
+}
+
+#gallery-modal .modal-body {
+  margin-bottom: 0;
 }
 
 .space-card {

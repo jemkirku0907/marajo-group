@@ -119,7 +119,13 @@ export default function GalleryPage() {
       </section>
 
       {active && (
-        <div className="modal-backdrop active" role="dialog" aria-modal="true" onClick={() => setActive(null)}>
+        <div
+          id="gallery-modal"
+          className="modal-backdrop active"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setActive(null)}
+        >
           <div className="modal" role="document" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close-btn" aria-label="Close modal" onClick={() => setActive(null)}>
               &times;

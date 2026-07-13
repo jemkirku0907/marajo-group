@@ -155,37 +155,34 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
             )}
           </div>
 
-          {themeControl && (
-            <div className="nav-mobile-footer" aria-label="Mobile theme controls">
-              {themeControl}
-              {!user ? (
-                <button
-                  type="button"
-                  className="nav-mobile-account-button"
-                  onClick={() => {
-                    openModal("login");
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  Log In
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className="nav-mobile-account-button"
-                  onClick={() => {
-                    setAccountOpen(true);
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  <span className="user-avatar nav-mobile-avatar" aria-hidden="true">
-                    {initials(user.name || user.email)}
-                  </span>
-                  My Account
-                </button>
-              )}
-            </div>
-          )}
+          <div className="nav-mobile-footer" aria-label="Mobile account controls">
+            {!user ? (
+              <button
+                type="button"
+                className="nav-mobile-account-button"
+                onClick={() => {
+                  openModal("login");
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Log In
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="nav-mobile-account-button"
+                onClick={() => {
+                  setAccountOpen(true);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                <span className="user-avatar nav-mobile-avatar" aria-hidden="true">
+                  {initials(user.name || user.email)}
+                </span>
+                My Account
+              </button>
+            )}
+          </div>
         </nav>
 
         <form onSubmit={handleSearch} className="nav-search" role="search">
@@ -200,7 +197,6 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
         </form>
 
         <div className="header-actions">
-          {themeControl}
           {!user ? (
             <Button type="button" onClick={() => openModal("login")} className="btn-primary nav-login-button">
               Log In
@@ -219,6 +215,12 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
               {userMenuOpen && (
                 <div className="user-dropdown-menu" onMouseLeave={() => setUserMenuOpen(false)}>
                   <p className="user-dropdown-email">{user.email}</p>
+                  {themeControl && (
+                    <div className="user-dropdown-theme">
+                      <span>Theme</span>
+                      {themeControl}
+                    </div>
+                  )}
                   <button
                     type="button"
                     className="user-dropdown-item"

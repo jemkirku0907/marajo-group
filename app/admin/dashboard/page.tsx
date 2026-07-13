@@ -1514,9 +1514,13 @@ function OverviewListPanel({ title, items }: { title: string; items: Array<{ nam
       <div style={{ display: "grid", gap: 12 }}>
         {(items.length ? items : [{ name: "No data yet", meta: "Recent activity will appear here", stat: "-" }]).map((item, index) => (
           <div key={`${item.name}-${index}`} style={{ display: "grid", gridTemplateColumns: "42px 1fr auto", gap: 12, alignItems: "center" }}>
-            <span style={{ width: 42, height: 42, borderRadius: 14, display: "grid", placeItems: "center", background: "rgba(119, 255, 66, 0.12)", color: "var(--admin-accent)", fontWeight: 900 }}>
-              {item.name.charAt(0).toUpperCase()}
-            </span>
+  <span style={{ width: 42, height: 42, borderRadius: 14, display: "grid", placeItems: "center", background: "rgba(119, 255, 66, 0.12)", color: "var(--admin-accent)" }}>
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 21h16" />
+      <path d="M6 21V5.8A1.8 1.8 0 0 1 7.8 4h8.4A1.8 1.8 0 0 1 18 5.8V21" />
+      <path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1" />
+    </svg>
+  </span>
             <span style={{ minWidth: 0 }}>
               <strong style={{ display: "block", color: "var(--admin-heading)", fontSize: 13, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.name}</strong>
               <small style={{ color: "var(--admin-muted)" }}>{item.meta}</small>

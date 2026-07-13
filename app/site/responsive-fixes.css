@@ -22,9 +22,14 @@ body {
 /* Clip horizontal overflow on a wrapper BELOW the sticky header so the header
    is never inside a clipped container */
 .home-page,
-main {
+body:not(.is-admin-route) main {
   overflow-x: clip;
   max-width: 100vw;
+}
+
+body.is-admin-route main {
+  overflow-x: visible;
+  max-width: none;
 }
 
 img {

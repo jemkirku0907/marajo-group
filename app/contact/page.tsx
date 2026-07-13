@@ -183,22 +183,18 @@ export default function ContactPage() {
                   <div className="form-field field-full floating-field">
                     <label htmlFor="contact-name">Full Name</label>
                     <input id="contact-name" type="text" className="form-control" placeholder="Juan Dela Cruz" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-                    <span className="field-check" aria-hidden="true">OK</span>
                   </div>
                   <div className="form-field floating-field">
                     <label htmlFor="contact-email">Email Address</label>
                     <input id="contact-email" type="email" className="form-control" placeholder="you@email.com" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-                    <span className="field-check" aria-hidden="true">OK</span>
                   </div>
                   <div className="form-field floating-field">
                     <label htmlFor="contact-phone">Phone Number</label>
                     <input id="contact-phone" type="tel" className="form-control" placeholder="09XX XXX XXXX" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
-                    <span className="field-check" aria-hidden="true">OK</span>
                   </div>
                   <div className="form-field field-full floating-field">
                     <label htmlFor="contact-subject">Subject</label>
                     <input id="contact-subject" type="text" className="form-control" placeholder="Property inquiry" required value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} />
-                    <span className="field-check" aria-hidden="true">OK</span>
                   </div>
                   <div className="form-field">
                     <label htmlFor="contact-project">Project Interest</label>

@@ -42,6 +42,7 @@ export default function PropertyHero({ name, tagline, category, meta, heroImage,
   const [activeSlide, setActiveSlide] = useState(0);
   const touchStartX = useRef<number | null>(null);
   const hasMultipleSlides = slides.length > 1;
+  const hasLongTitle = titleLines.length >= 3 || name.length > 18;
 
   useEffect(() => {
     if (!hasMultipleSlides) return;
@@ -66,7 +67,7 @@ export default function PropertyHero({ name, tagline, category, meta, heroImage,
   return (
     <section className="property-hero-frame" aria-label={`${name} hero`}>
       <div
-        className="property-hero-card"
+        className={`property-hero-card${hasLongTitle ? " property-hero-card--long-title" : ""}`}
         onTouchStart={(event) => {
           touchStartX.current = event.touches[0]?.clientX ?? null;
         }}

@@ -2527,6 +2527,16 @@ body.mobile-open.has-property-hero-header .site-header.site-header--property {
   font-size: clamp(3rem, 7vw, 6.25rem);
 }
 
+.property-detail-page .property-hero-card--long-title .property-hero-content {
+  width: min(590px, calc(100vw - clamp(2.5rem, 12vw, 13rem)));
+}
+
+.property-detail-page .property-hero-card--long-title .property-hero-wordmark {
+  font-size: clamp(2.75rem, 5.6vw, 5.1rem);
+  line-height: 0.96;
+  margin-bottom: clamp(0.85rem, 2vh, 1.25rem);
+}
+
 .property-detail-page .property-hero-bottom-strip {
   left: 0;
   right: 0;
@@ -2585,6 +2595,10 @@ body.mobile-open.has-property-hero-header .site-header.site-header--property {
 
   .property-detail-page .property-hero-wordmark {
     font-size: clamp(2.5rem, 13vw, 3.75rem);
+  }
+
+  .property-detail-page .property-hero-card--long-title .property-hero-wordmark {
+    font-size: clamp(2.1rem, 11vw, 3.1rem);
   }
 
   .property-detail-page .property-hero-bottom-strip {

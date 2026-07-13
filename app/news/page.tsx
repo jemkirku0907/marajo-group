@@ -7,38 +7,31 @@ export const metadata = {
 };
 
 const POST_IMG = "/assets/Post-New.jpg";
-const MURO_IMG = properties.find((property) => property.slug === "muro-siargao")?.image || POST_IMG;
-const TOWER_IMG = properties.find((property) => property.slug === "marajo-tower")?.image || POST_IMG;
 const featuredPropertyCount = properties.filter((property) => property.overview).length;
 
-const ARTICLES = [
-  {
-    tag: "Marajo Journal",
-    tagClass: "journal-tag--launch",
-    date: "October 18, 2023",
-    title: "Growing into one of the country's most trusted real estate companies",
-    excerpt: "Marajo Group has built a solid reputation across commercial, residential, hospitality, and storage developments through decades of quality-focused work.",
-    alt: "Marajo Journal feature",
-    image: POST_IMG,
-  },
-  {
-    tag: "Land Development",
-    tagClass: "journal-tag--insight",
-    date: "Portfolio Update",
-    title: "Muro Siargao planned community highlights island growth potential",
-    excerpt: "Muro Siargao is envisioned as a residential and commercial subdivision shaped around Siargao's natural setting and rising appeal.",
-    alt: "Muro Siargao",
-    image: MURO_IMG,
-  },
-  {
-    tag: "Portfolio",
-    tagClass: "journal-tag--community",
-    date: "Company Update",
-    title: "Marajo Group portfolio spans office, residential, hospitality, and storage",
-    excerpt: "The Group operates premium office space and prime residential properties while continuing to serve growing business and residential needs.",
-    alt: "Marajo Group portfolio",
-    image: TOWER_IMG,
-  },
+const BUSINESSMAN_IMG = "https://www.marajogroup.com/wp-content/uploads/2023/12/businessman_hires.jpg";
+const BUSINESSWOMAN_IMG = "https://www.marajogroup.com/wp-content/uploads/2023/12/businesswoman_hires.jpg";
+
+const KEY_PEOPLE = [
+  ["Juan Dela Cruz", "President", BUSINESSMAN_IMG],
+  ["Maria Santos", "Vice President", BUSINESSWOMAN_IMG],
+  ["Andres Gonzales", "Financial Officer", BUSINESSMAN_IMG],
+  ["Luz Reyes", "Technology Officer", BUSINESSWOMAN_IMG],
+  ["Rosa Hernandez", "Marketing Officer", BUSINESSWOMAN_IMG],
+  ["Diego Cruz", "Human Resources Officer", BUSINESSMAN_IMG],
+  ["Elena Rivera", "Information Officer", BUSINESSWOMAN_IMG],
+  ["Gabriel Fernandez", "Legal Officer", BUSINESSMAN_IMG],
+];
+
+const BOARD_DIRECTORS = [
+  ["Santiago Cruz", "Chairman of the Board", BUSINESSMAN_IMG],
+  ["Isabella Rodriguez", "Vice Chairman", BUSINESSWOMAN_IMG],
+  ["Mateo Sanchez", "Independent Director", BUSINESSMAN_IMG],
+  ["Luisa Ramirez", "Independent Director", BUSINESSWOMAN_IMG],
+  ["Diego Herrera", "Non-Executive Director", BUSINESSMAN_IMG],
+  ["Camila Torres", "Non-Executive Director", BUSINESSWOMAN_IMG],
+  ["Marcela Gomez", "Director", BUSINESSWOMAN_IMG],
+  ["Javier Martinez", "Director", BUSINESSMAN_IMG],
 ];
 
 export default function NewsPage() {
@@ -81,51 +74,74 @@ export default function NewsPage() {
           </div>
           <a href="#" className="journal-featured">
             <div className="journal-featured-img">
-              <Image src={POST_IMG} alt="Growing into one of the country's most trusted real estate companies" width={900} height={600} unoptimized />
+              <Image
+                src={POST_IMG}
+                alt="Growing into one of the country's most trusted real estate companies"
+                width={900}
+                height={600}
+                unoptimized
+              />
             </div>
             <div className="journal-featured-body">
               <div className="journal-meta">
                 <span className="journal-tag">Company News</span>
                 <span>October 18, 2023</span>
               </div>
-              <h2 className="journal-featured-title">Growing into one of the country&apos;s most trusted real estate companies</h2>
+              <h2 className="journal-featured-title">
+                Growing into one of the country&apos;s most trusted real estate companies
+              </h2>
               <p>
                 Since its inception four decades ago, Marajo Group has grown into one of the country&apos;s reliable
                 real estate developers, focused on quality across commercial, residential, hospitality, and storage
                 properties.
               </p>
-              <span className="journal-read-more">Read Full Story →</span>
+              <span className="journal-read-more">Read Full Story -&gt;</span>
             </div>
           </a>
         </div>
       </section>
 
-      <section className="section">
+      <section className="section journal-people-section">
         <div className="container">
           <div className="section-title">
-            <span>Archives</span>
-            <h2>More from the Journal</h2>
+            <span>Leadership</span>
+            <h2>Key People</h2>
           </div>
-          <div className="journal-grid">
-            {ARTICLES.map((a) => (
-              <a href="#" className="journal-card" key={a.title}>
-                <div className="journal-card-img">
-                  <Image src={a.image} alt={a.alt} width={700} height={480} unoptimized={a.image.startsWith("http")} />
+          <div className="journal-people-grid">
+            {KEY_PEOPLE.map(([name, role, image]) => (
+              <article className="journal-person-card" key={name}>
+                <div className="journal-person-img">
+                  <Image src={image} alt={`${name}, ${role}`} width={520} height={390} unoptimized />
                 </div>
-                <div className="journal-card-body">
-                  <div className="journal-meta">
-                    <span className={`journal-tag ${a.tagClass}`}>{a.tag}</span>
-                    <span>{a.date}</span>
-                  </div>
-                  <h3>{a.title}</h3>
-                  <p>{a.excerpt}</p>
-                  <span className="journal-read-more">Read More →</span>
+                <div className="journal-person-body">
+                  <h3>{name}</h3>
+                  <p>{role}</p>
                 </div>
-              </a>
+              </article>
             ))}
           </div>
+
+          <div className="section-title journal-board-title">
+            <span>Governance</span>
+            <h2>Board of Directors</h2>
+          </div>
+          <div className="journal-people-grid">
+            {BOARD_DIRECTORS.map(([name, role, image]) => (
+              <article className="journal-person-card" key={name}>
+                <div className="journal-person-img">
+                  <Image src={image} alt={`${name}, ${role}`} width={520} height={390} unoptimized />
+                </div>
+                <div className="journal-person-body">
+                  <h3>{name}</h3>
+                  <p>{role}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+
           <p className="journal-source-note">
-            Journal content is based on Marajo Group&apos;s published journal and current portfolio of {featuredPropertyCount} properties.
+            Journal content is based on Marajo Group&apos;s published journal and current portfolio of{" "}
+            {featuredPropertyCount} properties.
           </p>
         </div>
       </section>

@@ -5669,3 +5669,110 @@ table td {
     height: 220px;
   }
 }
+
+/* News journal cards: mirrors the old Marajo Journal structure without affecting other cards. */
+.news-page .journal-featured {
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2rem);
+  align-items: stretch;
+  padding: clamp(0.75rem, 1.5vw, 1rem);
+  border-top: 4px solid var(--mg-green-bright);
+}
+
+.news-page .journal-featured-img {
+  height: auto;
+  min-height: 320px;
+  border-radius: calc(var(--radius-lg) - 8px);
+}
+
+.news-page .journal-featured-body {
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  justify-content: center;
+}
+
+.news-page .journal-featured-title {
+  font-size: clamp(1.55rem, 3vw, 2.55rem);
+  line-height: 1.16;
+}
+
+.news-page .journal-featured-body p {
+  max-width: 680px;
+}
+
+.journal-people-section {
+  padding-top: clamp(3rem, 7vw, 5rem);
+}
+
+.journal-people-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.journal-person-card {
+  overflow: hidden;
+  border: 1px solid var(--border-muted);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.journal-person-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(31, 110, 52, 0.28);
+  box-shadow: var(--shadow-lg);
+}
+
+.journal-person-img {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--accent-soft);
+}
+
+.journal-person-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.journal-person-body {
+  padding: 1.1rem;
+}
+
+.journal-person-body h3 {
+  margin: 0;
+  color: var(--heading-color);
+  font-family: var(--font-head), sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.journal-person-body p {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.journal-board-title {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+@media (max-width: 900px) {
+  .news-page .journal-featured {
+    grid-template-columns: 1fr;
+  }
+
+  .news-page .journal-featured-img {
+    min-height: 240px;
+  }
+}
+
+@media (max-width: 600px) {
+  .journal-people-grid {
+    grid-template-columns: 1fr;
+  }
+}

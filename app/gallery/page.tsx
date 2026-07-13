@@ -58,7 +58,7 @@ export default function GalleryPage() {
         className="hero about-hero gallery-hero"
         style={{
           backgroundImage:
-            'linear-gradient(90deg, rgba(5, 20, 9, 0.58), rgba(5, 20, 9, 0.22) 50%, rgba(5, 20, 9, 0.5)), linear-gradient(180deg, rgba(5, 20, 9, 0.08), rgba(5, 20, 9, 0.5)), url("/assets/gallery-hero.jpg")',
+            'linear-gradient(90deg, rgba(5, 20, 9, 0.38), rgba(5, 20, 9, 0.08) 50%, rgba(5, 20, 9, 0.28)), linear-gradient(180deg, rgba(5, 20, 9, 0.04), rgba(5, 20, 9, 0.3)), url("/assets/gallery-hero.jpg")',
         }}
       >
         <div className="container">

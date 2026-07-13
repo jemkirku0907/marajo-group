@@ -1529,6 +1529,24 @@ function OverviewListPanel({ title, items }: { title: string; items: Array<{ nam
   );
 }
 
+function overviewNotificationIcon(item: { type: string; property?: string; status?: string }): AdminIcon {
+  const haystack = `${item.type || ""} ${item.property || ""} ${item.status || ""}`.toLowerCase();
+  if (haystack.includes("worker") || haystack.includes("janitor") || haystack.includes("workforce")) return "tool";
+  if (haystack.includes("parking")) return "car";
+  if (haystack.includes("lead") || haystack.includes("inquiry")) return "users";
+  if (haystack.includes("booking")) return "receipt";
+  return "bell";
+}
+
+function overviewNotificationTarget(item: { type: string; property?: string; status?: string }): Tab {
+  const haystack = `${item.type || ""} ${item.property || ""} ${item.status || ""}`.toLowerCase();
+  if (haystack.includes("worker") || haystack.includes("janitor") || haystack.includes("workforce")) return "workers";
+  if (haystack.includes("parking")) return "parking";
+  if (haystack.includes("lead") || haystack.includes("inquiry")) return "leads";
+  if (haystack.includes("booking")) return "parking";
+  return "notifications";
+}
+
 function OverviewRightRail({
   recentRows,
   topProperties,
@@ -1549,8 +1567,8 @@ function OverviewRightRail({
         </div>
         <div className="overview-rail-list">
           {(notifications.length ? notifications : [{ key: "empty", type: "System", name: "No new notifications", property: "Updates will appear here", date: "", status: "Ready" }]).map((item) => (
-            <button className="overview-rail-item" key={item.key} type="button" onClick={() => onNavigate(item.type === "Lead" ? "leads" : "parking")}>
-              <span className="overview-rail-dot">{item.type.charAt(0)}</span>
+            <button className="overview-rail-item" key={item.key} type="button" onClick={() => onNavigate(overviewNotificationTarget(item))}>
+              <span className="overview-rail-dot"><AdminNavIcon icon={overviewNotificationIcon(item)} /></span>
               <span>
                 <strong>{item.name || item.type}</strong>
                 <small>{item.property} · {item.status}</small>
@@ -1567,7 +1585,7 @@ function OverviewRightRail({
         <div className="overview-rail-list">
           {(activities.length ? activities : [{ name: "No inquiries yet", meta: "Property activity", stat: "-" }]).map((item, index) => (
             <div className="overview-rail-item" key={`${item.name}-${index}`}>
-              <span className="overview-rail-dot">{item.name.charAt(0).toUpperCase()}</span>
+              <span className="overview-rail-dot"><AdminNavIcon icon="building" /></span>
               <span>
                 <strong>{item.name}</strong>
                 <small>{item.meta} · {item.stat}</small>

@@ -1430,7 +1430,7 @@ function OverviewSummaryCard({
   detail,
   trend,
 }: {
-  icon: string;
+  icon: AdminIcon;
   label: string;
   value: string | number;
   detail: string;
@@ -1458,7 +1458,7 @@ function OverviewSummaryCard({
           }}
           aria-hidden="true"
         >
-          {icon}
+          <AdminNavIcon icon={icon} />
         </span>
       </div>
       <p style={{ margin: 0, color: "var(--admin-muted)", fontSize: 12, lineHeight: 1.45 }}>{detail}</p>
@@ -1657,27 +1657,27 @@ function OverviewTab({ onNavigate }: { onNavigate: (tab: Tab) => void }) {
       <div className="overview-main-column">
         <div className="overview-stat-grid">
           <OverviewSummaryCard
-            icon="L"
+            icon="mail"
             label="Total Leads"
             value={s.total_inquiries || 0}
             detail={`${s.new_inquiries || 0} new, ${s.converted_inquiries || 0} converted`}
             trend={overviewTrend(Number(trends.current_month_inquiries || 0), Number(trends.previous_month_inquiries || 0))}
           />
           <OverviewSummaryCard
-            icon="U"
+            icon="building"
             label="Total Units"
             value={s.total_units || 0}
             detail={`${s.available_units || 0} available, ${s.occupied_units || 0} occupied/reserved/sold`}
           />
           <OverviewSummaryCard
-            icon="B"
+            icon="receipt"
             label="Total Bookings"
             value={s.total_bookings || 0}
             detail={`${s.active_bookings || 0} active, ${s.pending_bookings || 0} pending`}
             trend={overviewTrend(Number(trends.current_month_bookings || 0), Number(trends.previous_month_bookings || 0))}
           />
           <OverviewSummaryCard
-            icon="A"
+            icon="calendar"
             label="Upcoming Appointments"
             value={s.upcoming_appointments || 0}
             detail={`${s.appointments_this_week || 0} scheduled in the next 7 days`}

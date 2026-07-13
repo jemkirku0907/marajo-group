@@ -1653,7 +1653,7 @@ function OverviewTab({ onNavigate }: { onNavigate: (tab: Tab) => void }) {
     .slice(0, 7);
 
   return (
-    <div className="overview-dashboard overview-dashboard-dark">
+    <div className="overview-dashboard overview-dashboard-panel">
       <div className="overview-main-column">
         <div className="overview-stat-grid">
           <OverviewSummaryCard

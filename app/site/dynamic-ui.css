@@ -656,7 +656,28 @@
   gap: 18px;
 }
 
-.overview-dashboard-dark {
+.overview-dashboard-panel {
+  --admin-bg: #f7fbf5;
+  --admin-card: #ffffff;
+  --admin-card-soft: #f0f7ee;
+  --admin-border: rgba(19, 93, 42, 0.12);
+  --admin-heading: var(--heading-color);
+  --admin-text: var(--text-primary);
+  --admin-muted: var(--text-muted);
+  --admin-accent: var(--mg-green);
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 300px);
+  align-items: start;
+  padding: 18px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 84% 0%, rgba(118, 201, 56, 0.14), transparent 32%),
+    radial-gradient(circle at 6% 16%, rgba(31, 110, 52, 0.08), transparent 34%),
+    var(--admin-bg);
+}
+
+.theme-dark .overview-dashboard-panel,
+.dark .overview-dashboard-panel,
+[data-theme="dark"] .overview-dashboard-panel {
   --admin-bg: #0d1113;
   --admin-card: #1a2024;
   --admin-card-soft: #20282d;
@@ -665,10 +686,6 @@
   --admin-text: rgba(246, 255, 242, 0.86);
   --admin-muted: rgba(246, 255, 242, 0.56);
   --admin-accent: #9cff4a;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 300px);
-  align-items: start;
-  padding: 18px;
-  border-radius: 24px;
   background:
     radial-gradient(circle at 84% 0%, rgba(89, 255, 113, 0.14), transparent 32%),
     radial-gradient(circle at 6% 16%, rgba(31, 110, 52, 0.2), transparent 34%),
@@ -681,21 +698,21 @@
   min-width: 0;
 }
 
-.overview-dashboard-dark table {
+.overview-dashboard-panel table {
   color: var(--admin-text) !important;
 }
 
-.overview-dashboard-dark th {
-  background: rgba(255, 255, 255, 0.04) !important;
+.overview-dashboard-panel th {
+  background: var(--admin-card-soft) !important;
   color: var(--admin-muted) !important;
 }
 
-.overview-dashboard-dark td {
+.overview-dashboard-panel td {
   border-color: var(--admin-border) !important;
   color: var(--admin-text) !important;
 }
 
-.overview-dashboard-dark svg {
+.overview-dashboard-panel svg {
   width: 20px;
   height: 20px;
   fill: none;
@@ -1041,7 +1058,7 @@ body:has(.admin-dashboard-shell) header[style*="display: none"] {
 }
 
 @media (max-width: 1180px) {
-  .overview-dashboard-dark {
+  .overview-dashboard-panel {
     grid-template-columns: 1fr;
   }
 

@@ -1415,8 +1415,11 @@ function overviewTrend(current: number, previous: number) {
 
 const overviewCardBase: React.CSSProperties = {
   ...cardStyle,
+  background: "var(--admin-card)",
+  color: "var(--admin-text)",
+  border: "1px solid var(--admin-border)",
   borderRadius: 18,
-  boxShadow: "0 18px 45px rgba(15, 23, 42, 0.08)",
+  boxShadow: "0 18px 45px rgba(0, 0, 0, 0.22)",
   overflow: "hidden",
 };
 
@@ -1437,8 +1440,8 @@ function OverviewSummaryCard({
     <article style={{ ...overviewCardBase, minHeight: 154 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginBottom: 18 }}>
         <div>
-          <p style={{ margin: 0, color: "var(--text-muted)", fontSize: 12, fontWeight: 800 }}>{label}</p>
-          <strong style={{ display: "block", marginTop: 10, color: "var(--heading-color)", fontSize: "clamp(1.65rem, 2vw, 2.15rem)", lineHeight: 1 }}>
+          <p style={{ margin: 0, color: "var(--admin-muted)", fontSize: 12, fontWeight: 800 }}>{label}</p>
+          <strong style={{ display: "block", marginTop: 10, color: "var(--admin-heading)", fontSize: "clamp(1.65rem, 2vw, 2.15rem)", lineHeight: 1 }}>
             {value}
           </strong>
         </div>
@@ -1449,8 +1452,8 @@ function OverviewSummaryCard({
             borderRadius: 14,
             display: "grid",
             placeItems: "center",
-            background: "rgba(31, 110, 52, 0.11)",
-            color: "var(--mg-green)",
+            background: "rgba(119, 255, 66, 0.12)",
+            color: "var(--admin-accent)",
             fontSize: 20,
           }}
           aria-hidden="true"
@@ -1458,8 +1461,8 @@ function OverviewSummaryCard({
           {icon}
         </span>
       </div>
-      <p style={{ margin: 0, color: "var(--text-muted)", fontSize: 12, lineHeight: 1.45 }}>{detail}</p>
-      {trend && <small style={{ display: "block", marginTop: 8, color: "var(--mg-green)", fontWeight: 800 }}>{trend}</small>}
+      <p style={{ margin: 0, color: "var(--admin-muted)", fontSize: 12, lineHeight: 1.45 }}>{detail}</p>
+      {trend && <small style={{ display: "block", marginTop: 8, color: "var(--admin-accent)", fontWeight: 800 }}>{trend}</small>}
     </article>
   );
 }
@@ -1471,10 +1474,10 @@ function OverviewActivityChart({ data }: { data: Array<{ label: string; c: numbe
     <section style={{ ...overviewCardBase, minHeight: 310 }}>
       <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "center", marginBottom: 22 }}>
         <div>
-          <h3 style={{ margin: 0, color: "var(--heading-color)", fontSize: 18 }}>Lead Activity</h3>
-          <p style={{ margin: "5px 0 0", color: "var(--text-muted)", fontSize: 12 }}>Inquiry volume over the last 30 days</p>
+          <h3 style={{ margin: 0, color: "var(--admin-heading)", fontSize: 18 }}>Lead Activity</h3>
+          <p style={{ margin: "5px 0 0", color: "var(--admin-muted)", fontSize: 12 }}>Inquiry volume over the last 30 days</p>
         </div>
-        <span style={{ color: "var(--mg-green)", fontSize: 12, fontWeight: 800 }}>Live data</span>
+        <span style={{ color: "var(--admin-accent)", fontSize: 12, fontWeight: 800 }}>Live data</span>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.max(1, rows.length)}, minmax(24px, 1fr))`, alignItems: "end", gap: 10, minHeight: 190 }}>
         {rows.map((item, index) => {
@@ -1486,11 +1489,11 @@ function OverviewActivityChart({ data }: { data: Array<{ label: string; c: numbe
                 style={{
                   height: `${Math.max(8, (value / max) * 170)}px`,
                   borderRadius: "12px 12px 5px 5px",
-                  background: value ? "linear-gradient(180deg, var(--mg-green-bright), var(--mg-green))" : "var(--surface-soft)",
-                  boxShadow: value ? "0 14px 26px rgba(31, 110, 52, 0.18)" : "none",
+                  background: value ? "linear-gradient(180deg, var(--admin-accent), var(--mg-green))" : "rgba(255,255,255,0.08)",
+                  boxShadow: value ? "0 14px 26px rgba(119, 255, 66, 0.14)" : "none",
                 }}
               />
-              <small style={{ color: "var(--text-muted)", fontSize: 10, textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              <small style={{ color: "var(--admin-muted)", fontSize: 10, textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                 {item.label}
               </small>
             </div>
@@ -1505,24 +1508,94 @@ function OverviewListPanel({ title, items }: { title: string; items: Array<{ nam
   return (
     <section style={{ ...overviewCardBase, minHeight: 310 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-        <h3 style={{ margin: 0, color: "var(--heading-color)", fontSize: 17 }}>{title}</h3>
-        <span style={{ color: "var(--mg-green)", fontSize: 12, fontWeight: 800 }}>Top 5</span>
+        <h3 style={{ margin: 0, color: "var(--admin-heading)", fontSize: 17 }}>{title}</h3>
+        <span style={{ color: "var(--admin-accent)", fontSize: 12, fontWeight: 800 }}>Top 5</span>
       </div>
       <div style={{ display: "grid", gap: 12 }}>
         {(items.length ? items : [{ name: "No data yet", meta: "Recent activity will appear here", stat: "-" }]).map((item, index) => (
           <div key={`${item.name}-${index}`} style={{ display: "grid", gridTemplateColumns: "42px 1fr auto", gap: 12, alignItems: "center" }}>
-            <span style={{ width: 42, height: 42, borderRadius: 14, display: "grid", placeItems: "center", background: "rgba(31, 110, 52, 0.1)", color: "var(--mg-green)", fontWeight: 900 }}>
+            <span style={{ width: 42, height: 42, borderRadius: 14, display: "grid", placeItems: "center", background: "rgba(119, 255, 66, 0.12)", color: "var(--admin-accent)", fontWeight: 900 }}>
               {item.name.charAt(0).toUpperCase()}
             </span>
             <span style={{ minWidth: 0 }}>
-              <strong style={{ display: "block", color: "var(--heading-color)", fontSize: 13, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.name}</strong>
-              <small style={{ color: "var(--text-muted)" }}>{item.meta}</small>
+              <strong style={{ display: "block", color: "var(--admin-heading)", fontSize: 13, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.name}</strong>
+              <small style={{ color: "var(--admin-muted)" }}>{item.meta}</small>
             </span>
-            <strong style={{ color: "var(--heading-color)", fontSize: 13 }}>{item.stat}</strong>
+            <strong style={{ color: "var(--admin-heading)", fontSize: 13 }}>{item.stat}</strong>
           </div>
         ))}
       </div>
     </section>
+  );
+}
+
+function OverviewRightRail({
+  recentRows,
+  topProperties,
+  onNavigate,
+}: {
+  recentRows: Array<{ key: string; type: string; name: string; property: string; date: string; status: string }>;
+  topProperties: Array<{ name: string; meta: string; stat: string | number }>;
+  onNavigate: (tab: Tab) => void;
+}) {
+  const notifications = recentRows.slice(0, 4);
+  const activities = topProperties.slice(0, 4);
+  return (
+    <aside className="overview-right-rail">
+      <section className="overview-rail-section">
+        <div className="overview-rail-heading">
+          <h3>Notifications</h3>
+          <button type="button" onClick={() => onNavigate("notifications")}>View</button>
+        </div>
+        <div className="overview-rail-list">
+          {(notifications.length ? notifications : [{ key: "empty", type: "System", name: "No new notifications", property: "Updates will appear here", date: "", status: "Ready" }]).map((item) => (
+            <button className="overview-rail-item" key={item.key} type="button" onClick={() => onNavigate(item.type === "Lead" ? "leads" : "parking")}>
+              <span className="overview-rail-dot">{item.type.charAt(0)}</span>
+              <span>
+                <strong>{item.name || item.type}</strong>
+                <small>{item.property} · {item.status}</small>
+              </span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="overview-rail-section">
+        <div className="overview-rail-heading">
+          <h3>Activities</h3>
+        </div>
+        <div className="overview-rail-list">
+          {(activities.length ? activities : [{ name: "No inquiries yet", meta: "Property activity", stat: "-" }]).map((item, index) => (
+            <div className="overview-rail-item" key={`${item.name}-${index}`}>
+              <span className="overview-rail-dot">{item.name.charAt(0).toUpperCase()}</span>
+              <span>
+                <strong>{item.name}</strong>
+                <small>{item.meta} · {item.stat}</small>
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="overview-rail-section">
+        <div className="overview-rail-heading">
+          <h3>Quick Actions</h3>
+        </div>
+        <div className="overview-quick-action-list">
+          {([
+            ["View Leads", "leads"],
+            ["Manage Bookings", "parking"],
+            ["Add Worker", "workers"],
+            ["Invoices", "receipts"],
+          ] as Array<[string, Tab]>).map(([label, target]) => (
+            <button key={label} type="button" onClick={() => onNavigate(target)}>
+              {label}
+              <span>-&gt;</span>
+            </button>
+          ))}
+        </div>
+      </section>
+    </aside>
   );
 }
 
@@ -1580,47 +1653,47 @@ function OverviewTab({ onNavigate }: { onNavigate: (tab: Tab) => void }) {
     .slice(0, 7);
 
   return (
-    <div style={{ display: "grid", gap: 18 }}>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 14 }}>
-        <OverviewSummaryCard
-          icon="L"
-          label="Total Leads"
-          value={s.total_inquiries || 0}
-          detail={`${s.new_inquiries || 0} new, ${s.converted_inquiries || 0} converted`}
-          trend={overviewTrend(Number(trends.current_month_inquiries || 0), Number(trends.previous_month_inquiries || 0))}
-        />
-        <OverviewSummaryCard
-          icon="U"
-          label="Total Units"
-          value={s.total_units || 0}
-          detail={`${s.available_units || 0} available, ${s.occupied_units || 0} occupied/reserved/sold`}
-        />
-        <OverviewSummaryCard
-          icon="B"
-          label="Total Bookings"
-          value={s.total_bookings || 0}
-          detail={`${s.active_bookings || 0} active, ${s.pending_bookings || 0} pending`}
-          trend={overviewTrend(Number(trends.current_month_bookings || 0), Number(trends.previous_month_bookings || 0))}
-        />
-        <OverviewSummaryCard
-          icon="A"
-          label="Upcoming Appointments"
-          value={s.upcoming_appointments || 0}
-          detail={`${s.appointments_this_week || 0} scheduled in the next 7 days`}
-        />
-      </div>
+    <div className="overview-dashboard overview-dashboard-dark">
+      <div className="overview-main-column">
+        <div className="overview-stat-grid">
+          <OverviewSummaryCard
+            icon="L"
+            label="Total Leads"
+            value={s.total_inquiries || 0}
+            detail={`${s.new_inquiries || 0} new, ${s.converted_inquiries || 0} converted`}
+            trend={overviewTrend(Number(trends.current_month_inquiries || 0), Number(trends.previous_month_inquiries || 0))}
+          />
+          <OverviewSummaryCard
+            icon="U"
+            label="Total Units"
+            value={s.total_units || 0}
+            detail={`${s.available_units || 0} available, ${s.occupied_units || 0} occupied/reserved/sold`}
+          />
+          <OverviewSummaryCard
+            icon="B"
+            label="Total Bookings"
+            value={s.total_bookings || 0}
+            detail={`${s.active_bookings || 0} active, ${s.pending_bookings || 0} pending`}
+            trend={overviewTrend(Number(trends.current_month_bookings || 0), Number(trends.previous_month_bookings || 0))}
+          />
+          <OverviewSummaryCard
+            icon="A"
+            label="Upcoming Appointments"
+            value={s.upcoming_appointments || 0}
+            detail={`${s.appointments_this_week || 0} scheduled in the next 7 days`}
+          />
+        </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 18 }}>
-        <OverviewActivityChart data={data.charts?.lead_activity || []} />
-        <OverviewListPanel title="Top Properties by Inquiries" items={topProperties} />
-      </div>
+        <div className="overview-grid-two">
+          <OverviewActivityChart data={data.charts?.lead_activity || []} />
+          <OverviewListPanel title="Top Properties by Inquiries" items={topProperties} />
+        </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 520px), 1fr))", gap: 18 }}>
         <section style={overviewCardBase}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 14 }}>
             <div>
-              <h3 style={{ margin: 0, color: "var(--heading-color)", fontSize: 17 }}>Recent Activity</h3>
-              <p style={{ margin: "5px 0 0", color: "var(--text-muted)", fontSize: 12 }}>Latest leads and booking movement</p>
+              <h3 style={{ margin: 0, color: "var(--admin-heading)", fontSize: 17 }}>Recent Activity</h3>
+              <p style={{ margin: "5px 0 0", color: "var(--admin-muted)", fontSize: 12 }}>Latest leads and booking movement</p>
             </div>
             <button onClick={() => onNavigate("leads")} style={{ ...actionBtn, marginRight: 0, padding: "8px 11px" }}>View all</button>
           </div>
@@ -1640,7 +1713,7 @@ function OverviewTab({ onNavigate }: { onNavigate: (tab: Tab) => void }) {
                     <td style={tdStyle}>
                       <strong>{item.name || "Unknown"}</strong>
                       <br />
-                      <small style={{ color: "var(--text-muted)" }}>{item.type}</small>
+                      <small style={{ color: "var(--admin-muted)" }}>{item.type}</small>
                     </td>
                     <td style={tdStyle}>{item.property}</td>
                     <td style={tdStyle}>{formatOverviewDate(item.date)}</td>
@@ -1656,42 +1729,8 @@ function OverviewTab({ onNavigate }: { onNavigate: (tab: Tab) => void }) {
             </table>
           </div>
         </section>
-
-        <section style={overviewCardBase}>
-          <h3 style={{ margin: "0 0 14px", color: "var(--heading-color)", fontSize: 17 }}>Quick Actions</h3>
-          <div style={{ display: "grid", gap: 10 }}>
-            {([
-              ["Add Property", "units"],
-              ["View Leads", "leads"],
-              ["Manage Bookings", "parking"],
-              ["Add Worker", "workers"],
-            ] as Array<[string, Tab]>).map(([label, target]) => (
-              <button
-                key={label}
-                type="button"
-                onClick={() => onNavigate(target)}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: 12,
-                  width: "100%",
-                  border: "1px solid var(--border-muted)",
-                  borderRadius: 14,
-                  padding: "13px 14px",
-                  background: "var(--surface-soft)",
-                  color: "var(--heading-color)",
-                  fontWeight: 800,
-                  cursor: "pointer",
-                }}
-              >
-                {label}
-                <span style={{ color: "var(--mg-green)" }}>-&gt;</span>
-              </button>
-            ))}
-          </div>
-        </section>
       </div>
+      <OverviewRightRail recentRows={recentRows} topProperties={topProperties} onNavigate={onNavigate} />
     </div>
   );
 }

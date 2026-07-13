@@ -32,7 +32,7 @@ type WorkerAssignment = {
   notes: string | null;
   admin_notes: string | null;
   worker_notes?: string | null;
-  status: "accepted" | "in_progress" | "done" | "declined";
+  status: "pending_response" | "accepted" | "in_progress" | "done" | "declined";
   status_label: string;
   current_status_age: string;
   total_elapsed: string;
@@ -140,7 +140,7 @@ export default function AccountModal({ open, onClose }: { open: boolean; onClose
     [history]
   );
 
-  async function updateAssignment(id: number, status: "in_progress" | "done" | "declined") {
+  async function updateAssignment(id: number, status: "accepted" | "in_progress" | "done" | "declined") {
     if (!token) return;
     setUpdatingAssignmentId(id);
     setAssignmentMessage("");
@@ -297,8 +297,10 @@ function AssignmentCard({
   note: string;
   onNote: (value: string) => void;
   updating: boolean;
-  onUpdate: (id: number, status: "in_progress" | "done" | "declined") => void;
+  onUpdate: (id: number, status: "accepted" | "in_progress" | "done" | "declined") => void;
 }) {
+  const canRespond = assignment.status === "pending_response";
+  const canDecline = assignment.status === "pending_response" || assignment.status === "accepted";
   const canStart = assignment.status === "accepted";
   const canFinish = assignment.status === "in_progress";
   return (
@@ -334,11 +336,14 @@ function AssignmentCard({
         placeholder="Optional update or reason..."
       />
       <div className="mt-3 flex flex-wrap gap-2">
-        <button type="button" className="btn-secondary" disabled={!canStart || updating} onClick={() => onUpdate(assignment.id, "declined")}>
+        <button type="button" className="btn-secondary" disabled={!canDecline || updating} onClick={() => onUpdate(assignment.id, "declined")}>
           Decline
         </button>
+        <button type="button" className="btn-primary" disabled={!canRespond || updating} onClick={() => onUpdate(assignment.id, "accepted")}>
+          Accept
+        </button>
         <button type="button" className="btn-primary" disabled={!canStart || updating} onClick={() => onUpdate(assignment.id, "in_progress")}>
-          Accept / Start Job
+          Start Job
         </button>
         <button type="button" className="btn-primary" disabled={!canFinish || updating} onClick={() => onUpdate(assignment.id, "done")}>
           Mark Done

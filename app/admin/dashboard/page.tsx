@@ -2257,6 +2257,7 @@ function ContactsTab() {
 
 const WORK_REQUEST_STATUSES = [
   { value: "pending", label: "Pending" },
+  { value: "pending_response", label: "Pending Response" },
   { value: "accepted", label: "Accepted" },
   { value: "in_progress", label: "In Progress" },
   { value: "done", label: "Done" },
@@ -2265,11 +2266,20 @@ const WORK_REQUEST_STATUSES = [
 
 const requestStatusColor: Record<string, string> = {
   pending: "#f59e0b",
+  pending_response: "#84cc16",
   accepted: "#2563eb",
   in_progress: "var(--mg-green)",
   done: "#16a34a",
   declined: "#dc2626",
 };
+
+function normalizeWorkerRole(value: any) {
+  return String(value ?? "").trim().toLowerCase().replace(/[\s-]+/g, "_");
+}
+
+function workerName(employee: any) {
+  return [employee.first_name, employee.last_name].filter(Boolean).join(" ") || employee.email || `Worker ${employee.id}`;
+}
 
 function TasksTab() {
   const [requests, setRequests] = useState<any[]>([]);
@@ -2338,7 +2348,7 @@ function TasksTab() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(5, minmax(0, 1fr))", gap: 12, marginBottom: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 12, marginBottom: 16 }}>
         {WORK_REQUEST_STATUSES.map((s) => (
           <div key={s.value} style={{ ...cardStyle, padding: 16, borderLeft: `4px solid ${requestStatusColor[s.value]}` }}>
             <div style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 6 }}>{s.label}</div>
@@ -2347,7 +2357,7 @@ function TasksTab() {
         ))}
       </div>
 
-      <div style={{ ...cardStyle, marginBottom: 16, display: "grid", gridTemplateColumns: "repeat(5, minmax(0, 1fr))", gap: 10 }}>
+      <div style={{ ...cardStyle, marginBottom: 16, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 10 }}>
         <select style={inputStyle} value={filters.status} onChange={(e) => setFilters({ ...filters, status: e.target.value })}>
           <option value="all">All statuses</option>
           {WORK_REQUEST_STATUSES.map((s) => (
@@ -2384,7 +2394,10 @@ function TasksTab() {
             </tr>
           </thead>
           <tbody>
-            {requests.map((request) => (
+            {requests.map((request) => {
+              const requestedRole = normalizeWorkerRole(request.position);
+              const matchingEmployees = employees.filter((employee) => normalizeWorkerRole(employee.position) === requestedRole);
+              return (
               <tr key={request.id}>
                 <td style={tdStyle}>
                   <div style={{ fontWeight: 700 }}>{request.client_name || "Unnamed client"}</div>
@@ -2407,9 +2420,14 @@ function TasksTab() {
                     onChange={(e) => updateRequest(request.id, { assigned_worker_id: e.target.value || null })}
                   >
                     <option value="">Unassigned</option>
-                    {employees.map((e) => (
+                    {matchingEmployees.length === 0 && (
+                      <option value="" disabled>
+                        No approved {request.position || "matching"} workers
+                      </option>
+                    )}
+                    {matchingEmployees.map((e) => (
                       <option key={e.id} value={e.id}>
-                        {[e.first_name, e.last_name].filter(Boolean).join(" ")}{e.position ? ` - ${e.position}` : ""}
+                        {workerName(e)}{e.position ? ` - ${e.position}` : ""}
                       </option>
                     ))}
                   </select>
@@ -2451,7 +2469,7 @@ function TasksTab() {
                   )}
                 </td>
               </tr>
-            ))}
+            );})}
             {requests.length === 0 && (
               <tr>
                 <td style={tdStyle} colSpan={6}>
@@ -2817,4 +2835,3 @@ function ProfileTab({ staff }: { staff: Staff }) {
     </div>
   );
 }
-

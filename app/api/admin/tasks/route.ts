@@ -8,8 +8,23 @@ function unauthorized() {
 }
 
 const PRIORITIES = ["high", "medium", "low"];
-const TRACKED_STATUSES = ["pending", "accepted", "in_progress", "done", "declined"] as const;
+const TRACKED_STATUSES = ["pending", "pending_response", "accepted", "in_progress", "done", "declined"] as const;
 type TrackedStatus = (typeof TRACKED_STATUSES)[number];
+const STATUS_INPUTS = [
+  "pending",
+  "pending_response",
+  "pending-response",
+  "pending response",
+  "assigned",
+  "accepted",
+  "confirmed",
+  "approved",
+  "in_progress",
+  "done",
+  "completed",
+  "declined",
+  "rejected",
+];
 
 async function tableExists(tableName: string) {
   const row = await db.queryOne<{ exists: boolean }>(
@@ -36,7 +51,8 @@ async function ensureWorkerBookingTrackingColumns() {
 }
 
 function normalizeStatus(status: string | null | undefined): TrackedStatus {
-  const value = String(status ?? "pending").toLowerCase();
+  const value = String(status ?? "pending").toLowerCase().trim();
+  if (value === "pending_response" || value === "pending-response" || value === "pending response" || value === "assigned") return "pending_response";
   if (value === "confirmed" || value === "approved" || value === "accepted") return "accepted";
   if (value === "completed" || value === "done") return "done";
   if (value === "declined" || value === "rejected") return "declined";
@@ -44,9 +60,14 @@ function normalizeStatus(status: string | null | undefined): TrackedStatus {
   return "pending";
 }
 
+function normalizeWorkerRole(value: any) {
+  return String(value ?? "").trim().toLowerCase().replace(/[\s-]+/g, "_");
+}
+
 function statusLabel(status: TrackedStatus) {
   const labels: Record<TrackedStatus, string> = {
     pending: "Pending",
+    pending_response: "Pending Response",
     accepted: "Accepted",
     in_progress: "In Progress",
     done: "Done",
@@ -77,20 +98,22 @@ function trackingFor(row: any) {
   const doneAt = row.done_at ?? null;
   const declinedAt = row.declined_at ?? null;
 
-  const pendingEnd = acceptedAt || inProgressAt || doneAt || declinedAt || (status === "pending" ? null : row.updated_at);
+  const pendingEnd = acceptedAt || inProgressAt || doneAt || declinedAt || (status === "pending" || status === "pending_response" ? null : row.updated_at);
   const acceptedEnd = inProgressAt || doneAt || declinedAt || (status === "accepted" ? null : row.updated_at);
   const progressEnd = doneAt || declinedAt || (status === "in_progress" ? null : row.updated_at);
   const currentSince =
     status === "pending" ? createdAt :
+    status === "pending_response" ? row.updated_at || createdAt :
     status === "accepted" ? acceptedAt || createdAt :
     status === "in_progress" ? inProgressAt || acceptedAt || createdAt :
     status === "declined" ? declinedAt || acceptedAt || createdAt :
     doneAt || inProgressAt || acceptedAt || createdAt;
+  const workStartedAt = acceptedAt || inProgressAt;
 
   return {
     status,
     status_label: statusLabel(status),
-    total_elapsed: durationLabel(createdAt, doneAt || declinedAt),
+    total_elapsed: workStartedAt ? durationLabel(workStartedAt, doneAt || declinedAt) : "Not started",
     current_status_age: durationLabel(currentSince, status === "done" ? doneAt : status === "declined" ? declinedAt : null),
     pending_time: durationLabel(createdAt, pendingEnd),
     accepted_time: acceptedAt ? durationLabel(acceptedAt, acceptedEnd) : "Not started",
@@ -151,6 +174,8 @@ export async function GET(req: NextRequest) {
     if (rawStatus !== "all") {
       if (status === "accepted") {
         where.push("wb.status IN ('accepted', 'confirmed', 'approved')");
+      } else if (status === "pending_response") {
+        where.push("wb.status IN ('pending_response', 'assigned')");
       } else if (status === "done") {
         where.push("wb.status IN ('done', 'completed')");
       } else if (status === "declined") {
@@ -223,21 +248,52 @@ export async function POST(req: NextRequest) {
 
   if (action === "update-request") {
     const id = Number(data.id ?? 0);
-    const requestedStatus = String(data.status ?? "").toLowerCase();
-    const status = normalizeStatus(requestedStatus);
+    const hasStatusPatch = data.status !== undefined;
+    const requestedStatus = String(data.status ?? "").toLowerCase().trim();
     const assignedWorkerId = data.assigned_worker_id ? Number(data.assigned_worker_id) : null;
     const adminNotes = data.admin_notes !== undefined ? String(data.admin_notes ?? "").trim() : undefined;
     if (!id) {
       return NextResponse.json({ success: false, message: "Invalid request ID." }, { status: 400 });
     }
-    if (!TRACKED_STATUSES.includes(requestedStatus as TrackedStatus)) {
+    if (hasStatusPatch && !STATUS_INPUTS.includes(requestedStatus)) {
       return NextResponse.json({ success: false, message: `Invalid status: ${data.status}` }, { status: 400 });
     }
     if (!(await ensureWorkerBookingTrackingColumns())) {
       return NextResponse.json({ success: false, message: "worker_bookings table is not available yet." }, { status: 404 });
     }
-    const before = await db.queryOne<{ status: string }>("SELECT status FROM worker_bookings WHERE id = ? LIMIT 1", [id]);
-    const previousStatus = normalizeStatus(before?.status);
+    const before = await db.queryOne<{ status: string; position: string | null; assigned_worker_id: number | null }>(
+      "SELECT status, position, assigned_worker_id FROM worker_bookings WHERE id = ? LIMIT 1",
+      [id]
+    );
+    if (!before) {
+      return NextResponse.json({ success: false, message: "Workforce request not found." }, { status: 404 });
+    }
+    const previousStatus = normalizeStatus(before.status);
+    let status = hasStatusPatch ? normalizeStatus(requestedStatus) : previousStatus;
+
+    if (data.assigned_worker_id !== undefined && assignedWorkerId) {
+      const worker = await db.queryOne<{ id: number; position: string | null }>(
+        "SELECT id, position FROM workers WHERE id = ? LIMIT 1",
+        [assignedWorkerId]
+      );
+      if (!worker) {
+        return NextResponse.json({ success: false, message: "Assigned employee was not found." }, { status: 400 });
+      }
+      const requestedRole = normalizeWorkerRole(before.position);
+      const workerRole = normalizeWorkerRole(worker.position);
+      if (requestedRole && workerRole && requestedRole !== workerRole) {
+        return NextResponse.json(
+          { success: false, message: `This request needs ${before.position}. Please assign a matching ${before.position} employee.` },
+          { status: 400 }
+        );
+      }
+      if (!hasStatusPatch && (previousStatus === "pending" || previousStatus === "declined" || before.assigned_worker_id !== assignedWorkerId)) {
+        status = "pending_response";
+      }
+    }
+    if (data.assigned_worker_id !== undefined && !assignedWorkerId && !hasStatusPatch) {
+      status = "pending";
+    }
 
     const fields = ["status = ?", "updated_at = NOW()"];
     const values: any[] = [status];
@@ -262,7 +318,7 @@ export async function POST(req: NextRequest) {
     if (status === "declined") {
       fields.push("declined_at = COALESCE(declined_at, NOW())");
     }
-    if (status === "pending") {
+    if (status === "pending" || status === "pending_response") {
       fields.push("accepted_at = NULL");
       fields.push("in_progress_at = NULL");
       fields.push("done_at = NULL");

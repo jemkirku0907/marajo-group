@@ -137,7 +137,7 @@ export default function WorkforcePage() {
     }
   }, [step, token]);
 
-  async function updateAssignment(id: number, status: "in_progress" | "done") {
+  async function updateAssignment(id: number, status: "accepted" | "in_progress" | "done" | "declined") {
     if (!requireLogin()) return;
     setUpdatingAssignmentId(id);
     setAssignmentError("");
@@ -251,6 +251,8 @@ export default function WorkforcePage() {
   }
 
   function assignmentCard(assignment: WorkerAssignment, mode: "active" | "completed") {
+    const canRespond = assignment.status === "pending_response";
+    const canDecline = assignment.status === "pending_response" || assignment.status === "accepted";
     const canStart = assignment.status === "accepted";
     const canFinish = assignment.status === "in_progress";
     return (
@@ -279,6 +281,22 @@ export default function WorkforcePage() {
         )}
         {mode === "active" && (
           <div className="worker-assignment-actions">
+            <button
+              type="button"
+              className="btn-book-secondary"
+              disabled={!canDecline || updatingAssignmentId === assignment.id}
+              onClick={() => updateAssignment(assignment.id, "declined")}
+            >
+              Decline
+            </button>
+            <button
+              type="button"
+              className="btn-book-primary"
+              disabled={!canRespond || updatingAssignmentId === assignment.id}
+              onClick={() => updateAssignment(assignment.id, "accepted")}
+            >
+              Accept
+            </button>
             <button
               type="button"
               className="btn-book-secondary"

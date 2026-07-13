@@ -39,42 +39,7 @@ export default function NewsPage() {
         </div>
       </section>
 
-      <section id="latest-news" className="section" style={{ paddingBottom: 0 }}>
-        <div className="container">
-          <div className="section-title">
-            <span>Latest</span>
-            <h2>Featured Story</h2>
-          </div>
-          <a href="#" className="journal-featured">
-            <div className="journal-featured-img">
-              <Image
-                src={POST_IMG}
-                alt="Growing into one of the country's most trusted real estate companies"
-                width={900}
-                height={600}
-                unoptimized
-              />
-            </div>
-            <div className="journal-featured-body">
-              <div className="journal-meta">
-                <span className="journal-tag">Company News</span>
-                <span>October 18, 2023</span>
-              </div>
-              <h2 className="journal-featured-title">
-                Growing into one of the country&apos;s most trusted real estate companies
-              </h2>
-              <p>
-                Since its inception four decades ago, Marajo Group has grown into one of the country&apos;s reliable
-                real estate developers, focused on quality across commercial, residential, hospitality, and storage
-                properties.
-              </p>
-              <span className="journal-read-more">Read Full Story -&gt;</span>
-            </div>
-          </a>
-        </div>
-      </section>
-
-      <section className="section journal-full-article-section">
+      <section id="latest-news" className="section journal-full-article-section">
         <div className="container">
           <div className="section-title">
             <span>Full Feature</span>

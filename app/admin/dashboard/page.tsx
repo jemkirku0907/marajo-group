@@ -2291,7 +2291,7 @@ function TasksTab() {
     employee: "all",
     date_from: "",
     date_to: "",
-    sort: "oldest-active",
+    sort: "latest-update",
   });
 
   const load = useCallback(async (silent = false) => {
@@ -2389,6 +2389,7 @@ function TasksTab() {
         <input style={inputStyle} type="date" value={filters.date_from} onChange={(e) => setFilters({ ...filters, date_from: e.target.value })} />
         <input style={inputStyle} type="date" value={filters.date_to} onChange={(e) => setFilters({ ...filters, date_to: e.target.value })} />
         <select style={inputStyle} value={filters.sort} onChange={(e) => setFilters({ ...filters, sort: e.target.value })}>
+          <option value="latest-update">Latest updates first</option>
           <option value="oldest-active">Oldest active first</option>
           <option value="newest">Newest first</option>
           <option value="status">Status order</option>
@@ -2524,7 +2525,7 @@ function TasksTab() {
       </div>
 
       <div style={{ ...cardStyle, marginTop: 16, fontSize: 13, color: "var(--text-muted)" }}>
-        Tip: sort by oldest active first to find requests that need a reminder. Timing is computed from submitted, accepted, in-progress, and done timestamps.
+        Tip: latest updates first brings newly completed worker tasks to the top. Use oldest active first to find requests that need a reminder.
       </div>
     </div>
   );

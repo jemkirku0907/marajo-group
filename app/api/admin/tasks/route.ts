@@ -169,7 +169,7 @@ export async function GET(req: NextRequest) {
     const employee = Number(req.nextUrl.searchParams.get("employee") ?? 0);
     const dateFrom = req.nextUrl.searchParams.get("date_from") ?? "";
     const dateTo = req.nextUrl.searchParams.get("date_to") ?? "";
-    const sort = req.nextUrl.searchParams.get("sort") ?? "oldest-active";
+    const sort = req.nextUrl.searchParams.get("sort") ?? "latest-update";
     const where: string[] = [];
     const params: any[] = [];
 
@@ -201,6 +201,7 @@ export async function GET(req: NextRequest) {
     }
 
     const orderBy =
+      sort === "latest-update" ? "COALESCE(wb.done_at, wb.in_progress_at, wb.accepted_at, wb.updated_at, wb.created_at) DESC" :
       sort === "newest" ? "wb.created_at DESC" :
       sort === "status" ? "CASE WHEN wb.status = 'pending' THEN 1 WHEN wb.status IN ('accepted','confirmed','approved') THEN 2 WHEN wb.status = 'in_progress' THEN 3 WHEN wb.status IN ('done','completed') THEN 4 ELSE 5 END, wb.created_at ASC" :
       "CASE WHEN wb.status IN ('done','completed','declined','rejected') THEN 2 ELSE 1 END, wb.created_at ASC";

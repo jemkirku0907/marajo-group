@@ -112,7 +112,7 @@ export default function WorkforcePage() {
     setAssignmentLoading(true);
     setAssignmentError("");
     try {
-      const res = await fetch("/api/worker/tasks", { headers: authHeaders(token) });
+      const res = await fetch("/api/worker/tasks", { headers: authHeaders(token), cache: "no-store" });
       const data = await res.json();
       if (!data.success) {
         setAssignmentError(data.message || "Could not load assignments.");

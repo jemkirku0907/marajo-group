@@ -3,6 +3,8 @@ import { requireAdmin } from "@/lib/staffAuth";
 import { db } from "@/lib/db";
 import { sendWorkerBookingAcceptedNotice } from "@/lib/mail";
 
+export const dynamic = "force-dynamic";
+
 function unauthorized() {
   return NextResponse.json({ success: false, message: "Unauthorized. Please log in." }, { status: 401 });
 }

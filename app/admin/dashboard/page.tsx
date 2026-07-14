@@ -2294,8 +2294,8 @@ function TasksTab() {
     sort: "oldest-active",
   });
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  const load = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
     const params = new URLSearchParams({
       action: "list",
       status: filters.status,
@@ -2305,16 +2305,30 @@ function TasksTab() {
       sort: filters.sort,
     });
     const [requestRes, employeeRes] = await Promise.all([
-      fetch(`/api/admin/tasks?${params.toString()}`).then((res) => res.json()),
-      fetch("/api/admin/tasks?action=employees").then((res) => res.json()),
+      fetch(`/api/admin/tasks?${params.toString()}`, { cache: "no-store" }).then((res) => res.json()),
+      fetch("/api/admin/tasks?action=employees", { cache: "no-store" }).then((res) => res.json()),
     ]);
     setRequests(requestRes.requests || []);
     setEmployees(employeeRes.employees || []);
-    setLoading(false);
+    if (!silent) setLoading(false);
   }, [filters]);
 
   useEffect(() => {
     load();
+  }, [load]);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      load(true);
+    }, 8000);
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === "visible") load(true);
+    };
+    document.addEventListener("visibilitychange", refreshWhenVisible);
+    return () => {
+      window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", refreshWhenVisible);
+    };
   }, [load]);
 
   async function updateRequest(id: number, patch: Record<string, any>) {
@@ -2397,6 +2411,7 @@ function TasksTab() {
             {requests.map((request) => {
               const requestedRole = normalizeWorkerRole(request.position);
               const matchingEmployees = employees.filter((employee) => normalizeWorkerRole(employee.position) === requestedRole);
+              const isDone = request.status === "done";
               return (
               <tr key={request.id}>
                 <td style={tdStyle}>
@@ -2444,11 +2459,38 @@ function TasksTab() {
                     ))}
                   </select>
                 </td>
-                <td style={tdStyle}>
-                  <div style={{ fontWeight: 700 }}>{request.current_status_age} in {request.status_label}</div>
-                  <div style={{ color: "var(--text-muted)", fontSize: 12 }}>Total: {request.total_elapsed}</div>
-                  <div style={{ color: "var(--text-muted)", fontSize: 12 }}>
-                    Pending {request.pending_time} - Accepted {request.accepted_time} - Active {request.in_progress_time}
+                <td style={{ ...tdStyle, minWidth: 230 }}>
+                  <div style={{ display: "grid", gap: 8 }}>
+                    <div style={{ fontWeight: 800, color: isDone ? "#16a34a" : "var(--text-primary)" }}>
+                      {isDone ? `Done - Total ${request.total_elapsed}` : `${request.current_status_age} in ${request.status_label}`}
+                    </div>
+                    {!isDone && (
+                      <div style={{ color: "var(--text-muted)", fontSize: 12 }}>
+                        Total work time: {request.total_elapsed}
+                      </div>
+                    )}
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                      {[
+                        ["Pending", request.pending_time],
+                        ["Accepted", request.accepted_time],
+                        ["Active", request.in_progress_time],
+                      ].map(([label, value]) => (
+                        <span
+                          key={label}
+                          style={{
+                            border: "1px solid var(--border-muted)",
+                            borderRadius: 999,
+                            padding: "4px 8px",
+                            color: "var(--text-muted)",
+                            fontSize: 11,
+                            lineHeight: 1.2,
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {label}: {value}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </td>
                 <td style={tdStyle}>

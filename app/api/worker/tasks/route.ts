@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 const WORKER_VISIBLE_STATUSES = ["pending_response", "assigned", "accepted", "confirmed", "approved", "in_progress", "done", "completed", "declined"];
 const WORKER_UPDATE_STATUSES = ["accepted", "in_progress", "done", "declined"] as const;
 type WorkerUpdateStatus = (typeof WORKER_UPDATE_STATUSES)[number];

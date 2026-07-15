@@ -92,10 +92,6 @@ export default function PropertyHero({ name, tagline, category, meta, heroImage,
         <div className="property-hero-grain" aria-hidden="true" />
 
         <div className="property-hero-topline">
-          <span className="property-hero-eyebrow">
-            <span className="property-hero-status-dot" aria-hidden="true" />
-            {category}
-          </span>
           <span>{meta}</span>
         </div>
 

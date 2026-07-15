@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
 import AccountModal from "./AccountModal";
 import Button from "./Button";
 import Container from "./Container";
+import { MEETING_ROOM_BOOKING_URL, PARKING_BOOKING_URL } from "@/lib/externalBooking";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -17,9 +18,9 @@ const NAV_LINKS = [
 ];
 
 const SERVICE_LINKS = [
-  { href: "/parking", label: "Parking" },
+  { href: PARKING_BOOKING_URL, label: "Parking" },
   { href: "/workforce", label: "Workforce" },
-  { href: "/facilities", label: "Facilities" },
+  { href: MEETING_ROOM_BOOKING_URL, label: "Facilities" },
   { href: "/cafeteria", label: "Cafeteria" },
 ];
 

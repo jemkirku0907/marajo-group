@@ -2,8 +2,8 @@
 
 import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { authHeaders, useAuth } from "@/lib/AuthContext";
+import { MEETING_ROOM_BOOKING_URL } from "@/lib/externalBooking";
 
 type Membership = {
   full_name: string;
@@ -126,9 +126,9 @@ export default function MembershipPage() {
               <strong>{membership?.floor_number || "Not submitted"}</strong>
             </div>
             {membership?.membership_status === "active" && (
-              <Link href="/facilities" className="btn-primary membership-card-action">
+              <a href={MEETING_ROOM_BOOKING_URL} className="btn-primary membership-card-action">
                 Book Facilities
-              </Link>
+              </a>
             )}
           </aside>
 

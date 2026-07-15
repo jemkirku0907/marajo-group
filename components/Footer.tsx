@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { properties } from "@/lib/properties";
+import { MEETING_ROOM_BOOKING_URL, PARKING_BOOKING_URL } from "@/lib/externalBooking";
 
 const featuredFooterProperties = properties.slice(0, 4);
 
@@ -37,9 +38,9 @@ export default function Footer() {
           <h4>Services</h4>
           <div className="footer-links">
             <Link href="/properties">Properties</Link>
-            <Link href="/parking">Parking</Link>
+            <a href={PARKING_BOOKING_URL}>Parking</a>
             <Link href="/workforce">Workforce</Link>
-            <Link href="/facilities">Facilities</Link>
+            <a href={MEETING_ROOM_BOOKING_URL}>Facilities</a>
             <Link href="/cafeteria">Cafeteria</Link>
             <Link href="/contact">Contact</Link>
           </div>

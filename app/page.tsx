@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
 import VisitorCounter from "@/components/VisitorCounter";
+import { MEETING_ROOM_BOOKING_URL, PARKING_BOOKING_URL } from "@/lib/externalBooking";
 
 export const metadata = {
   title: "Home",
@@ -135,7 +136,7 @@ export default function HomePage() {
             <h2>More than just properties.</h2>
           </div>
           <div className="home-services-grid">
-            <Link href="/parking" className="home-service-card">
+            <a href={PARKING_BOOKING_URL} className="home-service-card">
               <div className="home-service-icon" aria-hidden="true">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -152,7 +153,7 @@ export default function HomePage() {
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </span>
-            </Link>
+            </a>
             <Link href="/workforce" className="home-service-card">
               <div className="home-service-icon" aria-hidden="true">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round">
@@ -173,7 +174,7 @@ export default function HomePage() {
                 </svg>
               </span>
             </Link>
-            <Link href="/facilities" className="home-service-card">
+            <a href={MEETING_ROOM_BOOKING_URL} className="home-service-card">
               <div className="home-service-icon" aria-hidden="true">
                 <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M24 36H44V12H4V36H24ZM24 36V28M24 12V20" stroke="currentColor" strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" />
@@ -192,7 +193,7 @@ export default function HomePage() {
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </span>
-            </Link>
+            </a>
           </div>
         </div>
       </section>

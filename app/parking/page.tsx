@@ -2,6 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useAuth, authHeaders } from "@/lib/AuthContext";
+import { PARKING_BOOKING_URL } from "@/lib/externalBooking";
+
+// Temporarily disabled while reservations are handled by OfficeRnD.
+// Set this back to true if the client wants to restore the in-site flow.
+const LEGACY_PARKING_BOOKING_ENABLED = false;
 
 type Slot = { id: number; slot_number: string; floor_level: number; slot_type: string };
 type Facility = { id: number; name: string; location: string };
@@ -221,8 +226,8 @@ export default function ParkingPage() {
             <h1>Reserve parking with live slots, vehicle details, and automated fees.</h1>
             <p>Check available spaces by date and time, choose the best slot, submit vehicle information, and generate a reservation total with VAT and service fee breakdown.</p>
             <div className="platform-hero-actions">
-              <a href="#reserve" className="btn-primary">Reserve a Slot</a>
-              <a href="#history" className="btn-secondary" onClick={(e) => { e.preventDefault(); goTo(3); }}>View Workflow</a>
+              <a href={PARKING_BOOKING_URL} className="btn-primary">Reserve a Slot</a>
+              {/* The previous View Workflow action belongs to the disabled in-site booking flow. */}
             </div>
           </div>
           <div className="platform-preview">
@@ -236,8 +241,8 @@ export default function ParkingPage() {
         </div>
       </section>
 
-      {/* Booking */}
-      <section id="reserve" className="booking-section">
+      {/* Legacy in-site booking UI is preserved but temporarily hidden. */}
+      {LEGACY_PARKING_BOOKING_ENABLED && <section id="reserve" className="booking-section">
         <div className="container">
 
           {/* Desktop step tabs */}
@@ -645,7 +650,7 @@ export default function ParkingPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section>}
     </main>
   );
 }

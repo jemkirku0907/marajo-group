@@ -133,10 +133,10 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
             <button
               type="button"
               className={`nav-link nav-dropdown-toggle${isServiceActive ? " active" : ""}`}
+              aria-controls="services-menu"
               aria-haspopup="true"
               aria-expanded={dropdownOpen}
               onClick={() => setDropdownOpen((o) => !o)}
-              onFocus={() => setDropdownOpen(true)}
             >
               Services
               <svg className="dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -144,7 +144,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
               </svg>
             </button>
             {dropdownOpen && (
-              <ul className="nav-dropdown-menu" role="menu" onClick={() => setDropdownOpen(false)}>
+              <ul id="services-menu" className="nav-dropdown-menu" role="menu" onClick={() => setDropdownOpen(false)}>
                 {SERVICE_LINKS.map((l) => (
                   <li role="none" key={l.href}>
                     <Link

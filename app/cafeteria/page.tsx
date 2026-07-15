@@ -14,7 +14,7 @@ export default function CafeteriaPage() {
             </p>
             <div className="platform-hero-actions">
               <a href="#order" className="btn-primary">
-                Order via Enstack
+                Order Here
               </a>
               <Link href="/contact" className="btn-secondary">
                 Ask About Cafeteria

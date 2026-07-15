@@ -71,7 +71,7 @@ export default function CafeteriaPage() {
                 </p>
                 <div className="cafeteria-order-actions">
                   <a className="btn-primary" href="#" aria-disabled="true">
-                    Order via Enstack
+                    Order Here
                   </a>
                   <Link className="btn-secondary" href="/contact">
                     Contact Admin

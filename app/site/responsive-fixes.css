@@ -643,9 +643,15 @@ button.nav-dropdown-toggle.active::after {
     gap: 2rem;
   }
 
-  /* Explicitly hide preview panel on mobile — status strip is inside it */
+  /* Keep the service image and status strip visible in the mobile stack. */
   .platform-preview {
-    display: none !important;
+    display: flex !important;
+    width: 100%;
+    margin-top: 0.25rem;
+  }
+
+  .platform-preview img {
+    height: clamp(180px, 52vw, 240px);
   }
 
   /* Ensure hero text column takes full width */

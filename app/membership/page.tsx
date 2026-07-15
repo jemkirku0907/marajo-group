@@ -126,7 +126,7 @@ export default function MembershipPage() {
               <strong>{membership?.floor_number || "Not submitted"}</strong>
             </div>
             {membership?.membership_status === "active" && (
-              <a href={MEETING_ROOM_BOOKING_URL} className="btn-primary membership-card-action">
+              <a href={MEETING_ROOM_BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-primary membership-card-action">
                 Book Facilities
               </a>
             )}

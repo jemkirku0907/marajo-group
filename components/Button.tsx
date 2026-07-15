@@ -10,6 +10,8 @@ type BaseProps = {
   href?: string;
   title?: string;
   ariaLabel?: string;
+  target?: "_blank" | "_self" | "_parent" | "_top";
+  rel?: string;
 };
 
 type ButtonProps = BaseProps & ButtonHTMLAttributes<HTMLButtonElement>;
@@ -18,12 +20,12 @@ function buttonClassName(variant: ButtonVariant, className?: string) {
   return ["ui-button", `ui-button--${variant}`, className].filter(Boolean).join(" ");
 }
 
-export default function Button({ children, className, variant = "primary", href, title, ariaLabel, ...props }: ButtonProps) {
+export default function Button({ children, className, variant = "primary", href, title, ariaLabel, target, rel, ...props }: ButtonProps) {
   const classes = buttonClassName(variant, className);
 
   if (href) {
     return (
-      <Link href={href} className={classes} title={title} aria-label={ariaLabel}>
+      <Link href={href} className={classes} title={title} aria-label={ariaLabel} target={target} rel={rel}>
         {children}
       </Link>
     );

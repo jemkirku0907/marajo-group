@@ -226,7 +226,7 @@ export default function ParkingPage() {
             <h1>Reserve parking with live slots, vehicle details, and automated fees.</h1>
             <p>Check available spaces by date and time, choose the best slot, submit vehicle information, and generate a reservation total with VAT and service fee breakdown.</p>
             <div className="platform-hero-actions">
-              <a href={PARKING_BOOKING_URL} className="btn-primary">Reserve a Slot</a>
+              <a href={PARKING_BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">Reserve a Slot</a>
               {/* The previous View Workflow action belongs to the disabled in-site booking flow. */}
             </div>
           </div>

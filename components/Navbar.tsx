@@ -7,7 +7,7 @@ import { useAuth } from "@/lib/AuthContext";
 import AccountModal from "./AccountModal";
 import Button from "./Button";
 import Container from "./Container";
-import { MEETING_ROOM_BOOKING_URL, PARKING_BOOKING_URL } from "@/lib/externalBooking";
+import { MEETING_ROOM_BOOKING_URL } from "@/lib/externalBooking";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -18,7 +18,7 @@ const NAV_LINKS = [
 ];
 
 const SERVICE_LINKS = [
-  { href: PARKING_BOOKING_URL, label: "Parking" },
+  { href: "/parking", label: "Parking" },
   { href: "/workforce", label: "Workforce" },
   { href: MEETING_ROOM_BOOKING_URL, label: "Facilities" },
   { href: "/cafeteria", label: "Cafeteria" },
@@ -148,7 +148,14 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
               <ul className="nav-dropdown-menu" role="menu" onClick={() => setDropdownOpen(false)}>
                 {SERVICE_LINKS.map((l) => (
                   <li role="none" key={l.href}>
-                    <Link className="nav-dropdown-item" href={l.href} role="menuitem" onClick={() => setDropdownOpen(false)}>
+                    <Link
+                      className="nav-dropdown-item"
+                      href={l.href}
+                      role="menuitem"
+                      target={l.href.startsWith("http") ? "_blank" : undefined}
+                      rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                      onClick={() => setDropdownOpen(false)}
+                    >
                       {l.label}
                     </Link>
                   </li>

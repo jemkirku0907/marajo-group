@@ -85,7 +85,7 @@ export default async function FacilityDetailPage({ params }: { params: Promise<{
             <h1 className="hero-title">{facility.title}</h1>
             <p className="hero-copy">{facility.text}</p>
             <div className="hero-actions">
-              <Button href={MEETING_ROOM_BOOKING_URL} className="btn-primary">
+              <Button href={MEETING_ROOM_BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">
                 Check Booking Options
               </Button>
               <Button href="/contact" variant="secondary" className="btn-secondary">

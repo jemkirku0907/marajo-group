@@ -38,9 +38,9 @@ export default function Footer() {
           <h4>Services</h4>
           <div className="footer-links">
             <Link href="/properties">Properties</Link>
-            <a href={PARKING_BOOKING_URL}>Parking</a>
+            <Link href="/parking">Parking</Link>
             <Link href="/workforce">Workforce</Link>
-            <a href={MEETING_ROOM_BOOKING_URL}>Facilities</a>
+            <a href={MEETING_ROOM_BOOKING_URL} target="_blank" rel="noopener noreferrer">Facilities</a>
             <Link href="/cafeteria">Cafeteria</Link>
             <Link href="/contact">Contact</Link>
           </div>

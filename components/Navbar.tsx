@@ -93,6 +93,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
         <button
           type="button"
           className="nav-toggle"
+          aria-controls="site-navigation"
           aria-expanded={mobileMenuOpen}
           aria-label={mobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
           onClick={() => setMobileMenuOpen((open) => !open)}
@@ -100,7 +101,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
           <span className="hamb" />
         </button>
 
-        <nav className="nav-links">
+        <nav id="site-navigation" className="nav-links" aria-label="Primary navigation">
           <form onSubmit={handleSearch} className="nav-mobile-search" role="search" aria-label="Mobile site search">
             <input
               type="search"

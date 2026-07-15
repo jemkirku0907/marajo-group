@@ -1,0 +1,125 @@
+/* Shared final polish layer; imported last to normalize legacy page styles. */
+:root {
+  --space-section: clamp(4.5rem, 8vw, 7rem);
+  --radius-control: 10px;
+  --radius-card: 16px;
+  --focus-ring: 0 0 0 4px var(--accent-soft);
+}
+
+.section { padding-block: var(--space-section); }
+.section-title { margin-bottom: clamp(2rem, 4vw, 3rem); }
+
+.section-title h1,
+.section-title h2 {
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.section-title > span,
+.section-kicker,
+.hero-label { letter-spacing: 0.12em; }
+
+.property-card,
+.journal-card,
+.contact-card,
+.info-card,
+.feature-card,
+.service-card,
+.space-card,
+.booking-card,
+.interactive-card { border-radius: var(--radius-card); }
+
+button,
+a,
+input,
+select,
+textarea {
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+input,
+select,
+textarea,
+.form-control { border-radius: var(--radius-control); }
+
+select {
+  appearance: none;
+  padding-right: 2.5rem !important;
+  background-image:
+    linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--mg-green);
+  outline-offset: 3px;
+  box-shadow: var(--focus-ring);
+}
+
+.properties-listing-page .no-results {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: min(100%, 720px);
+  margin: 2.5rem auto 0;
+  padding: 1.5rem;
+  text-align: left;
+  border: 1px solid var(--border-muted);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.no-results-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--mg-green);
+}
+
+.no-results h2 {
+  margin: 0 0 0.25rem;
+  color: var(--heading-color);
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.no-results p { margin: 0; color: var(--text-muted); }
+.no-results .btn-secondary { flex: 0 0 auto; margin-left: auto; min-height: 44px; }
+
+/* Desktop and drawer account controls never overlap at a breakpoint. */
+@media (max-width: 900px) {
+  .header-actions,
+  .nav-login-button { display: none !important; }
+}
+
+@media (min-width: 901px) {
+  .nav-mobile-footer,
+  .nav-mobile-account-button { display: none !important; }
+}
+
+@media (max-width: 640px) {
+  .properties-listing-page .no-results { flex-direction: column; align-items: flex-start; }
+  .no-results .btn-secondary { width: 100%; margin-left: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

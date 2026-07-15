@@ -6,6 +6,7 @@
 @import "./site/booking-desktop.css";
 @import "./site/dynamic-ui.css";
 @import "./site/search.css";
+@import "./site/polish.css";
 
 :root {
   --background: #ffffff;

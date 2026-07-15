@@ -41,7 +41,7 @@ export default function HomePage() {
           </div>
         </div>
         <div className="home-scroll-cue">
-          <a href="#home-stats-title" aria-label="Scroll to company highlights">
+          <a href="#home-stats" aria-label="Scroll to company highlights">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
@@ -49,10 +49,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="home-stat-strip reveal-on-scroll" aria-labelledby="home-stats-title">
+      <section id="home-stats" className="home-stat-strip reveal-on-scroll" aria-labelledby="home-stats-title">
         <div className="container">
+          <span id="home-stats-title" className="visually-hidden">Company Highlights</span>
           <div className="section-title home-stat-heading">
-            <span id="home-stats-title">Company Highlights</span>
+            <span>Company Highlights</span>
             <h2>Built through decades of steady development.</h2>
           </div>
           <div className="home-stat-grid">

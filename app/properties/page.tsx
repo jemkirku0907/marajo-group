@@ -198,7 +198,31 @@ export default function PropertiesPage() {
               </article>
             ))}
           </div>
-          {filtered.length === 0 && <div className="no-results">No properties match your search.</div>}
+          {filtered.length === 0 && (
+            <div className="no-results" role="status">
+              <span className="no-results-icon" aria-hidden="true">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m20 20-4-4" />
+                  <path d="M8.5 11h5" />
+                </svg>
+              </span>
+              <div>
+                <h2>No matching properties</h2>
+                <p>Try a different location, property type, or search term.</p>
+              </div>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => {
+                  setCategory("all");
+                  setQuery("");
+                }}
+              >
+                Clear filters
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </main>

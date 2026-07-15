@@ -13,7 +13,7 @@ export default function CafeteriaPage() {
               Preview the cafeteria space today. Online ordering will connect to Enstack once the store link is ready.
             </p>
             <div className="platform-hero-actions">
-              <a href="https://enstack.ph/marajo-simply-7" className="btn-primary">
+              <a href="https://enstack.ph/marajo-simply-7" target="_blank" rel="noopener noreferrer" className="btn-primary">
                 Order Here
               </a>
               <Link href="/contact" className="btn-secondary">
@@ -70,7 +70,7 @@ export default function CafeteriaPage() {
                   For now, this page is a visual preview of the cafeteria. The ordering button is ready as the future entry point for Enstack.
                 </p>
                 <div className="cafeteria-order-actions">
-                  <a className="btn-primary" href="#" aria-disabled="true">
+                  <a className="btn-primary" href="https://enstack.ph/marajo-simply-7" target="_blank" rel="noopener noreferrer" aria-disabled="true">
                     Order Here
                   </a>
                   <Link className="btn-secondary" href="/contact">

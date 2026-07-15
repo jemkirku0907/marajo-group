@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Button from "@/components/Button";
-import { MEETING_ROOM_BOOKING_URL } from "@/lib/externalBooking";
 import { getProperty, properties } from "@/lib/properties";
 
 function facilityImage(propertySlug: string, facilitySlug: string) {
@@ -85,7 +84,7 @@ export default async function FacilityDetailPage({ params }: { params: Promise<{
             <h1 className="hero-title">{facility.title}</h1>
             <p className="hero-copy">{facility.text}</p>
             <div className="hero-actions">
-              <Button href={MEETING_ROOM_BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">
+              <Button href="/facilities" className="btn-primary">
                 Check Booking Options
               </Button>
               <Button href="/contact" variant="secondary" className="btn-secondary">

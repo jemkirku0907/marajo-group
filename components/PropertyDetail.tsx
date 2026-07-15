@@ -4,6 +4,7 @@ import { Property } from "@/lib/properties";
 import Button from "@/components/Button";
 import PropertyHero from "@/components/PropertyHero";
 import PropertyGalleryCarousel from "@/components/PropertyGalleryCarousel";
+import { MEETING_ROOM_BOOKING_URL } from "@/lib/externalBooking";
 
 const DETAIL_GALLERY_IMAGES = [
   {
@@ -163,8 +164,18 @@ export default function PropertyDetail({ property }: { property: Property }) {
 
       <section className="section">
         <div className="container info-grid">
-          {infoCards.map((card, index) => (
-            <Link className="interactive-card" data-action={card.action} aria-label={card.ariaLabel ?? card.title} key={card.action} href={`/properties/${property.slug}/facilities/${card.action}`}>
+          {infoCards.map((card, index) => {
+            const usesOfficeRnd = property.slug === "marajo-tower" && card.action === "meeting-rooms";
+            return (
+            <Link
+              className="interactive-card"
+              data-action={card.action}
+              aria-label={card.ariaLabel ?? card.title}
+              key={card.action}
+              href={usesOfficeRnd ? MEETING_ROOM_BOOKING_URL : `/properties/${property.slug}/facilities/${card.action}`}
+              target={usesOfficeRnd ? "_blank" : undefined}
+              rel={usesOfficeRnd ? "noopener noreferrer" : undefined}
+            >
               <div className="card-head">
                 <div className="card-icon" aria-hidden>
                   <CardIcon icon={card.icon ?? DEFAULT_INFO_CARDS[index % DEFAULT_INFO_CARDS.length].icon} />
@@ -174,7 +185,8 @@ export default function PropertyDetail({ property }: { property: Property }) {
               </div>
               <p>{card.text}</p>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </section>
 

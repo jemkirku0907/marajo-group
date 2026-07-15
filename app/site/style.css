@@ -4517,7 +4517,7 @@ body.theme-light .home-mosaic {
 
   body.mobile-open .nav-mobile-footer {
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 44px;
     gap: 0.75rem;
     align-items: center;
     padding-top: 0.8rem;

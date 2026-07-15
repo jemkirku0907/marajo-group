@@ -7,7 +7,6 @@ import { useAuth } from "@/lib/AuthContext";
 import AccountModal from "./AccountModal";
 import Button from "./Button";
 import Container from "./Container";
-import { MEETING_ROOM_BOOKING_URL } from "@/lib/externalBooking";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -20,7 +19,7 @@ const NAV_LINKS = [
 const SERVICE_LINKS = [
   { href: "/parking", label: "Parking" },
   { href: "/workforce", label: "Workforce" },
-  { href: MEETING_ROOM_BOOKING_URL, label: "Facilities" },
+  { href: "/facilities", label: "Facilities" },
   { href: "/cafeteria", label: "Cafeteria" },
 ];
 
@@ -152,8 +151,6 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
                       className="nav-dropdown-item"
                       href={l.href}
                       role="menuitem"
-                      target={l.href.startsWith("http") ? "_blank" : undefined}
-                      rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
                       onClick={() => setDropdownOpen(false)}
                     >
                       {l.label}
@@ -164,7 +161,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
             )}
           </div>
 
-          <div className="nav-mobile-footer" aria-label="Mobile account controls">
+          <div className="nav-mobile-footer" aria-label="Mobile account and theme controls">
             {!user ? (
               <button
                 type="button"
@@ -191,6 +188,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
                 My Account
               </button>
             )}
+            {themeControl}
           </div>
         </nav>
 
@@ -206,6 +204,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
         </form>
 
         <div className="header-actions">
+          {themeControl}
           {!user ? (
             <Button type="button" onClick={() => openModal("login")} className="btn-primary nav-login-button">
               Log In
@@ -224,12 +223,6 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
               {userMenuOpen && (
                 <div className="user-dropdown-menu" onMouseLeave={() => setUserMenuOpen(false)}>
                   <p className="user-dropdown-email">{user.email}</p>
-                  {themeControl && (
-                    <div className="user-dropdown-theme">
-                      <span>Theme</span>
-                      {themeControl}
-                    </div>
-                  )}
                   <button
                     type="button"
                     className="user-dropdown-item"

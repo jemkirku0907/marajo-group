@@ -125,11 +125,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
             </Link>
           ))}
 
-          <div
-            className={`nav-dropdown${dropdownOpen ? " open" : ""}`}
-            onMouseEnter={() => setDropdownOpen(true)}
-            onMouseLeave={() => setDropdownOpen(false)}
-          >
+          <div className={`nav-dropdown${dropdownOpen ? " open" : ""}`}>
             <button
               type="button"
               className={`nav-link nav-dropdown-toggle${isServiceActive ? " active" : ""}`}

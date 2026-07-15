@@ -77,9 +77,6 @@ export default function CafeteriaPage() {
                     Contact Admin
                   </Link>
                 </div>
-                <div className="booking-message platform-message is-visible cafeteria-note">
-                  Enstack URL not connected yet. Once available, this button will go directly to online ordering.
-                </div>
               </div>
             </div>
 

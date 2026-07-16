@@ -525,41 +525,10 @@ img {
   }
 }
 
-/* Keep the Home hero calm and consistently aligned on phone screens. */
+/* Match the Home hero actions to the simplified About hero on phones. */
 @media (max-width: 480px) {
-  .home-hero {
-    padding: 1.75rem 0 2rem;
-  }
-
-  .home-hero-grid {
-    align-content: center;
-    gap: 0;
-  }
-
-  .home-hero-copy {
-    gap: 0.9rem;
-  }
-
-  .home-hero-copy .hero-title {
-    font-size: clamp(2.05rem, 10.5vw, 2.7rem);
-    line-height: 1.02;
-  }
-
-  .home-hero-copy .hero-copy {
-    line-height: 1.55;
-  }
-
-  .home-hero .hero-actions {
-    margin-top: 0.15rem;
-  }
-
   .home-hero .hero-actions .btn-secondary {
     display: none;
-  }
-
-  .home-hero .hero-actions .btn-primary {
-    min-height: 50px;
-    padding-block: 0.8rem;
   }
 }
 

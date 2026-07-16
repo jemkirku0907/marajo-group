@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
-import VisitorCounter from "@/components/VisitorCounter";
 import { PARKING_BOOKING_URL } from "@/lib/externalBooking";
 
 export const metadata = {
@@ -13,9 +12,18 @@ export const metadata = {
 export default function HomePage() {
   return (
     <main className="home-page">
-      <section id="home" className="home-hero">
-        <div className="container home-hero-grid">
-          <div className="home-hero-copy reveal-on-scroll">
+      <section id="home" className="hero home-hero about-hero reveal-on-scroll">
+        <Image
+          src="/assets/marajo-tower.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="about-hero-bg"
+          aria-hidden="true"
+        />
+        <div className="container home-hero-grid about-hero-grid">
+          <div className="home-hero-copy about-hero-copy reveal-on-scroll">
             <span className="hero-label">Premium Real Estate</span>
             <h1 className="hero-title">Quality spaces for people, business, and long term value.</h1>
             <p className="hero-copy">
@@ -30,9 +38,8 @@ export default function HomePage() {
                 Our Story
               </Button>
             </div>
-            <VisitorCounter variant="inline" />
           </div>
-          <div className="home-hero-media reveal-on-scroll" aria-label="Featured Marajo development preview">
+          <div className="home-hero-media about-hero-media reveal-on-scroll" aria-label="Featured Marajo development preview">
             <Image src="/assets/marajo-tower.jpg" alt="Marajo Tower exterior" width={900} height={1100} priority />
             <div className="hero-feature-panel">
               <span>Featured Development</span>

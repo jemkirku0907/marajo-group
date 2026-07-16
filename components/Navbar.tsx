@@ -50,8 +50,14 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
     e.preventDefault();
     if (!searchQuery.trim()) return;
     router.push(`/properties?q=${encodeURIComponent(searchQuery.trim())}`);
-    setSearchOpen(false);
+    closeSearch();
     setMobileMenuOpen(false);
+  }
+
+  function closeSearch() {
+    setSearchOpen(false);
+    setSearchQuery("");
+    searchInputRef.current?.blur();
   }
 
   function openSearch() {
@@ -64,18 +70,17 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
   }
 
   function handleSearchMouseLeave() {
-    if (document.activeElement !== searchInputRef.current && !searchQuery) setSearchOpen(false);
+    if (document.activeElement !== searchInputRef.current) closeSearch();
   }
 
   React.useEffect(() => {
     if (!searchOpen) return;
     const onPointerDown = (event: PointerEvent) => {
-      if (!searchRef.current?.contains(event.target as Node)) setSearchOpen(false);
+      if (!searchRef.current?.contains(event.target as Node)) closeSearch();
     };
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setSearchOpen(false);
-        searchInputRef.current?.blur();
+        closeSearch();
       }
     };
     document.addEventListener("pointerdown", onPointerDown);
@@ -272,7 +277,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
             </svg>
           </button>
           {searchOpen && (
-            <button type="button" className="nav-search-close" aria-label="Close property search" onClick={() => setSearchOpen(false)}>
+            <button type="button" className="nav-search-close" aria-label="Close property search" onClick={closeSearch}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
                 <path d="M6 6l12 12M18 6 6 18" />
               </svg>

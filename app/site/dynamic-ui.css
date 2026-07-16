@@ -5,7 +5,27 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-left: auto;
+  margin-left: 0;
+}
+
+@media (min-width: 1024px) {
+  .navbar {
+    justify-content: flex-start;
+  }
+
+  .navbar .brand {
+    margin-right: auto;
+  }
+
+  .navbar .nav-links {
+    width: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+  }
+
+  .nav-utilities {
+    flex: 0 0 auto;
+  }
 }
 
 .nav-search {

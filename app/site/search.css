@@ -434,7 +434,7 @@ body.theme-dark .about-hero .hero-copy {
 @media (max-width: 480px) {
   .home-hero,
   .about-hero {
-    min-height: auto;
+    min-height: calc(100svh - 64px);
     padding: 2.5rem 0 2.75rem;
   }
 

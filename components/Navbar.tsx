@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
@@ -41,12 +41,42 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const searchRef = useRef<HTMLFormElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
-    if (searchQuery.trim()) router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    if (!searchQuery.trim()) return;
+    router.push(`/properties?q=${encodeURIComponent(searchQuery.trim())}`);
+    setSearchOpen(false);
+    setMobileMenuOpen(false);
   }
+
+  function openSearch() {
+    setSearchOpen(true);
+    window.requestAnimationFrame(() => searchInputRef.current?.focus());
+  }
+
+  React.useEffect(() => {
+    if (!searchOpen) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!searchRef.current?.contains(event.target as Node)) setSearchOpen(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSearchOpen(false);
+        searchInputRef.current?.blur();
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [searchOpen]);
 
   React.useEffect(() => {
     document.body.classList.toggle("mobile-open", mobileMenuOpen);
@@ -105,7 +135,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
           <form onSubmit={handleSearch} className="nav-mobile-search" role="search" aria-label="Mobile site search">
             <input
               type="search"
-              placeholder="Search..."
+              placeholder="Search properties..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="nav-mobile-search-input"
@@ -199,15 +229,36 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
           </div>
         </nav>
 
-        <form onSubmit={handleSearch} className="nav-search" role="search">
+        <form ref={searchRef} onSubmit={handleSearch} className={`nav-search${searchOpen ? " is-open" : ""}`} role="search" aria-label="Property search">
           <input
+            ref={searchInputRef}
             type="search"
-            placeholder="Search..."
+            placeholder="Search properties..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="nav-search-input"
-            aria-label="Search"
+            aria-label="Search properties"
+            tabIndex={searchOpen ? 0 : -1}
           />
+          <button
+            type={searchOpen ? "submit" : "button"}
+            className="nav-search-trigger"
+            aria-label={searchOpen ? "Search properties" : "Open property search"}
+            aria-expanded={searchOpen}
+            onClick={searchOpen ? undefined : openSearch}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+          </button>
+          {searchOpen && (
+            <button type="button" className="nav-search-close" aria-label="Close property search" onClick={() => setSearchOpen(false)}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+                <path d="M6 6l12 12M18 6 6 18" />
+              </svg>
+            </button>
+          )}
         </form>
 
         <div className="header-actions">

@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { properties as ALL_PROPERTIES } from "@/lib/properties";
@@ -31,9 +32,9 @@ function getLocationTag(location: string) {
   return location;
 }
 
-export default function PropertiesPage() {
+function PropertiesContent({ initialQuery }: { initialQuery: string }) {
   const [category, setCategory] = useState<string>("all");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [sort, setSort] = useState("newest");
 
   const filtered = useMemo(() => {
@@ -226,5 +227,19 @@ export default function PropertiesPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+function PropertiesSearchPage() {
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams.get("q") || "";
+  return <PropertiesContent key={initialQuery} initialQuery={initialQuery} />;
+}
+
+export default function PropertiesPage() {
+  return (
+    <Suspense fallback={<main className="properties-listing-page" aria-busy="true" />}>
+      <PropertiesSearchPage />
+    </Suspense>
   );
 }

@@ -228,7 +228,7 @@ export default function ParkingPage() {
             <div className="platform-hero-actions">
               <a href={PARKING_BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">Reserve a Slot</a>
               <a href="/contact" className="btn-secondary">
-                Ask About Cafeteria
+                Ask About Parking
               </a>
               {/* The previous View Workflow action belongs to the disabled in-site booking flow. */}
             </div>

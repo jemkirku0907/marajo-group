@@ -19,8 +19,8 @@ export default function HomePage() {
             <span className="hero-label">Premium Real Estate</span>
             <h1 className="hero-title">Quality spaces for people, business, and long term value.</h1>
             <p className="hero-copy">
-              For over four decades, Marajo Group has transformed focused ideas into enduring real estate across
-              Makati, BGC, and select Philippine growth districts.
+              For over four decades, Marajo Group has created enduring real estate across Makati, BGC, and key
+              Philippine districts.
             </p>
             <div className="hero-actions">
               <Button href="/properties" className="btn-primary">
@@ -40,13 +40,6 @@ export default function HomePage() {
               <p>PEZA-accredited office address in Bonifacio Global City.</p>
             </div>
           </div>
-        </div>
-        <div className="home-scroll-cue">
-          <a href="#home-stats" aria-label="Scroll to company highlights">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </a>
         </div>
       </section>
 

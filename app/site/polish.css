@@ -105,7 +105,8 @@ select {
 
 @media (min-width: 901px) {
   .nav-mobile-footer,
-  .nav-mobile-account-button { display: none !important; }
+  .nav-mobile-account-button,
+  .nav-mobile-account-actions { display: none !important; }
 }
 
 @media (max-width: 640px) {

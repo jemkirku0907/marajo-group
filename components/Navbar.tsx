@@ -170,19 +170,31 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
                 Log In
               </button>
             ) : (
-              <button
-                type="button"
-                className="nav-mobile-account-button"
-                onClick={() => {
-                  setAccountOpen(true);
-                  setMobileMenuOpen(false);
-                }}
-              >
-                <span className="user-avatar nav-mobile-avatar" aria-hidden="true">
-                  {initials(user.name || user.email)}
-                </span>
-                My Account
-              </button>
+              <div className="nav-mobile-account-actions">
+                <button
+                  type="button"
+                  className="nav-mobile-account-button"
+                  onClick={() => {
+                    setAccountOpen(true);
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  <span className="user-avatar nav-mobile-avatar" aria-hidden="true">
+                    {initials(user.name || user.email)}
+                  </span>
+                  My Account
+                </button>
+                <button
+                  type="button"
+                  className="nav-mobile-logout-button"
+                  onClick={() => {
+                    logout();
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  Log Out
+                </button>
+              </div>
             )}
           </div>
         </nav>

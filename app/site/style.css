@@ -4548,6 +4548,37 @@ body.theme-light .home-mosaic {
     cursor: pointer;
   }
 
+  .nav-mobile-account-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(96px, 0.42fr);
+    gap: 0.65rem;
+  }
+
+  .nav-mobile-logout-button {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(185, 28, 28, 0.35);
+    border-radius: 12px;
+    background: transparent;
+    color: #b91c1c;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+  }
+
+  .nav-mobile-logout-button:hover,
+  .nav-mobile-logout-button:focus-visible {
+    border-color: #b91c1c;
+    background: rgba(185, 28, 28, 0.09);
+  }
+
+  body.theme-dark .nav-mobile-logout-button {
+    border-color: rgba(252, 165, 165, 0.4);
+    color: #fca5a5;
+  }
+
   .nav-mobile-avatar {
     width: 28px;
     height: 28px;

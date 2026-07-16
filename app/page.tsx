@@ -12,7 +12,7 @@ export const metadata = {
 export default function HomePage() {
   return (
     <main className="home-page">
-      <section id="home" className="hero home-hero about-hero reveal-on-scroll">
+      <section id="home" className="hero home-hero home-hero--simple reveal-on-scroll">
         <Image
           src="/assets/marajo-tower.jpg"
           alt=""
@@ -22,13 +22,11 @@ export default function HomePage() {
           className="about-hero-bg"
           aria-hidden="true"
         />
-        <div className="container home-hero-grid about-hero-grid">
-          <div className="home-hero-copy about-hero-copy reveal-on-scroll">
-            <span className="hero-label">Premium Real Estate</span>
+        <div className="container home-hero-grid home-hero-grid--simple">
+          <div className="home-hero-copy reveal-on-scroll">
             <h1 className="hero-title">Quality spaces for people, business, and long term value.</h1>
             <p className="hero-copy">
-              For over four decades, Marajo Group has created enduring real estate across Makati, BGC, and key
-              Philippine districts.
+              Marajo Group creates enduring real estate across Makati, BGC, and key Philippine districts.
             </p>
             <div className="hero-actions">
               <Button href="/properties" className="btn-primary">
@@ -37,14 +35,6 @@ export default function HomePage() {
               <Button href="/about" variant="secondary" className="btn-secondary">
                 Our Story
               </Button>
-            </div>
-          </div>
-          <div className="home-hero-media about-hero-media reveal-on-scroll" aria-label="Featured Marajo development preview">
-            <Image src="/assets/marajo-tower.jpg" alt="Marajo Tower exterior" width={900} height={1100} priority />
-            <div className="hero-feature-panel">
-              <span>Featured Development</span>
-              <strong>Marajo Tower</strong>
-              <p>PEZA-accredited office address in Bonifacio Global City.</p>
             </div>
           </div>
         </div>

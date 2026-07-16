@@ -292,6 +292,46 @@ body.theme-dark .btn-outline {
   pointer-events: none;
 }
 
+/* Homepage hero: keep the building clear while protecting only the text area. */
+.home-hero--simple {
+  background-image: none;
+}
+
+.home-hero--simple::before {
+  background: linear-gradient(
+    90deg,
+    rgba(4, 12, 7, 0.82) 0%,
+    rgba(4, 12, 7, 0.62) 34%,
+    rgba(4, 12, 7, 0.2) 62%,
+    transparent 78%
+  );
+}
+
+.home-hero-grid--simple {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.home-hero--simple .home-hero-copy {
+  gap: clamp(1.25rem, 2.6vh, 1.75rem);
+  max-width: 780px;
+}
+
+.home-hero--simple .hero-copy {
+  max-width: 600px;
+}
+
+.home-hero--simple .btn-secondary {
+  background: transparent !important;
+  border-color: rgba(255, 255, 255, 0.62) !important;
+  box-shadow: none !important;
+  backdrop-filter: none;
+}
+
+.home-hero--simple .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.86) !important;
+}
+
 .home-hero-grid,
 .about-hero-grid {
   align-items: center;

@@ -525,13 +525,6 @@ img {
   }
 }
 
-/* Match the Home hero actions to the simplified About hero on phones. */
-@media (max-width: 480px) {
-  .home-hero .hero-actions .btn-secondary {
-    display: none;
-  }
-}
-
 /* ── 38. Typography — base font size on tiny screens ──────── */
 @media (max-width: 320px) {
   html {

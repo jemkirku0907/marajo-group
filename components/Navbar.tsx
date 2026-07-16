@@ -229,7 +229,17 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
           </div>
         </nav>
 
-        <form ref={searchRef} onSubmit={handleSearch} className={`nav-search${searchOpen ? " is-open" : ""}`} role="search" aria-label="Property search">
+        <div className="nav-utilities">
+        <form
+          ref={searchRef}
+          onSubmit={handleSearch}
+          className={`nav-search${searchOpen ? " is-open" : ""}`}
+          role="search"
+          aria-label="Property search"
+          onMouseEnter={() => {
+            if (window.matchMedia("(hover: hover)").matches) openSearch();
+          }}
+        >
           <input
             ref={searchInputRef}
             type="search"
@@ -310,6 +320,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
               )}
             </div>
           )}
+        </div>
         </div>
       </Container>
 

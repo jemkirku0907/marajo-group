@@ -1,6 +1,13 @@
 /* Additions for dynamic UI (search box, logged-in user menu) not present
    in the original static HTML, styled to match the existing design tokens. */
 
+.nav-utilities {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
 .nav-search {
   display: none;
   align-items: center;
@@ -8,7 +15,7 @@
   position: relative;
   width: 42px;
   height: 42px;
-  margin-left: 0.25rem;
+  margin-left: 0;
   border: 1px solid var(--border-muted, #d8d8de);
   border-radius: 999px;
   background: var(--surface);
@@ -17,6 +24,10 @@
 }
 @media (min-width: 1024px) {
   .nav-search { display: flex; }
+}
+
+@media (max-width: 900px) {
+  .nav-utilities { display: none; }
 }
 .nav-search.is-open {
   width: min(250px, 22vw);

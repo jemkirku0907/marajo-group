@@ -14,8 +14,12 @@ const CATEGORIES = [
 
 export default function SearchContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const query = searchParams.get("q") || searchParams.get("search") || "";
+  return <SearchResults key={query} query={query} />;
+}
+
+function SearchResults({ query }: { query: string }) {
+  const router = useRouter();
   const [inputValue, setInputValue] = useState(query);
   const [activeCategory, setActiveCategory] = useState<(typeof CATEGORIES)[number]["key"]>("all");
 

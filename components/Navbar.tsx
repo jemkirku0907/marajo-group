@@ -49,7 +49,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     if (!searchQuery.trim()) return;
-    router.push(`/properties?q=${encodeURIComponent(searchQuery.trim())}`);
+    router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
     closeSearch();
     setMobileMenuOpen(false);
   }
@@ -148,7 +148,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
           <form onSubmit={handleSearch} className="nav-mobile-search" role="search" aria-label="Mobile site search">
             <input
               type="search"
-              placeholder="Search properties..."
+              placeholder="Search the site..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="nav-mobile-search-input"
@@ -248,7 +248,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
           onSubmit={handleSearch}
           className={`nav-search${searchOpen ? " is-open" : ""}`}
           role="search"
-          aria-label="Property search"
+          aria-label="Site search"
           onMouseEnter={() => {
             if (window.matchMedia("(hover: hover)").matches) previewSearch();
           }}
@@ -257,17 +257,17 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
           <input
             ref={searchInputRef}
             type="search"
-            placeholder="Search properties..."
+            placeholder="Search pages, properties, services..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="nav-search-input"
-            aria-label="Search properties"
+            aria-label="Search Marajo Group"
             tabIndex={searchOpen ? 0 : -1}
           />
           <button
             type={searchOpen ? "submit" : "button"}
             className="nav-search-trigger"
-            aria-label={searchOpen ? "Search properties" : "Open property search"}
+            aria-label={searchOpen ? "Search the site" : "Open site search"}
             aria-expanded={searchOpen}
             onClick={searchOpen ? undefined : openSearch}
           >
@@ -277,7 +277,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
             </svg>
           </button>
           {searchOpen && (
-            <button type="button" className="nav-search-close" aria-label="Close property search" onClick={closeSearch}>
+            <button type="button" className="nav-search-close" aria-label="Close site search" onClick={closeSearch}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
                 <path d="M6 6l12 12M18 6 6 18" />
               </svg>

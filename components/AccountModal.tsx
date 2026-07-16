@@ -40,7 +40,7 @@ type WorkerAssignment = {
 
 const APPROVED_STATUSES = new Set(["accepted", "approved", "confirmed", "in_progress", "done", "completed", "paid"]);
 
-export default function AccountModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+export default function AccountModal({ open, onClose, themeControl }: { open: boolean; onClose: () => void; themeControl?: ReactNode }) {
   const { token, user } = useAuth();
   const isWorker = user?.role === "worker";
   const [tab, setTab] = useState<"profile" | "history" | "assignments">("profile");
@@ -186,6 +186,12 @@ export default function AccountModal({ open, onClose }: { open: boolean; onClose
 
         {!loading && tab === "profile" && (
           <div className="space-y-2 text-sm">
+            {themeControl && (
+              <div className="mb-3 flex items-center justify-between rounded-lg border p-3 theme-subpanel">
+                <span className="font-medium theme-heading">Appearance</span>
+                {themeControl}
+              </div>
+            )}
             <Row label="Name" value={profile?.name || user?.name} />
             <Row label="Email" value={profile?.email || user?.email} />
             <Row label="Phone" value={profile?.phone || "-"} />

@@ -157,7 +157,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
             )}
           </div>
 
-          <div className="nav-mobile-footer" aria-label="Mobile account and theme controls">
+          <div className="nav-mobile-footer" aria-label="Mobile account controls">
             {!user ? (
               <button
                 type="button"
@@ -184,7 +184,6 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
                 My Account
               </button>
             )}
-            {themeControl}
           </div>
         </nav>
 
@@ -200,7 +199,6 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
         </form>
 
         <div className="header-actions">
-          {themeControl}
           {!user ? (
             <Button type="button" onClick={() => openModal("login")} className="btn-primary nav-login-button">
               Log In
@@ -219,6 +217,12 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
               {userMenuOpen && (
                 <div className="user-dropdown-menu" onMouseLeave={() => setUserMenuOpen(false)}>
                   <p className="user-dropdown-email">{user.email}</p>
+                  {themeControl && (
+                    <div className="user-dropdown-theme">
+                      <span>Appearance</span>
+                      {themeControl}
+                    </div>
+                  )}
                   <button
                     type="button"
                     className="user-dropdown-item"
@@ -246,7 +250,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
         </div>
       </Container>
 
-      <AccountModal open={accountOpen} onClose={() => setAccountOpen(false)} />
+      <AccountModal open={accountOpen} onClose={() => setAccountOpen(false)} themeControl={themeControl} />
     </header>
   );
 }

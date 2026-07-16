@@ -45,7 +45,7 @@ export default function AboutPage() {
 
   return (
     <main className="about-page">
-      <section className="hero about-hero reveal-on-scroll">
+      <section className="hero about-hero page-hero--simple reveal-on-scroll">
         <Image
           src="/assets/marajo-tower.jpg"
           alt=""
@@ -55,12 +55,11 @@ export default function AboutPage() {
           className="about-hero-bg"
           aria-hidden="true"
         />
-        <div className="container about-hero-grid">
+        <div className="container about-hero-grid page-hero-grid--simple">
           <div className="about-hero-copy reveal-on-scroll">
-            <span className="hero-label">About Marajo Group</span>
             <h1 className="hero-title">Quality is the essence and our dream.</h1>
             <p className="hero-copy">
-             Marajo Group is a real estate developer spanning commercial, residential, hospitality, and storage properties, guided by a team that values discipline, imagination, personalized service, and care.
+              We create thoughtful places through disciplined development, imagination, personalized service, and care.
             </p>
             <div className="hero-actions">
               <Link href="/properties" className="btn-primary">
@@ -69,14 +68,6 @@ export default function AboutPage() {
               <Link href="/contact" className="btn-secondary">
                 Get in Touch
               </Link>
-            </div>
-          </div>
-          <div className="about-hero-media reveal-on-scroll" aria-label="Salcedo Towers, a Marajo Group development">
-            <Image src="/assets/SALCEDO-TOWERS.jpg" alt="Salcedo Towers, a Marajo Group development in Makati" width={900} height={680} />
-            <div className="hero-feature-panel">
-              <span>Operating Since 1978</span>
-              <strong>45+ Years</strong>
-              <p>Of development experience across Metro Manila&apos;s most active districts.</p>
             </div>
           </div>
         </div>

@@ -10,14 +10,12 @@ const POST_IMG = "/assets/Post-New.jpg";
 export default function NewsPage() {
   return (
     <main className="news-page">
-      <section className="hero about-hero reveal-on-scroll">
-        <div className="container about-hero-grid">
+      <section className="hero about-hero page-hero--simple reveal-on-scroll">
+        <div className="container about-hero-grid page-hero-grid--simple">
           <div className="about-hero-copy reveal-on-scroll">
-            <span className="hero-label">Marajo Journal</span>
             <h1 className="hero-title">News, updates, and market insights from Marajo Group.</h1>
             <p className="hero-copy">
-              Stay informed on property launches, company milestones, market notes, and community updates from the
-              Marajo Group team.
+              Follow our latest property launches, company milestones, market notes, and community updates.
             </p>
             <div className="hero-actions">
               <Link href="#latest-news" className="btn-primary">
@@ -26,14 +24,6 @@ export default function NewsPage() {
               <Link href="/contact" className="btn-secondary">
                 Contact Us
               </Link>
-            </div>
-          </div>
-          <div className="about-hero-media reveal-on-scroll" aria-label="Featured Marajo journal story">
-            <Image src={POST_IMG} alt="Marajo journal featured story" width={900} height={680} priority unoptimized />
-            <div className="hero-feature-panel">
-              <span>October 18, 2023</span>
-              <strong>Marajo Journal</strong>
-              <p>Growing into one of the country&apos;s most trusted real estate companies</p>
             </div>
           </div>
         </div>

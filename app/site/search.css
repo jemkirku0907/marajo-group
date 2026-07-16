@@ -216,13 +216,13 @@ body.has-hero-header .site-header.site-header--hero:not(.is-scrolled) .nav-dropd
 }
 
 body.has-hero-header .site-header.site-header--hero:not(.is-scrolled) .nav-search-input {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.28);
-  color: #ffffff;
+  background: transparent;
+  color: var(--text-primary);
+  caret-color: var(--mg-green);
 }
 
 body.has-hero-header .site-header.site-header--hero:not(.is-scrolled) .nav-search-input::placeholder {
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--text-muted);
 }
 
 body.has-hero-header .site-header.site-header--hero.is-scrolled,

@@ -59,6 +59,14 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
     window.requestAnimationFrame(() => searchInputRef.current?.focus());
   }
 
+  function previewSearch() {
+    setSearchOpen(true);
+  }
+
+  function handleSearchMouseLeave() {
+    if (document.activeElement !== searchInputRef.current && !searchQuery) setSearchOpen(false);
+  }
+
   React.useEffect(() => {
     if (!searchOpen) return;
     const onPointerDown = (event: PointerEvent) => {
@@ -237,8 +245,9 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
           role="search"
           aria-label="Property search"
           onMouseEnter={() => {
-            if (window.matchMedia("(hover: hover)").matches) openSearch();
+            if (window.matchMedia("(hover: hover)").matches) previewSearch();
           }}
+          onMouseLeave={handleSearchMouseLeave}
         >
           <input
             ref={searchInputRef}

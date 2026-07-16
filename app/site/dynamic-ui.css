@@ -54,6 +54,10 @@
 .nav-search-input::placeholder {
   color: var(--text-muted);
 }
+.nav-search-input::-webkit-search-cancel-button {
+  appearance: none;
+  display: none;
+}
 .nav-search-input:focus {
   outline: none;
   box-shadow: none;

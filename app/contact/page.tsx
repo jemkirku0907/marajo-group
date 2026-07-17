@@ -6,7 +6,7 @@ import Link from "next/link";
 import { properties } from "@/lib/properties";
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", project: "", unit: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", project: "", message: "" });
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState("");
@@ -256,22 +256,13 @@ export default function ContactPage() {
                     <label htmlFor="contact-subject">Subject</label>
                     <input id="contact-subject" type="text" className="form-control" placeholder="Property inquiry" required value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} />
                   </div>
-                  <div className="form-field">
+                  <div className="form-field field-full">
                     <label htmlFor="contact-project">Project Interest</label>
                     <select id="contact-project" className="form-control" value={form.project} onChange={(e) => setForm({ ...form, project: e.target.value })}>
                       <option value="" disabled>Select a project</option>
                       {properties.map((property) => (
                         <option key={property.slug} value={property.name}>{property.name}</option>
                       ))}
-                    </select>
-                  </div>
-                  <div className="form-field">
-                    <label htmlFor="contact-unit">Preferred Unit</label>
-                    <select id="contact-unit" className="form-control" value={form.unit} onChange={(e) => setForm({ ...form, unit: e.target.value })}>
-                      <option value="" disabled>Select unit type</option>
-                      <option>Studio</option>
-                      <option>1 Bedroom</option>
-                      <option>2 Bedroom</option>
                     </select>
                   </div>
                   <div className="form-field field-full">

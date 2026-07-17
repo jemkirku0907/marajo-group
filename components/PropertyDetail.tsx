@@ -4,6 +4,7 @@ import { Property } from "@/lib/properties";
 import Button from "@/components/Button";
 import PropertyHero from "@/components/PropertyHero";
 import PropertyGalleryCarousel from "@/components/PropertyGalleryCarousel";
+import { MEETING_ROOM_BOOKING_URL } from "@/lib/externalBooking";
 
 const DETAIL_GALLERY_IMAGES = [
   {
@@ -186,14 +187,16 @@ export default function PropertyDetail({ property }: { property: Property }) {
               data-action={card.action}
               aria-label={card.ariaLabel ?? card.title}
               key={card.action}
-              href={property.slug === "marajo-tower" && isMeetingRoom ? "/contact" : `/properties/${property.slug}/facilities/${card.action}`}
+              href={property.slug === "marajo-tower" && isMeetingRoom ? MEETING_ROOM_BOOKING_URL : `/properties/${property.slug}/facilities/${card.action}`}
+              target={property.slug === "marajo-tower" && isMeetingRoom ? "_blank" : undefined}
+              rel={property.slug === "marajo-tower" && isMeetingRoom ? "noopener noreferrer" : undefined}
             >
               <div className="card-head">
                 <div className="card-icon" aria-hidden>
                   <CardIcon icon={card.icon ?? DEFAULT_INFO_CARDS[index % DEFAULT_INFO_CARDS.length].icon} />
                 </div>
                 <h4>{card.title}</h4>
-                <span className="card-arrow">{property.slug === "marajo-tower" && isMeetingRoom ? "Inquire" : "→"}</span>
+                <span className="card-arrow">{property.slug === "marajo-tower" && isMeetingRoom ? "Book Now" : "→"}</span>
               </div>
               <p>{card.text}</p>
             </Link>

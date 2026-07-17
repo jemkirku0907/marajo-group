@@ -2747,3 +2747,52 @@ body.mobile-open.has-property-hero-header .site-header.site-header--property {
     min-height: 620px;
   }
 }
+
+/* Final image-hero contrast pass. These late rules keep text readable while
+   preserving the building and editorial photography. */
+.home-page .home-hero--simple::before {
+  background:
+    linear-gradient(90deg, rgba(3, 10, 6, 0.84) 0%, rgba(3, 10, 6, 0.64) 44%, rgba(3, 10, 6, 0.24) 72%, rgba(3, 10, 6, 0.10) 100%),
+    linear-gradient(180deg, rgba(3, 10, 6, 0.10) 48%, rgba(3, 10, 6, 0.46) 100%);
+}
+
+.about-page .page-hero--simple::before {
+  background:
+    linear-gradient(90deg, rgba(3, 10, 6, 0.86) 0%, rgba(3, 10, 6, 0.66) 46%, rgba(3, 10, 6, 0.24) 76%, rgba(3, 10, 6, 0.10) 100%),
+    linear-gradient(180deg, rgba(3, 10, 6, 0.08) 50%, rgba(3, 10, 6, 0.46) 100%);
+}
+
+.properties-listing-page .page-hero--simple::before {
+  background:
+    linear-gradient(90deg, rgba(3, 10, 6, 0.84) 0%, rgba(3, 10, 6, 0.64) 45%, rgba(3, 10, 6, 0.26) 74%, rgba(3, 10, 6, 0.12) 100%),
+    linear-gradient(180deg, rgba(3, 10, 6, 0.12) 42%, rgba(3, 10, 6, 0.52) 100%);
+}
+
+.news-page .page-hero--simple::before {
+  background:
+    linear-gradient(90deg, rgba(2, 8, 5, 0.90) 0%, rgba(2, 8, 5, 0.72) 48%, rgba(2, 8, 5, 0.38) 76%, rgba(2, 8, 5, 0.22) 100%),
+    linear-gradient(180deg, rgba(2, 8, 5, 0.18) 28%, rgba(2, 8, 5, 0.58) 100%);
+}
+
+.contact-page .about-hero::before {
+  background:
+    linear-gradient(90deg, rgba(3, 10, 6, 0.84) 0%, rgba(3, 10, 6, 0.64) 44%, rgba(3, 10, 6, 0.26) 72%, rgba(3, 10, 6, 0.14) 100%),
+    linear-gradient(180deg, rgba(3, 10, 6, 0.10) 44%, rgba(3, 10, 6, 0.54) 100%);
+}
+
+.contact-page .about-hero::after {
+  background: none;
+}
+
+.gallery-page .about-hero::before,
+.gallery-hero::before {
+  background:
+    linear-gradient(90deg, rgba(3, 10, 6, 0.78) 0%, rgba(3, 10, 6, 0.52) 46%, rgba(3, 10, 6, 0.20) 78%, rgba(3, 10, 6, 0.10) 100%),
+    linear-gradient(180deg, rgba(3, 10, 6, 0.08) 46%, rgba(3, 10, 6, 0.48) 100%);
+}
+
+.property-detail-page .property-hero-card::after {
+  background:
+    linear-gradient(180deg, rgba(3, 10, 6, 0.42) 0%, rgba(3, 10, 6, 0.12) 27%, rgba(3, 10, 6, 0.16) 48%, rgba(3, 10, 6, 0.82) 100%),
+    linear-gradient(90deg, rgba(3, 10, 6, 0.58) 0%, rgba(3, 10, 6, 0.22) 50%, rgba(3, 10, 6, 0.30) 100%);
+}

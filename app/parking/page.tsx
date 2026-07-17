@@ -235,11 +235,13 @@ export default function ParkingPage() {
           </div>
           <div className="platform-preview">
             <img src="/assets/Parking.jpg" alt="Marajo Tower exterior" />
+            {/* Disabled Parking rate preview strip; booking calculations remain untouched.
             <div className="platform-status-strip">
               <div><strong>₱50</strong><span>Hourly rate</span></div>
               <div><strong>₱500</strong><span>Daily max</span></div>
               <div><strong>₱5k</strong><span>Monthly rate</span></div>
             </div>
+            */}
           </div>
         </div>
       </section>

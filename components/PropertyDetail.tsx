@@ -4,7 +4,6 @@ import { Property } from "@/lib/properties";
 import Button from "@/components/Button";
 import PropertyHero from "@/components/PropertyHero";
 import PropertyGalleryCarousel from "@/components/PropertyGalleryCarousel";
-import { MEETING_ROOM_BOOKING_URL } from "@/lib/externalBooking";
 
 const DETAIL_GALLERY_IMAGES = [
   {
@@ -165,23 +164,36 @@ export default function PropertyDetail({ property }: { property: Property }) {
       <section className="section">
         <div className="container info-grid">
           {infoCards.map((card, index) => {
-            const usesOfficeRnd = property.slug === "marajo-tower" && card.action === "meeting-rooms";
+            const isMeetingRoom = card.action === "meeting-rooms";
+            const isUnavailable = property.slug === "salcedo-towers" && isMeetingRoom;
+            if (isUnavailable) {
+              return (
+                <article className="interactive-card interactive-card--disabled" aria-disabled="true" key={card.action}>
+                  <div className="card-head">
+                    <div className="card-icon" aria-hidden>
+                      <CardIcon icon={card.icon ?? DEFAULT_INFO_CARDS[index % DEFAULT_INFO_CARDS.length].icon} />
+                    </div>
+                    <h4>{card.title}</h4>
+                    <span className="facility-availability-badge">Currently Unavailable</span>
+                  </div>
+                  <p>{card.text}</p>
+                </article>
+              );
+            }
             return (
             <Link
               className="interactive-card"
               data-action={card.action}
               aria-label={card.ariaLabel ?? card.title}
               key={card.action}
-              href={usesOfficeRnd ? MEETING_ROOM_BOOKING_URL : `/properties/${property.slug}/facilities/${card.action}`}
-              target={usesOfficeRnd ? "_blank" : undefined}
-              rel={usesOfficeRnd ? "noopener noreferrer" : undefined}
+              href={property.slug === "marajo-tower" && isMeetingRoom ? "/contact" : `/properties/${property.slug}/facilities/${card.action}`}
             >
               <div className="card-head">
                 <div className="card-icon" aria-hidden>
                   <CardIcon icon={card.icon ?? DEFAULT_INFO_CARDS[index % DEFAULT_INFO_CARDS.length].icon} />
                 </div>
                 <h4>{card.title}</h4>
-                <span className="card-arrow">→</span>
+                <span className="card-arrow">{property.slug === "marajo-tower" && isMeetingRoom ? "Inquire" : "→"}</span>
               </div>
               <p>{card.text}</p>
             </Link>

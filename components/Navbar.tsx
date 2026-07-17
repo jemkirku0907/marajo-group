@@ -3,9 +3,9 @@
 import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useAuth } from "@/lib/AuthContext";
-import AccountModal from "./AccountModal";
-import Button from "./Button";
+// import { useAuth } from "@/lib/AuthContext"; // Disabled public login/account UI.
+// import AccountModal from "./AccountModal";
+// import Button from "./Button";
 import Container from "./Container";
 
 const NAV_LINKS = [
@@ -34,13 +34,14 @@ function initials(name: string) {
 }
 
 export default function Navbar({ themeControl }: { themeControl?: React.ReactNode }) {
-  const { user, logout, openModal } = useAuth();
+  // const { user, logout, openModal } = useAuth(); // Disabled public auth controls.
   const router = useRouter();
   const pathname = usePathname();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [accountOpen, setAccountOpen] = useState(false);
+  // const [userMenuOpen, setUserMenuOpen] = useState(false);
+  // const [accountOpen, setAccountOpen] = useState(false);
+  const [cafeteriaPickerOpen, setCafeteriaPickerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -187,20 +188,36 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
               <ul id="services-menu" className="nav-dropdown-menu" role="menu" onClick={() => setDropdownOpen(false)}>
                 {SERVICE_LINKS.map((l) => (
                   <li role="none" key={l.href}>
-                    <Link
-                      className="nav-dropdown-item"
-                      href={l.href}
-                      role="menuitem"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      {l.label}
-                    </Link>
+                    {l.href === "/cafeteria" ? (
+                      <button
+                        type="button"
+                        className="nav-dropdown-item nav-dropdown-item-button"
+                        role="menuitem"
+                        onClick={() => {
+                          setDropdownOpen(false);
+                          setMobileMenuOpen(false);
+                          setCafeteriaPickerOpen(true);
+                        }}
+                      >
+                        {l.label}
+                      </button>
+                    ) : (
+                      <Link
+                        className="nav-dropdown-item"
+                        href={l.href}
+                        role="menuitem"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        {l.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
             )}
           </div>
 
+          {/* Disabled mobile Log In, account, and Log Out controls.
           <div className="nav-mobile-footer" aria-label="Mobile account controls">
             {!user ? (
               <button
@@ -241,6 +258,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
               </div>
             )}
           </div>
+          */}
         </nav>
 
         <div className="nav-utilities">
@@ -286,6 +304,7 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
           )}
         </form>
 
+        {/* Disabled desktop Log In and authenticated account menu.
         <div className="header-actions">
           {!user ? (
             <Button type="button" onClick={() => openModal("login")} className="btn-primary nav-login-button">
@@ -336,10 +355,35 @@ export default function Navbar({ themeControl }: { themeControl?: React.ReactNod
             </div>
           )}
         </div>
+        */}
         </div>
       </Container>
 
-      <AccountModal open={accountOpen} onClose={() => setAccountOpen(false)} themeControl={themeControl} />
+      {/* <AccountModal open={accountOpen} onClose={() => setAccountOpen(false)} themeControl={themeControl} /> */}
+      {cafeteriaPickerOpen && (
+        <div
+          className="cafeteria-picker-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="cafeteria-picker-title"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) setCafeteriaPickerOpen(false);
+          }}
+        >
+          <div className="cafeteria-picker-modal">
+            <button type="button" className="cafeteria-picker-close" aria-label="Close property selection" onClick={() => setCafeteriaPickerOpen(false)}>×</button>
+            <span className="section-kicker">Cafeteria</span>
+            <h2 id="cafeteria-picker-title">Where would you like to order from?</h2>
+            <p>Select a property with active cafeteria service.</p>
+            <div className="cafeteria-property-list">
+              <Link href="/cafeteria?property=marajo-tower" onClick={() => setCafeteriaPickerOpen(false)}>
+                <strong>Marajo Tower</strong>
+                <span>BGC · Cafeteria ordering available</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

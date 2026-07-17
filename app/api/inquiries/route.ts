@@ -3,8 +3,21 @@ import nodemailer from "nodemailer";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { requireActiveTenant } from "@/lib/tenantMembership";
+import { turnstileEnabled, turnstileSiteKey, verifyTurnstileToken } from "@/lib/turnstile";
+import { getClientIp } from "@/lib/rateLimit";
 
 const CONTACT_TO = "admin@marajogroup.com";
+
+export async function GET(req: NextRequest) {
+  if (req.nextUrl.searchParams.get("action") === "turnstile-site-key") {
+    return NextResponse.json({
+      success: true,
+      turnstile_enabled: turnstileEnabled(),
+      site_key: turnstileSiteKey(),
+    });
+  }
+  return NextResponse.json({ success: false, message: "Endpoint not found" }, { status: 404 });
+}
 
 function val(data: Record<string, any>, keys: string[], def = ""): string {
   for (const k of keys) {
@@ -158,6 +171,17 @@ export async function POST(req: NextRequest) {
   const sourcePageUrl = val(data, ["source_page_url", "source_url"], req.headers.get("referer") || "");
   const leadSource = val(data, ["lead_source"], "Website");
   const action = val(data, ["action", "inquiry_type"]).toLowerCase();
+  const inquiryContext = val(data, ["inquiry_context"]).toLowerCase();
+
+  if (inquiryContext === "contact") {
+    const verified = await verifyTurnstileToken(data.turnstile_token, getClientIp(req));
+    if (!verified) {
+      return NextResponse.json(
+        { success: false, message: "Please complete the security check before sending your inquiry." },
+        { status: 400 },
+      );
+    }
+  }
 
   if (leadSource === "Facilities Booking") {
     const user = getCurrentUser(req);

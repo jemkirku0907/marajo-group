@@ -257,6 +257,13 @@ export const properties: Property[] = [
     },
     facilities: [
       {
+        title: "Meeting Rooms",
+        text: "Commercial meeting rooms are part of Salcedo Towers, but booking is currently unavailable.",
+        action: "meeting-rooms",
+        ariaLabel: "Meeting Rooms - Salcedo Towers - Currently Unavailable",
+        icon: "home",
+      },
+      {
         title: "Residential Suites",
         text: "Private residential layouts for professionals and families who want a central Makati address.",
         action: "residential-suites",

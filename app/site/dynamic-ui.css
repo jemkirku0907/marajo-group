@@ -8,6 +8,83 @@
   margin-left: 0;
 }
 
+.nav-dropdown-item-button {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cafeteria-picker-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(4, 12, 7, 0.62);
+  backdrop-filter: blur(8px);
+}
+
+.cafeteria-picker-modal {
+  position: relative;
+  width: min(100%, 520px);
+  padding: clamp(1.5rem, 5vw, 2.25rem);
+  border: 1px solid var(--border-muted);
+  border-radius: 24px;
+  background: var(--surface);
+  color: var(--text-primary);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+}
+
+.cafeteria-picker-modal h2 {
+  margin: 0.55rem 2rem 0.55rem 0;
+  color: var(--heading-color);
+  font-size: clamp(1.45rem, 4vw, 2rem);
+}
+
+.cafeteria-picker-modal > p {
+  margin: 0 0 1.25rem;
+  color: var(--text-muted);
+}
+
+.cafeteria-picker-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--border-muted);
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--text-primary);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.cafeteria-property-list a {
+  display: grid;
+  gap: 0.3rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(31, 110, 52, 0.24);
+  border-radius: 14px;
+  background: rgba(31, 110, 52, 0.08);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.cafeteria-property-list a:hover {
+  border-color: var(--mg-green);
+  background: rgba(31, 110, 52, 0.14);
+}
+
+.cafeteria-property-list span {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
 @media (min-width: 1024px) {
   .navbar {
     justify-content: flex-start;

@@ -223,6 +223,7 @@ export default function ParkingPage() {
         <div className="container platform-hero-grid">
           <div>
             <span className="platform-eyebrow">Marajo Tower Smart Parking</span>
+            <span className="tenant-only-note">For Tenants Only</span>
             <h1>Reserve parking with live slots, vehicle details, and automated fees.</h1>
             <p>Check available spaces by date and time, choose the best slot, submit vehicle information, and generate a reservation total with VAT and service fee breakdown.</p>
             <div className="platform-hero-actions">

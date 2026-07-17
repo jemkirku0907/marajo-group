@@ -50,6 +50,21 @@
   padding: 0.3em 0.8em;
 }
 
+.tenant-only-note {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0.7rem 0 0;
+  padding: 0.42rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .platform-hero h1 {
   margin: 0;
   font-size: clamp(1.65rem, 3.5vw, 2.5rem);

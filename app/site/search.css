@@ -372,6 +372,32 @@ body.theme-dark .btn-outline {
   border-color: rgba(255, 255, 255, 0.86) !important;
 }
 
+.interactive-card--disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+  box-shadow: none;
+}
+
+.interactive-card--disabled:hover {
+  transform: none;
+  border-color: var(--border-muted);
+  box-shadow: none;
+}
+
+.facility-availability-badge {
+  display: inline-flex;
+  width: fit-content;
+  margin-left: auto;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid rgba(180, 83, 9, 0.28);
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.12);
+  color: #92400e;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
 .home-hero-grid,
 .about-hero-grid {
   align-items: center;

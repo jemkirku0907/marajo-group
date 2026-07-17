@@ -38,20 +38,20 @@ type AdminIcon =
   | "logOut";
 
 const ADMIN_NAV_ITEMS: Array<{ id: Tab; label: string; icon: AdminIcon }> = [
-  { id: "overview", label: "Overview", icon: "layout" },
-  { id: "units", label: "Units", icon: "building" },
+  // { id: "overview", label: "Overview", icon: "layout" },
+  // { id: "units", label: "Units", icon: "building" },
   { id: "leads", label: "Leads", icon: "users" },
-  { id: "tenants", label: "Tenants", icon: "users" },
-  { id: "parking", label: "Parking", icon: "car" },
+  // { id: "tenants", label: "Tenants", icon: "users" },
+  // { id: "parking", label: "Parking", icon: "car" },
   // { id: "facilities", label: "Court Bookings", icon: "court" },
   // { id: "workers", label: "Workers", icon: "tool" },
-  { id: "calendar", label: "Calendar", icon: "calendar" },
-  { id: "appointments", label: "Appointments", icon: "clock" },
+  // { id: "calendar", label: "Calendar", icon: "calendar" },
+  // { id: "appointments", label: "Appointments", icon: "clock" },
   { id: "contacts", label: "Contacts", icon: "mail" },
   // { id: "tasks", label: "Tasks", icon: "check" }, // Disabled Workforce request tracking tab.
-  { id: "receipts", label: "Receipts", icon: "receipt" },
-  { id: "notifications", label: "Notifications", icon: "bell" },
-  { id: "profile", label: "Profile", icon: "user" },
+  // { id: "receipts", label: "Receipts", icon: "receipt" },
+  // { id: "notifications", label: "Notifications", icon: "bell" },
+  // { id: "profile", label: "Profile", icon: "user" },
 ];
 
 const sidebarStyle: React.CSSProperties = {
@@ -187,7 +187,7 @@ export default function AdminDashboardPage() {
   const router = useRouter();
   const [staff, setStaff] = useState<Staff | null>(null);
   const [checking, setChecking] = useState(true);
-  const [tab, setTab] = useState<Tab>("overview");
+  const [tab, setTab] = useState<Tab>("leads");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
@@ -350,22 +350,30 @@ export default function AdminDashboardPage() {
                 <button className="admin-mobile-menu-button" onClick={() => setMobileSidebarOpen(true)} aria-label="Open sidebar">Menu</button>
                 <h1 style={{ fontSize: 26, margin: 0, fontWeight: 700, color: "var(--heading-color)" }}>{ADMIN_NAV_ITEMS.find((item) => item.id === tab)?.label}</h1>
                 <p style={{ margin: "8px 0 0", color: "var(--text-muted)", fontSize: 14 }}>
+                  {/* Disabled non-inquiry admin sections.
                   {tab === "overview" && "Sales pipeline summary and portal activity."}
                   {tab === "units" && "Manage assigned units across all buildings."}
+                  */}
                   {tab === "leads" && "Track leads, inquiries, and status updates."}
+                  {/*
                   {tab === "tenants" && "Verify Marajo Tower tenant/member access."}
                   {tab === "parking" && "Manage parking reservations and occupancy."}
+                  */}
                   {/* Disabled Facilities and Workforce admin descriptions.
                   {tab === "facilities" && "Handle court bookings and facility schedules."}
                   {tab === "workers" && "Manage workforce approvals and assignments."}
                   */}
+                  {/*
                   {tab === "calendar" && "View appointments and reservation dates."}
                   {tab === "appointments" && "Schedule and update client visits."}
+                  */}
                   {tab === "contacts" && "Keep contact records and inquiries organized."}
                   {/* {tab === "tasks" && "Track pending tasks and follow-ups."} */}
+                  {/*
                   {tab === "receipts" && "Search, send, and manage booking invoices and receipts."}
                   {tab === "notifications" && "Review system alerts and messages."}
                   {tab === "profile" && "Update your staff profile and credentials."}
+                  */}
                 </p>
               </div>
               <div className="admin-dashboard-actions">
@@ -375,22 +383,30 @@ export default function AdminDashboardPage() {
           </div>
 
           <main key={tab} className="admin-dashboard-main">
+            {/* Disabled non-inquiry admin panels.
             {tab === "overview" && <OverviewTab onNavigate={handleTabChange} />}
             {tab === "units" && <UnitsTab />}
+            */}
             {tab === "leads" && <LeadsTab />}
+            {/*
             {tab === "tenants" && <TenantsTab />}
             {tab === "parking" && <ParkingTab />}
+            */}
             {/* Disabled Facilities and Workforce management tabs.
             {tab === "facilities" && <FacilitiesTab />}
             {tab === "workers" && <WorkersTab />}
             */}
+            {/*
             {tab === "calendar" && <CalendarTab />}
             {tab === "appointments" && <AppointmentsTab />}
+            */}
             {tab === "contacts" && <ContactsTab />}
             {/* {tab === "tasks" && <TasksTab />} */}
+            {/*
             {tab === "receipts" && <ReceiptsTab />}
             {tab === "notifications" && <NotificationsTab />}
             {tab === "profile" && <ProfileTab staff={staff} />}
+            */}
           </main>
         </div>
       </div>

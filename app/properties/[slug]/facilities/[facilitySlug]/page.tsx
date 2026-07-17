@@ -71,6 +71,8 @@ export default async function FacilityDetailPage({ params }: { params: Promise<{
   const image = facilityImage(slug, facilitySlug);
   const specs = facilitySpecs(slug, facilitySlug);
   const isRemoteImage = image.startsWith("http");
+  const isMeetingRoom = facilitySlug === "meeting-rooms";
+  const isSalcedoUnavailable = property.slug === "salcedo-towers" && isMeetingRoom;
 
   return (
     <main className="facility-detail-page">
@@ -83,12 +85,17 @@ export default async function FacilityDetailPage({ params }: { params: Promise<{
             <span className="hero-label">{property.categoryLabel} Facility</span>
             <h1 className="hero-title">{facility.title}</h1>
             <p className="hero-copy">{facility.text}</p>
+            {isSalcedoUnavailable && <span className="facility-availability-badge">Currently Unavailable</span>}
             <div className="hero-actions">
-              <Button href="/facilities" className="btn-primary">
-                Check Booking Options
-              </Button>
-              <Button href="/contact" variant="secondary" className="btn-secondary">
-                Ask About This Space
+              {isMeetingRoom ? (
+                <Button href="/contact" className="btn-primary">
+                  {isSalcedoUnavailable ? "Contact Us About Availability" : "Inquire About Meeting Rooms"}
+                </Button>
+              ) : (
+                <Button href="/contact" className="btn-primary">Ask About This Space</Button>
+              )}
+              <Button href={`/properties/${property.slug}`} variant="secondary" className="btn-secondary">
+                Back to {property.name}
               </Button>
             </div>
           </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { properties } from "@/lib/properties";
@@ -12,6 +12,11 @@ export default function ContactPage() {
   const [error, setError] = useState("");
   const [mapOpen, setMapOpen] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [turnstileEnabled, setTurnstileEnabled] = useState(false);
+  const [turnstileSiteKey, setTurnstileSiteKey] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const turnstileWidgetId = useRef<string | null>(null);
 
   function openMap() {
     setMapLoaded(true);
@@ -31,15 +36,68 @@ export default function ContactPage() {
     return () => { document.body.style.overflow = ""; };
   }, [mapOpen]);
 
+  useEffect(() => {
+    fetch("/api/inquiries?action=turnstile-site-key")
+      .then((response) => response.json())
+      .then((data) => {
+        setTurnstileEnabled(Boolean(data.turnstile_enabled));
+        setTurnstileSiteKey(data.site_key || "");
+      })
+      .catch(() => setTurnstileEnabled(false));
+  }, []);
+
+  useEffect(() => {
+    if (!turnstileEnabled || !turnstileSiteKey || !turnstileRef.current) return;
+
+    const renderWidget = () => {
+      if (!(window as any).turnstile || !turnstileRef.current || turnstileWidgetId.current) return;
+      turnstileWidgetId.current = (window as any).turnstile.render(turnstileRef.current, {
+        sitekey: turnstileSiteKey,
+        callback: (token: string) => setTurnstileToken(token),
+        "expired-callback": () => setTurnstileToken(""),
+        "error-callback": () => setTurnstileToken(""),
+      });
+    };
+
+    if ((window as any).turnstile) {
+      renderWidget();
+      return;
+    }
+
+    const existing = document.querySelector<HTMLScriptElement>('script[src*="challenges.cloudflare.com/turnstile"]');
+    if (existing) {
+      existing.addEventListener("load", renderWidget, { once: true });
+      return () => existing.removeEventListener("load", renderWidget);
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    script.async = true;
+    script.defer = true;
+    script.addEventListener("load", renderWidget, { once: true });
+    document.head.appendChild(script);
+    return () => script.removeEventListener("load", renderWidget);
+  }, [turnstileEnabled, turnstileSiteKey]);
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    if (turnstileEnabled && !turnstileToken) {
+      setError("Please complete the security check before sending your inquiry.");
+      return;
+    }
     setBusy(true);
     try {
       const res = await fetch("/api/inquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, lead_source: "Website", source_page_url: window.location.href }),
+        body: JSON.stringify({
+          ...form,
+          lead_source: "Website",
+          inquiry_context: "contact",
+          turnstile_token: turnstileToken,
+          source_page_url: window.location.href,
+        }),
       });
       const data = await res.json();
       if (!data.success) {
@@ -47,6 +105,8 @@ export default function ContactPage() {
         return;
       }
       setDone(true);
+      if (turnstileWidgetId.current) (window as any).turnstile?.reset(turnstileWidgetId.current);
+      setTurnstileToken("");
     } catch {
       setError("Network error. Please try again.");
     } finally {
@@ -218,7 +278,12 @@ export default function ContactPage() {
                     <label htmlFor="contact-message">Message</label>
                     <textarea id="contact-message" className="form-control" rows={5} placeholder="Tell us your inquiry and preferred schedule" required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
                   </div>
-                  <button className="btn-primary field-full" type="submit" disabled={busy}>
+                  {turnstileEnabled && (
+                    <div className="form-field field-full contact-turnstile" aria-label="Bot protection">
+                      <div ref={turnstileRef} />
+                    </div>
+                  )}
+                  <button className="btn-primary field-full" type="submit" disabled={busy || (turnstileEnabled && !turnstileToken)}>
                     {busy ? "Sending..." : "Send Inquiry"}
                   </button>
                 </form>

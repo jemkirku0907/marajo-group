@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import AuthModal from "@/components/AuthModal";
+// import AuthModal from "@/components/AuthModal"; // Disabled public login/register modal.
 import Button from "@/components/Button";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -38,7 +38,7 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
           )}
           <Footer />
           {!isHome && <VisitorCounter />}
-          <AuthModal />
+          {/* <AuthModal /> */}
           <ScrollPolish />
         </>
       )}

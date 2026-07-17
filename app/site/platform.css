@@ -120,6 +120,38 @@ body.theme-dark .tenant-only-note {
   display: block;
 }
 
+/* Parking hero: let the new photo pair finish level with the CTA row. */
+.booking-page .platform-hero-grid {
+  align-items: stretch;
+}
+
+.booking-page .platform-preview {
+  height: 100%;
+}
+
+.parking-preview-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  height: 100%;
+  min-height: 430px;
+}
+
+.parking-preview-gallery img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+}
+
+.parking-preview-gallery img:first-child {
+  object-position: center 62%;
+}
+
+.parking-preview-gallery img:last-child {
+  object-position: center 58%;
+  border-left: 1px solid rgba(255, 255, 255, 0.45);
+}
+
 .platform-status-strip {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -674,6 +706,15 @@ body.theme-dark .tenant-only-note {
   .platform-preview img {
     height: 220px;
   }
+
+  .parking-preview-gallery {
+    height: 340px;
+    min-height: 340px;
+  }
+
+  .parking-preview-gallery img {
+    height: 100%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -731,6 +772,11 @@ body.theme-dark .tenant-only-note {
   .platform-hero-actions .btn-secondary {
     width: 100%;
     justify-content: center;
+  }
+
+  .parking-preview-gallery {
+    height: 260px;
+    min-height: 260px;
   }
 
   .platform-status-strip {

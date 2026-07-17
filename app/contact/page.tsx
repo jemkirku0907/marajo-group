@@ -18,6 +18,36 @@ export default function ContactPage() {
   const turnstileRef = useRef<HTMLDivElement>(null);
   const turnstileWidgetId = useRef<string | null>(null);
 
+  useEffect(() => {
+    const service = new URLSearchParams(window.location.search).get("service");
+    const presets: Record<string, { subject: string; message: string }> = {
+      parking: {
+        subject: "Parking inquiry",
+        message: "I would like to ask about Marajo Tower parking.",
+      },
+      workforce: {
+        subject: "Workforce services inquiry",
+        message: "I would like to inquire about Marajo workforce services.",
+      },
+      cafeteria: {
+        subject: "Cafeteria inquiry",
+        message: "I would like to ask about the Marajo Tower cafeteria.",
+      },
+      "meeting-rooms": {
+        subject: "Meeting rooms inquiry",
+        message: "I would like to inquire about meeting-room availability.",
+      },
+    };
+    const preset = service ? presets[service] : undefined;
+    if (preset) {
+      setForm((current) => ({
+        ...current,
+        subject: current.subject || preset.subject,
+        message: current.message || preset.message,
+      }));
+    }
+  }, []);
+
   function openMap() {
     setMapLoaded(true);
     setMapOpen(true);

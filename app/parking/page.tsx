@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth, authHeaders } from "@/lib/AuthContext";
-import { PARKING_BOOKING_URL } from "@/lib/externalBooking";
+import { PARKING_BOOKING_URL, PARKING_INQUIRY_URL } from "@/lib/externalBooking";
 import ParkingHeroSlider from "./ParkingHeroSlider";
 
 // Temporarily disabled while reservations are handled by OfficeRnD.
@@ -231,7 +231,7 @@ export default function ParkingPage() {
             <p>Check available spaces by date and time, choose the best slot, submit vehicle information, and generate a reservation total with VAT and service fee breakdown.</p>
             <div className="platform-hero-actions">
               <a href={PARKING_BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">Reserve a Slot</a>
-              <a href="/contact" className="btn-secondary">
+              <a href={PARKING_INQUIRY_URL} className="btn-secondary">
                 Ask About Parking
               </a>
               {/* The previous View Workflow action belongs to the disabled in-site booking flow. */}

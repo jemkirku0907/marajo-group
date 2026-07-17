@@ -50,19 +50,35 @@
   padding: 0.3em 0.8em;
 }
 
+.platform-hero-labels {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  width: fit-content;
+  max-width: 100%;
+}
+
 .tenant-only-note {
   display: inline-flex;
+  align-items: center;
   width: fit-content;
-  margin: 0.7rem 0 0;
-  padding: 0.42rem 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  margin: 0;
+  padding: 0.32rem 0.72rem;
+  border: 1px solid rgba(31, 110, 52, 0.28);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
-  font-size: 0.78rem;
+  background: rgba(31, 110, 52, 0.11);
+  color: var(--mg-green);
+  font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+body.theme-dark .tenant-only-note {
+  border-color: rgba(125, 194, 65, 0.38);
+  background: rgba(125, 194, 65, 0.14);
+  color: #b9e88f;
 }
 
 .platform-hero h1 {

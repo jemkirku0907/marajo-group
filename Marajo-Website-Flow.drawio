@@ -1,4 +1,39 @@
-<mxfile host="app.diagrams.net" modified="2026-07-17T12:00:00.000Z" agent="Codex" version="24.7.17" type="device" pages="3">
+<mxfile host="app.diagrams.net" modified="2026-07-17T16:30:00.000Z" agent="Codex" version="24.7.17" type="device" pages="4">
+  <diagram id="client-overview" name="0 - Client Overview">
+    <mxGraphModel dx="1400" dy="850" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="co-title" value="MARAJO GROUP WEBSITE — CLIENT FLOW" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=28;fontStyle=1;fontColor=#153b20;" vertex="1" parent="1"><mxGeometry x="340" y="25" width="970" height="50" as="geometry" /></mxCell>
+        <mxCell id="co-subtitle" value="A simple view of what visitors can browse, book, and inquire about" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontColor=#52605a;" vertex="1" parent="1"><mxGeometry x="430" y="75" width="790" height="35" as="geometry" /></mxCell>
+
+        <mxCell id="co-visitor" value="&lt;b&gt;1. VISITOR&lt;/b&gt;&lt;br&gt;Opens the Marajo Group website" style="ellipse;whiteSpace=wrap;html=1;fillColor=#1f6e34;strokeColor=#154d24;fontColor=#ffffff;fontSize=17;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="65" y="170" width="210" height="105" as="geometry" /></mxCell>
+        <mxCell id="co-home" value="&lt;b&gt;2. WEBSITE HOME&lt;/b&gt;&lt;br&gt;Clear navigation, universal search, and property highlights" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dff0df;strokeColor=#4f8d5e;fontColor=#153b20;fontSize=17;spacing=10;" vertex="1" parent="1"><mxGeometry x="350" y="165" width="280" height="115" as="geometry" /></mxCell>
+        <mxCell id="co-browse" value="&lt;b&gt;3A. BROWSE&lt;/b&gt;&lt;br&gt;About • Properties • News&lt;br&gt;Property details and facilities" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dceaf8;strokeColor=#6c9bc5;fontColor=#17324d;fontSize=17;spacing=10;" vertex="1" parent="1"><mxGeometry x="730" y="120" width="300" height="135" as="geometry" /></mxCell>
+        <mxCell id="co-services" value="&lt;b&gt;3B. USE SERVICES&lt;/b&gt;&lt;br&gt;Parking • Workforce&lt;br&gt;Cafeteria • Meeting Rooms" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff1c7;strokeColor=#d4a72c;fontColor=#5d4300;fontSize=17;spacing=10;" vertex="1" parent="1"><mxGeometry x="730" y="300" width="300" height="135" as="geometry" /></mxCell>
+
+        <mxCell id="co-officernd" value="&lt;b&gt;BOOKING SERVICES&lt;/b&gt;&lt;br&gt;Parking, Workforce, and available Meeting Rooms open OfficeRnD" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fde3c4;strokeColor=#d08a34;fontColor=#673b05;fontSize=16;spacing=10;" vertex="1" parent="1"><mxGeometry x="1130" y="250" width="355" height="120" as="geometry" /></mxCell>
+        <mxCell id="co-cafeteria" value="&lt;b&gt;CAFETERIA&lt;/b&gt;&lt;br&gt;Choose an available property, then continue to its ordering information" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e5;strokeColor=#d4a72c;fontColor=#5d4300;fontSize=16;spacing=10;" vertex="1" parent="1"><mxGeometry x="1130" y="405" width="355" height="115" as="geometry" /></mxCell>
+
+        <mxCell id="co-contact" value="&lt;b&gt;4. CONTACT / INQUIRE&lt;/b&gt;&lt;br&gt;Visitor submits a protected inquiry form" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eadff4;strokeColor=#936bb0;fontColor=#3d2350;fontSize=17;spacing=10;" vertex="1" parent="1"><mxGeometry x="500" y="555" width="310" height="115" as="geometry" /></mxCell>
+        <mxCell id="co-database" value="&lt;b&gt;5. INQUIRY RECORD&lt;/b&gt;&lt;br&gt;Inquiry is stored for follow-up and tracking" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e5f2ea;strokeColor=#5f9d70;fontColor=#153b20;fontSize=17;spacing=10;" vertex="1" parent="1"><mxGeometry x="890" y="555" width="310" height="115" as="geometry" /></mxCell>
+        <mxCell id="co-admin" value="&lt;b&gt;6. ADMIN TEAM&lt;/b&gt;&lt;br&gt;Views, responds to, and tracks inquiries" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1f6e34;strokeColor=#154d24;fontColor=#ffffff;fontSize=17;spacing=10;" vertex="1" parent="1"><mxGeometry x="1280" y="555" width="290" height="115" as="geometry" /></mxCell>
+
+        <mxCell id="co-note" value="&lt;b&gt;CLIENT NOTE&lt;/b&gt;&lt;br&gt;Public booking forms are no longer managed by the Marajo admin dashboard. Booking CTAs send users to the correct external platform; the Marajo admin focuses on inquiries." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f6f7f6;strokeColor=#aab4ad;fontColor=#3f4c44;fontSize=15;spacing=12;" vertex="1" parent="1"><mxGeometry x="350" y="760" width="950" height="105" as="geometry" /></mxCell>
+        <mxCell id="co-legend" value="Green = Marajo website/admin   •   Blue = content browsing   •   Gold = services/external booking   •   Purple = inquiry flow" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=14;fontColor=#52605a;" vertex="1" parent="1"><mxGeometry x="310" y="900" width="1030" height="40" as="geometry" /></mxCell>
+
+        <mxCell id="coe1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=3;strokeColor=#1f6e34;endArrow=block;endFill=1;" edge="1" parent="1" source="co-visitor" target="co-home"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="coe2" value="browse" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=3;strokeColor=#477da8;endArrow=block;endFill=1;fontSize=14;" edge="1" parent="1" source="co-home" target="co-browse"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="coe3" value="services" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=3;strokeColor=#b88c17;endArrow=block;endFill=1;fontSize=14;" edge="1" parent="1" source="co-home" target="co-services"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="coe4" value="book" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=3;strokeColor=#d08a34;endArrow=block;endFill=1;fontSize=14;" edge="1" parent="1" source="co-services" target="co-officernd"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="coe5" value="order" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=3;strokeColor=#b88c17;endArrow=block;endFill=1;fontSize=14;" edge="1" parent="1" source="co-services" target="co-cafeteria"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="coe6" value="inquire" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=3;strokeColor=#80529d;endArrow=block;endFill=1;fontSize=14;" edge="1" parent="1" source="co-browse" target="co-contact"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="coe7" value="questions / unavailable service" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=3;strokeColor=#80529d;endArrow=block;endFill=1;fontSize=13;" edge="1" parent="1" source="co-services" target="co-contact"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="coe8" value="secure submit" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=3;strokeColor=#80529d;endArrow=block;endFill=1;fontSize=14;" edge="1" parent="1" source="co-contact" target="co-database"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="coe9" value="manage" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=3;strokeColor=#1f6e34;endArrow=block;endFill=1;fontSize=14;" edge="1" parent="1" source="co-database" target="co-admin"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
   <diagram id="site-overview" name="1 - Site Overview">
     <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
       <root>

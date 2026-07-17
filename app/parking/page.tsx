@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth, authHeaders } from "@/lib/AuthContext";
 import { PARKING_BOOKING_URL } from "@/lib/externalBooking";
+import ParkingHeroSlider from "./ParkingHeroSlider";
 
 // Temporarily disabled while reservations are handled by OfficeRnD.
 // Set this back to true if the client wants to restore the in-site flow.
@@ -237,10 +238,7 @@ export default function ParkingPage() {
             </div>
           </div>
           <div className="platform-preview">
-            <div className="parking-preview-gallery">
-              <img src="/assets/IMG_0367.jpg" alt="Available parking spaces at Marajo Tower" />
-              <img src="/assets/IMG_0368.jpg" alt="Marajo Tower tenant parking area" />
-            </div>
+            <ParkingHeroSlider />
             {/* Disabled Parking rate preview strip; booking calculations remain untouched.
             <div className="platform-status-strip">
               <div><strong>₱50</strong><span>Hourly rate</span></div>

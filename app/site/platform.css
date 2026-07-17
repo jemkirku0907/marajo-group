@@ -129,27 +129,21 @@ body.theme-dark .tenant-only-note {
   height: 100%;
 }
 
-.parking-preview-gallery {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.parking-slider {
   height: 100%;
   min-height: 430px;
+  border-radius: 0;
 }
 
-.parking-preview-gallery img {
+.parking-slider .parking-slide {
   width: 100%;
   height: 100%;
   min-height: 0;
   object-fit: cover;
 }
 
-.parking-preview-gallery img:first-child {
+.parking-slider .parking-slide:nth-child(2) {
   object-position: center 62%;
-}
-
-.parking-preview-gallery img:last-child {
-  object-position: center 58%;
-  border-left: 1px solid rgba(255, 255, 255, 0.45);
 }
 
 .platform-status-strip {
@@ -707,12 +701,12 @@ body.theme-dark .tenant-only-note {
     height: 220px;
   }
 
-  .parking-preview-gallery {
+  .parking-slider {
     height: 340px;
     min-height: 340px;
   }
 
-  .parking-preview-gallery img {
+  .parking-slider .parking-slide {
     height: 100%;
   }
 }
@@ -774,7 +768,7 @@ body.theme-dark .tenant-only-note {
     justify-content: center;
   }
 
-  .parking-preview-gallery {
+  .parking-slider {
     height: 260px;
     min-height: 260px;
   }

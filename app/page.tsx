@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
-import { CAFETERIA_ORDER_URL, PARKING_BOOKING_URL, WORKFORCE_BOOKING_URL } from "@/lib/externalBooking";
+import { PARKING_BOOKING_URL } from "@/lib/externalBooking";
 
 export const metadata = {
   title: "Home",
@@ -144,7 +144,7 @@ export default function HomePage() {
                 </svg>
               </span>
             </a>
-            <a href={WORKFORCE_BOOKING_URL} target="_blank" rel="noopener noreferrer" className="home-service-card">
+            <Link href="/workforce" className="home-service-card">
               <div className="home-service-icon" aria-hidden="true">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="9" cy="7" r="4" />
@@ -155,34 +155,15 @@ export default function HomePage() {
               </div>
               <div>
                 <strong>Workforce Booking</strong>
-                <p>Continue to OfficeRnD for janitorial, maintenance, technical, or security workforce requirements.</p>
+                <p>Need janitors, maintenance staff, electricians, or security? Browse verified workers and book a shift directly online.</p>
               </div>
               <span className="home-service-link">
-                Book workforce{" "}
+                Book a worker{" "}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </span>
-            </a>
-            <a href={CAFETERIA_ORDER_URL} target="_blank" rel="noopener noreferrer" className="home-service-card">
-              <div className="home-service-icon" aria-hidden="true">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 10h16" />
-                  <path d="m5 10 1.5 9h11L19 10" />
-                  <path d="M8 10V7a4 4 0 0 1 8 0v3" />
-                </svg>
-              </div>
-              <div>
-                <strong>Cafeteria Ordering</strong>
-                <p>Order meals and snacks for pickup from the Marajo Tower cafeteria through Enstack.</p>
-              </div>
-              <span className="home-service-link">
-                Order from cafeteria{" "}
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </span>
-            </a>
+            </Link>
             {/* Disabled Facilities service card. Restore this whole block when Facilities returns.
             <Link href="/facilities" className="home-service-card">
               <div className="home-service-icon" aria-hidden="true">

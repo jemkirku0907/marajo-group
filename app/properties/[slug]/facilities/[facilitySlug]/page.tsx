@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Button from "@/components/Button";
 import { getProperty, properties } from "@/lib/properties";
-import { MEETING_ROOM_BOOKING_URL, MEETING_ROOM_INQUIRY_URL } from "@/lib/externalBooking";
 
 function facilityImage(propertySlug: string, facilitySlug: string) {
   const property = getProperty(propertySlug);
@@ -89,11 +88,9 @@ export default async function FacilityDetailPage({ params }: { params: Promise<{
             {isSalcedoUnavailable && <span className="facility-availability-badge">Currently Unavailable</span>}
             <div className="hero-actions">
               {isMeetingRoom ? (
-                isSalcedoUnavailable ? (
-                  <Button href={MEETING_ROOM_INQUIRY_URL} className="btn-primary">Contact Us About Availability</Button>
-                ) : (
-                  <Button href={MEETING_ROOM_BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">Book a Meeting Room</Button>
-                )
+                <Button href="/contact" className="btn-primary">
+                  {isSalcedoUnavailable ? "Contact Us About Availability" : "Inquire About Meeting Rooms"}
+                </Button>
               ) : (
                 <Button href="/contact" className="btn-primary">Ask About This Space</Button>
               )}

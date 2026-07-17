@@ -147,10 +147,12 @@ export async function GET(req: NextRequest) {
 
   const action = req.nextUrl.searchParams.get("action") ?? "list";
 
+  /* Disabled Workforce employee assignment handler.
   if (action === "employees") {
     const employees = await getEmployees();
     return NextResponse.json({ success: true, employees, count: employees.length });
   }
+  */
 
   if (action === "manual-list") {
     const rows = await db.query(
@@ -159,6 +161,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: true, tasks: rows, count: rows.length });
   }
 
+  /* Disabled Workforce request tracking list, filters, timing, and assignment data.
   if (action === "list") {
     if (!(await ensureWorkerBookingTrackingColumns())) {
       return NextResponse.json({ success: true, requests: [], count: 0, message: "worker_bookings table is not available yet." });
@@ -233,6 +236,11 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ success: true, requests, count: requests.length });
   }
+  */
+
+  if (action === "employees" || action === "list") {
+    return NextResponse.json({ success: false, message: "Workforce request tracking is currently disabled." }, { status: 410 });
+  }
 
   return NextResponse.json({ success: false, message: `Admin tasks endpoint not found: ${action}` }, { status: 404 });
 }
@@ -249,6 +257,7 @@ export async function POST(req: NextRequest) {
   const action = req.nextUrl.searchParams.get("action") ?? "";
   const data = await req.json().catch(() => ({}));
 
+  /* Disabled Workforce assignment and request status update handler.
   if (action === "update-request") {
     const id = Number(data.id ?? 0);
     const hasStatusPatch = data.status !== undefined;
@@ -334,6 +343,11 @@ export async function POST(req: NextRequest) {
       sendWorkerBookingAcceptedNotice(id).catch((e) => console.error("Workforce accepted email failed:", e));
     }
     return NextResponse.json({ success: true, message: "Workforce request updated." });
+  }
+  */
+
+  if (action === "update-request") {
+    return NextResponse.json({ success: false, message: "Workforce request tracking is currently disabled." }, { status: 410 });
   }
 
   if (action === "create") {

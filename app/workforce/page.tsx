@@ -1,5 +1,6 @@
 "use client";
 
+/* Disabled legacy Workforce booking imports, types, rates, and form helpers.
 import { useEffect, useState } from "react";
 import { useAuth, authHeaders } from "@/lib/AuthContext";
 
@@ -63,8 +64,11 @@ function roleLabel(value: string) {
   const found = POSITIONS.find((p) => p[0] === value);
   return found ? found[1] : "—";
 }
+*/
 
 export default function WorkforcePage() {
+  /* Disabled Workforce form state, validation, booking handlers, assignment logic,
+     receipt generation, and rate/hours presentation.
   const { token, requireLogin } = useAuth();
 
   const [step, setStep] = useState(0);
@@ -329,10 +333,14 @@ export default function WorkforcePage() {
     <svg key="3" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>,
     <svg key="4" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>,
   ];
+  */
 
   return (
+    <>
+      {/* Disabled legacy Workforce booking forms, worker tables, rate/hours displays,
+          confirmation workflow, and assignment management panels.
     <main className="booking-page">
-      {/* Hero */}
+      LEGACY HERO
       <section className="platform-hero">
         <div className="container platform-hero-grid">
           <div>
@@ -355,7 +363,7 @@ export default function WorkforcePage() {
         </div>
       </section>
 
-      {/* Booking section */}
+      LEGACY BOOKING SECTION
       <section id="wf-section" className="booking-section">
         <div className="container">
 
@@ -379,7 +387,7 @@ export default function WorkforcePage() {
 
           <div className="wf-track">
 
-            {/* PANEL 0 — Browse Workers */}
+            PANEL 0 — Browse Workers
             <div className={`wf-panel${step === 0 ? " is-active" : ""}`} role="tabpanel">
               <div className="booking-columns">
                 <div className="booking-card">
@@ -487,7 +495,7 @@ export default function WorkforcePage() {
               </div>
             </div>
 
-            {/* PANEL 1 — Book a Shift */}
+            PANEL 1 — Book a Shift
             <div className={`wf-panel${step === 1 ? " is-active" : ""}`} role="tabpanel">
               <div className="booking-columns">
                 <div className="booking-card">
@@ -605,7 +613,7 @@ export default function WorkforcePage() {
               </div>
             </div>
 
-            {/* PANEL 2 — Confirmation */}
+            PANEL 2 — Confirmation
             <div className={`wf-panel${step === 2 ? " is-active" : ""}`} role="tabpanel">
               <div className="booking-card" style={{ maxWidth: 640, margin: "0 auto" }}>
                 <div className="booking-card-header">
@@ -658,7 +666,7 @@ export default function WorkforcePage() {
               </div>
             </div>
 
-            {/* PANEL 3 — What's Included */}
+            PANEL 3 — Worker Assignments
             <div className={`wf-panel${step === 3 ? " is-active" : ""}`} role="tabpanel">
               <div className="booking-card">
                 <div className="booking-card-header">
@@ -734,7 +742,7 @@ export default function WorkforcePage() {
               </div>
             </div>
 
-            {/* PANEL 4 - What's Included */}
+            PANEL 4 - What's Included
             <div className={`wf-panel${step === 4 ? " is-active" : ""}`} role="tabpanel">
               <div className="booking-card">
                 <div className="booking-card-header">
@@ -768,5 +776,25 @@ export default function WorkforcePage() {
         </div>
       </section>
     </main>
+      */}
+
+      <main className="booking-page workforce-link-page">
+        <section className="platform-hero">
+          <div className="container platform-hero-grid">
+            <div>
+              <span className="platform-eyebrow">Marajo Workforce Services</span>
+              <h1>Building support, coordinated by the Marajo team.</h1>
+              <p>Contact us for janitorial, maintenance, technical, or security workforce requirements.</p>
+              <div className="platform-hero-actions">
+                <a href="/contact" className="btn-primary">Contact Marajo</a>
+              </div>
+            </div>
+            <div className="platform-preview">
+              <img src="/assets/Space-Solution-A.jpg" alt="Marajo office service area" />
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
   );
 }

@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { sendCourtBookingReceipt } from "@/lib/mail";
 import { requireActiveTenant } from "@/lib/tenantMembership";
 
+/* Disabled Facilities availability, rates, conflict checking, and booking handlers.
 function courtHours(start: string, end: string): number {
   let s = new Date(`2026-01-01T${start}`).getTime();
   let e = new Date(`2026-01-01T${end}`).getTime();
@@ -119,4 +120,13 @@ export async function POST(req: NextRequest) {
 function dateStamp(): string {
   const d = new Date();
   return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
+}
+*/
+
+export async function GET(_req: NextRequest) {
+  return NextResponse.json({ success: false, message: "Facilities booking is currently disabled." }, { status: 410 });
+}
+
+export async function POST(_req: NextRequest) {
+  return NextResponse.json({ success: false, message: "Facilities booking is currently disabled." }, { status: 410 });
 }

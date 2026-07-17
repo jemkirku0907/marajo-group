@@ -164,6 +164,7 @@ export default function HomePage() {
                 </svg>
               </span>
             </Link>
+            {/* Disabled Facilities service card. Restore this whole block when Facilities returns.
             <Link href="/facilities" className="home-service-card">
               <div className="home-service-icon" aria-hidden="true">
                 <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -184,6 +185,7 @@ export default function HomePage() {
                 </svg>
               </span>
             </Link>
+            */}
           </div>
         </div>
       </section>

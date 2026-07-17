@@ -49,6 +49,8 @@ function getPreviewFee(facilityType: FacilityType, hours: number) {
 }
 
 export default function FacilitiesPage() {
+  /* Disabled Facilities booking state, calculations, validation, and handlers.
+     Restore this block together with the commented JSX and Facilities API routes.
   const { token, requireLogin } = useAuth();
 
   const [step, setStep] = useState(0);
@@ -258,8 +260,11 @@ export default function FacilitiesPage() {
     <svg key="1" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
     <svg key="2" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>,
   ];
+  */
 
   return (
+    <>
+      {/* Disabled entire Facilities frontend booking section.
     <main className="booking-page">
       <section className="platform-hero">
         <div className="container platform-hero-grid">
@@ -573,5 +578,7 @@ export default function FacilitiesPage() {
         </div>
       </section>
     </main>
+      */}
+    </>
   );
 }

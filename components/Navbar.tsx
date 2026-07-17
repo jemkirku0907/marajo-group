@@ -19,7 +19,8 @@ const NAV_LINKS = [
 const SERVICE_LINKS = [
   { href: "/parking", label: "Parking" },
   { href: "/workforce", label: "Workforce" },
-  { href: "/facilities", label: "Facilities" },
+  // Disabled Facilities frontend link. Restore when Facilities management is re-enabled.
+  // { href: "/facilities", label: "Facilities" },
   { href: "/cafeteria", label: "Cafeteria" },
 ];
 

@@ -3,6 +3,8 @@ import { requireAdmin } from "@/lib/staffAuth";
 import { db } from "@/lib/db";
 import { sendWorkerBookingAcceptedNotice } from "@/lib/mail";
 
+/* Disabled admin Workforce management handlers, tables, approvals, availability,
+   booking status updates, and workforce rate/payroll statistics.
 async function tableExists(table: string): Promise<boolean> {
   const rows = await db.query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = ?", [table]);
   return rows.length > 0;
@@ -158,4 +160,13 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ success: false, message: `Admin workforce endpoint not found: ${action}` }, { status: 404 });
+}
+*/
+
+export async function GET(_req: NextRequest) {
+  return NextResponse.json({ success: false, message: "Admin Workforce management is currently disabled." }, { status: 410 });
+}
+
+export async function POST(_req: NextRequest) {
+  return NextResponse.json({ success: false, message: "Admin Workforce management is currently disabled." }, { status: 410 });
 }

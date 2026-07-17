@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/staffAuth";
 import { db } from "@/lib/db";
-import { sendCourtBookingReceipt, sendParkingReceipt, sendWorkerBookingReceipt } from "@/lib/mail";
+import { sendParkingReceipt } from "@/lib/mail";
+// import { sendCourtBookingReceipt, sendWorkerBookingReceipt } from "@/lib/mail"; // Disabled Facilities/Workforce receipts.
 
-type ReceiptSource = "parking" | "court" | "workforce";
+type ReceiptSource = "parking";
 
 async function tableExists(tableName: string) {
   const row = await db.queryOne<{ exists: boolean }>(
@@ -75,6 +76,7 @@ async function parkingReceipts() {
   );
 }
 
+/* Disabled Facilities and Workforce receipt tables and queries.
 async function courtReceipts() {
   if (!(await tableExists("court_bookings"))) return [];
   return db.query(
@@ -116,6 +118,7 @@ async function workforceReceipts() {
      FROM worker_bookings wb`
   );
 }
+*/
 
 export async function GET(req: NextRequest) {
   const staff = requireAdmin(req);
@@ -127,13 +130,12 @@ export async function GET(req: NextRequest) {
   const dateFrom = req.nextUrl.searchParams.get("date_from") || "";
   const dateTo = req.nextUrl.searchParams.get("date_to") || "";
 
-  const [parking, court, workforce] = await Promise.all([
-    parkingReceipts(),
-    courtReceipts(),
-    workforceReceipts(),
-  ]);
+  const parking = await parkingReceipts();
+  /* Disabled Facilities and Workforce receipt loading.
+  const [parking, court, workforce] = await Promise.all([parkingReceipts(), courtReceipts(), workforceReceipts()]);
+  */
 
-  const receipts = [...parking, ...court, ...workforce]
+  const receipts = [...parking]
     .filter((row: any) => source === "all" || row.source === source)
     .filter((row: any) => matchesPaymentFilter(row, paymentStatus))
     .filter((row: any) => matchesSearch(row, search))
@@ -170,17 +172,15 @@ export async function POST(req: NextRequest) {
   const id = Number(data.id || 0);
   const source = String(data.source || "") as ReceiptSource;
 
-  if (!id || !["parking", "court", "workforce"].includes(source)) {
+  if (!id || source !== "parking") {
     return NextResponse.json({ success: false, message: "Valid source and id are required." }, { status: 400 });
   }
 
   if (action === "send-receipt") {
-    const sent =
-      source === "parking"
-        ? await sendParkingReceipt(id)
-        : source === "court"
-          ? await sendCourtBookingReceipt(id)
-          : await sendWorkerBookingReceipt(id);
+    const sent = await sendParkingReceipt(id);
+    /* Disabled Facilities and Workforce receipt dispatch.
+    const sent = source === "parking" ? await sendParkingReceipt(id) : source === "court" ? await sendCourtBookingReceipt(id) : await sendWorkerBookingReceipt(id);
+    */
     return NextResponse.json({ success: sent, message: sent ? "Receipt sent." : "Unable to send receipt. Check email and mail configuration." });
   }
 
@@ -197,11 +197,13 @@ export async function POST(req: NextRequest) {
       );
       return NextResponse.json({ success: true, message: "Parking payment status updated." });
     }
+    /* Disabled Facilities payment management.
     if (source === "court") {
       await db.execute("UPDATE court_bookings SET payment_status = ? WHERE id = ?", [paymentStatus, id]);
       return NextResponse.json({ success: true, message: "Court payment status updated." });
     }
     return NextResponse.json({ success: false, message: "Workforce bookings do not have payment tracking yet." }, { status: 400 });
+    */
   }
 
   return NextResponse.json({ success: false, message: `Receipts endpoint not found: ${action}` }, { status: 404 });

@@ -3,6 +3,8 @@ import { requireAdmin } from "@/lib/staffAuth";
 import { db } from "@/lib/db";
 import { sendCourtAcceptedNotice, sendCourtBookingReceipt } from "@/lib/mail";
 
+/* Disabled admin Facilities analytics, booking tables, status management,
+   cancellation, and receipt handlers.
 function unauthorized() {
   return NextResponse.json({ success: false, message: "Unauthorized." }, { status: 401 });
 }
@@ -139,4 +141,13 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ success: false, message: `Court admin endpoint not found: ${action}` }, { status: 404 });
+}
+*/
+
+export async function GET(_req: NextRequest) {
+  return NextResponse.json({ success: false, message: "Admin Facilities management is currently disabled." }, { status: 410 });
+}
+
+export async function POST(_req: NextRequest) {
+  return NextResponse.json({ success: false, message: "Admin Facilities management is currently disabled." }, { status: 410 });
 }

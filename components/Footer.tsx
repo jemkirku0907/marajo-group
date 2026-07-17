@@ -39,7 +39,8 @@ export default function Footer() {
             <Link href="/properties">Properties</Link>
             <Link href="/parking">Parking</Link>
             <Link href="/workforce">Workforce</Link>
-            <Link href="/facilities">Facilities</Link>
+            {/* Disabled Facilities frontend link. */}
+            {/* <Link href="/facilities">Facilities</Link> */}
             <Link href="/cafeteria">Cafeteria</Link>
             <Link href="/contact">Contact</Link>
           </div>

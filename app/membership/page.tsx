@@ -125,11 +125,13 @@ export default function MembershipPage() {
               <span>Floor</span>
               <strong>{membership?.floor_number || "Not submitted"}</strong>
             </div>
+            {/* Disabled Facilities booking action while the Facilities frontend is paused.
             {membership?.membership_status === "active" && (
               <Link href="/facilities" className="btn-primary membership-card-action">
                 Book Facilities
               </Link>
             )}
+            */}
           </aside>
 
           <div className="membership-form-card">

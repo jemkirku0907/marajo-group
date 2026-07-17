@@ -5,6 +5,7 @@ import { sendWorkerBookingReceipt } from "@/lib/mail";
 import { requireActiveTenant } from "@/lib/tenantMembership";
 import { filterFallbackWorkers } from "@/lib/workforce";
 
+/* Disabled legacy public Workforce directory and booking handlers.
 export async function GET(req: NextRequest) {
   const action = req.nextUrl.searchParams.get("action");
   const user = getCurrentUser(req);
@@ -105,4 +106,13 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ success: false, message: "Endpoint not found" }, { status: 404 });
+}
+*/
+
+export async function GET(_req: NextRequest) {
+  return NextResponse.json({ success: false, message: "Workforce booking is currently disabled." }, { status: 410 });
+}
+
+export async function POST(_req: NextRequest) {
+  return NextResponse.json({ success: false, message: "Workforce booking is currently disabled." }, { status: 410 });
 }

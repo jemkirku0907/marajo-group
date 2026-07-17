@@ -24,6 +24,7 @@ export default function CafeteriaPage() {
 
           <div className="platform-preview cafeteria-preview">
             <CafeteriaHeroSlider />
+            {/* Disabled cafeteria preview metadata card; keep the slider and ordering flow active.
             <div className="platform-status-strip">
               <div>
                 <strong>Location</strong>
@@ -38,6 +39,7 @@ export default function CafeteriaPage() {
                 <span>Enstack Soon</span>
               </div>
             </div>
+            */}
           </div>
         </div>
       </section>

@@ -11,8 +11,8 @@ type Tab =
   | "leads"
   | "tenants"
   | "parking"
-  | "facilities"
-  | "workers"
+  // | "facilities" // Disabled Facilities admin tab.
+  // | "workers" // Disabled Workforce admin tab.
   | "calendar"
   | "appointments"
   | "contacts"
@@ -43,12 +43,12 @@ const ADMIN_NAV_ITEMS: Array<{ id: Tab; label: string; icon: AdminIcon }> = [
   { id: "leads", label: "Leads", icon: "users" },
   { id: "tenants", label: "Tenants", icon: "users" },
   { id: "parking", label: "Parking", icon: "car" },
-  { id: "facilities", label: "Court Bookings", icon: "court" },
-  { id: "workers", label: "Workers", icon: "tool" },
+  // { id: "facilities", label: "Court Bookings", icon: "court" },
+  // { id: "workers", label: "Workers", icon: "tool" },
   { id: "calendar", label: "Calendar", icon: "calendar" },
   { id: "appointments", label: "Appointments", icon: "clock" },
   { id: "contacts", label: "Contacts", icon: "mail" },
-  { id: "tasks", label: "Tasks", icon: "check" },
+  // { id: "tasks", label: "Tasks", icon: "check" }, // Disabled Workforce request tracking tab.
   { id: "receipts", label: "Receipts", icon: "receipt" },
   { id: "notifications", label: "Notifications", icon: "bell" },
   { id: "profile", label: "Profile", icon: "user" },
@@ -355,12 +355,14 @@ export default function AdminDashboardPage() {
                   {tab === "leads" && "Track leads, inquiries, and status updates."}
                   {tab === "tenants" && "Verify Marajo Tower tenant/member access."}
                   {tab === "parking" && "Manage parking reservations and occupancy."}
+                  {/* Disabled Facilities and Workforce admin descriptions.
                   {tab === "facilities" && "Handle court bookings and facility schedules."}
                   {tab === "workers" && "Manage workforce approvals and assignments."}
+                  */}
                   {tab === "calendar" && "View appointments and reservation dates."}
                   {tab === "appointments" && "Schedule and update client visits."}
                   {tab === "contacts" && "Keep contact records and inquiries organized."}
-                  {tab === "tasks" && "Track pending tasks and follow-ups."}
+                  {/* {tab === "tasks" && "Track pending tasks and follow-ups."} */}
                   {tab === "receipts" && "Search, send, and manage booking invoices and receipts."}
                   {tab === "notifications" && "Review system alerts and messages."}
                   {tab === "profile" && "Update your staff profile and credentials."}
@@ -378,12 +380,14 @@ export default function AdminDashboardPage() {
             {tab === "leads" && <LeadsTab />}
             {tab === "tenants" && <TenantsTab />}
             {tab === "parking" && <ParkingTab />}
+            {/* Disabled Facilities and Workforce management tabs.
             {tab === "facilities" && <FacilitiesTab />}
             {tab === "workers" && <WorkersTab />}
+            */}
             {tab === "calendar" && <CalendarTab />}
             {tab === "appointments" && <AppointmentsTab />}
             {tab === "contacts" && <ContactsTab />}
-            {tab === "tasks" && <TasksTab />}
+            {/* {tab === "tasks" && <TasksTab />} */}
             {tab === "receipts" && <ReceiptsTab />}
             {tab === "notifications" && <NotificationsTab />}
             {tab === "profile" && <ProfileTab staff={staff} />}
@@ -1035,8 +1039,8 @@ function ParkingTab() {
   );
 }
 
-/* ───────────────────── Facilities (court bookings) tab ───────────────────── */
-
+// Disabled Facilities and Workers admin implementations are preserved below.
+/*
 function FacilitiesTab() {
   const [analytics, setAnalytics] = useState<any>(null);
   const [bookings, setBookings] = useState<any[]>([]);
@@ -1133,8 +1137,6 @@ function FacilitiesTab() {
     </div>
   );
 }
-
-/* ───────────────────── Workers tab ───────────────────── */
 
 function WorkersTab() {
   const [stats, setStats] = useState<any>(null);
@@ -1352,6 +1354,7 @@ function WorkersTab() {
     </div>
   );
 }
+*/
 
 function statusPillStyle(status: string): React.CSSProperties {
   const colors: Record<string, { bg: string; fg: string }> = {
@@ -1544,7 +1547,8 @@ function overviewNotificationIcon(item: { type: string; property?: string; statu
 
 function overviewNotificationTarget(item: { type: string; property?: string; status?: string }): Tab {
   const haystack = `${item.type || ""} ${item.property || ""} ${item.status || ""}`.toLowerCase();
-  if (haystack.includes("worker") || haystack.includes("janitor") || haystack.includes("workforce")) return "workers";
+  // Disabled Workforce admin navigation target.
+  // if (haystack.includes("worker") || haystack.includes("janitor") || haystack.includes("workforce")) return "workers";
   if (haystack.includes("parking")) return "parking";
   if (haystack.includes("lead") || haystack.includes("inquiry")) return "leads";
   if (haystack.includes("booking")) return "parking";
@@ -1607,7 +1611,7 @@ function OverviewRightRail({
           {([
             ["View Leads", "leads"],
             ["Manage Bookings", "parking"],
-            ["Add Worker", "workers"],
+            // ["Add Worker", "workers"], // Disabled Workforce admin quick action.
             ["Invoices", "receipts"],
           ] as Array<[string, Tab]>).map(([label, target]) => (
             <button key={label} type="button" onClick={() => onNavigate(target)}>
@@ -2253,8 +2257,8 @@ function ContactsTab() {
   );
 }
 
-/* ───────────────────── Tasks tab ───────────────────── */
-
+// Disabled Workforce request tracking state, filters, tables, and assignment controls.
+/*
 const WORK_REQUEST_STATUSES = [
   { value: "pending", label: "Pending" },
   { value: "pending_response", label: "Pending Response" },
@@ -2530,6 +2534,7 @@ function TasksTab() {
     </div>
   );
 }
+*/
 /* ───────────────────── Notifications tab ───────────────────── */
 
 function ReceiptsTab() {
@@ -2616,8 +2621,10 @@ function ReceiptsTab() {
           <select style={inputStyle} value={filters.source} onChange={(e) => setFilter("source", e.target.value)}>
             <option value="all">All types</option>
             <option value="parking">Parking</option>
+            {/* Disabled Facilities and Workforce receipt filters.
             <option value="court">Court</option>
             <option value="workforce">Workforce</option>
+            */}
           </select>
           <select style={inputStyle} value={filters.payment_status} onChange={(e) => setFilter("payment_status", e.target.value)}>
             <option value="all">All payments</option>
@@ -2650,7 +2657,8 @@ function ReceiptsTab() {
           <tbody>
             {receipts.map((row) => {
               const keyBase = `${row.source}-${row.id}`;
-              const canManagePayment = row.source === "parking" || row.source === "court";
+              const canManagePayment = row.source === "parking";
+              // Facilities payment management is disabled: || row.source === "court".
               return (
                 <tr key={keyBase}>
                   <td style={tdStyle}>

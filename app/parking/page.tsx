@@ -218,7 +218,7 @@ export default function ParkingPage() {
   const mobileLabels = ["Availability", "Slots", "Details", "Workflow"];
 
   return (
-    <main className="booking-page">
+    <main className="booking-page parking-page">
       {/* Hero */}
       <section className="platform-hero">
         <div className="container platform-hero-grid">

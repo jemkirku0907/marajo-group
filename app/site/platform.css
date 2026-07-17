@@ -121,11 +121,11 @@ body.theme-dark .tenant-only-note {
 }
 
 /* Parking hero: let the new photo pair finish level with the CTA row. */
-.booking-page .platform-hero-grid {
+.parking-page .platform-hero-grid {
   align-items: stretch;
 }
 
-.booking-page .platform-preview {
+.parking-page .platform-preview {
   height: 100%;
 }
 

@@ -16,7 +16,8 @@ export default function HomePage() {
         <Image
           src="/assets/marajo-tower.jpg"
           alt=""
-          fill
+          width={768}
+          height={1152}
           priority
           sizes="100vw"
           className="about-hero-bg"

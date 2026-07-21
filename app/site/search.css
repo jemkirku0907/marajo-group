@@ -2148,6 +2148,51 @@ html.theme-dark .visitor-counter strong {
     radial-gradient(circle at 18% 22%, rgba(117, 202, 53, 0.18), transparent 34%);
 }
 
+/* Home desktop hero: show the full portrait tower instead of cropping it wide. */
+@media (min-width: 901px) {
+  .home-page .home-hero--simple {
+    background: linear-gradient(90deg, #06130b 0%, #0a1d12 58%, #10261a 100%);
+  }
+
+  .home-page .home-hero--simple .about-hero-bg {
+    inset: 0 0 0 auto;
+    width: 58%;
+    height: 100%;
+    object-fit: contain;
+    object-position: right bottom;
+    filter: saturate(1.04) contrast(1.03);
+  }
+
+  .home-page .home-hero--simple::before {
+    background:
+      linear-gradient(90deg, rgba(3, 12, 7, 0.98) 0%, rgba(3, 12, 7, 0.90) 34%, rgba(3, 12, 7, 0.56) 58%, rgba(3, 12, 7, 0.10) 82%, transparent 100%),
+      linear-gradient(180deg, transparent 62%, rgba(3, 12, 7, 0.38) 100%);
+  }
+
+  .home-page .home-hero-grid--simple {
+    grid-template-columns: minmax(0, 720px) 1fr;
+  }
+
+  .home-page .home-hero--simple .home-hero-copy {
+    grid-column: 1;
+    max-width: 720px;
+  }
+
+  .home-page .home-hero--simple .hero-title {
+    font-size: clamp(3rem, 5vw, 5.2rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .home-page .home-hero--simple .about-hero-bg {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 42%;
+  }
+}
+
 .news-page .hero-feature-panel,
 .contact-page .hero-feature-panel {
   border-color: rgba(255, 255, 255, 0.28);
@@ -2614,6 +2659,15 @@ body.mobile-open.has-property-hero-header .site-header.site-header--property {
   background:
     linear-gradient(180deg, rgba(4, 14, 7, 0.34) 0%, rgba(4, 14, 7, 0.08) 24%, rgba(4, 14, 7, 0.08) 48%, rgba(4, 14, 7, 0.72) 100%),
     linear-gradient(90deg, rgba(4, 14, 7, 0.48) 0%, rgba(4, 14, 7, 0.14) 48%, rgba(4, 14, 7, 0.24) 100%);
+}
+
+/* Final Home override: protect copy while keeping the complete tower visible. */
+@media (min-width: 901px) {
+  .home-page .home-hero--simple::before {
+    background:
+      linear-gradient(90deg, rgba(3, 12, 7, 0.98) 0%, rgba(3, 12, 7, 0.90) 34%, rgba(3, 12, 7, 0.56) 58%, rgba(3, 12, 7, 0.10) 82%, transparent 100%),
+      linear-gradient(180deg, transparent 62%, rgba(3, 12, 7, 0.38) 100%);
+  }
 }
 
 .property-detail-page .property-hero-topline {

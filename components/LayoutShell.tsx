@@ -22,7 +22,8 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
 
   return (
     <>
-      {!isAdmin && <Navbar themeControl={<ThemeController />} />}
+      <ThemeController />
+      {!isAdmin && <Navbar />}
       <main className={isAdmin ? undefined : "flex-1"}>{children}</main>
       {!isAdmin && (
         <>

@@ -1,5 +1,7 @@
 "use client";
 
+import { WORKFORCE_TENANT_PORTAL_URL } from "@/lib/externalBooking";
+
 /* Disabled legacy Workforce booking imports, types, rates, and form helpers.
 import { useEffect, useState } from "react";
 import { useAuth, authHeaders } from "@/lib/AuthContext";
@@ -786,7 +788,7 @@ export default function WorkforcePage() {
               <h1>Building support, coordinated by the Marajo team.</h1>
               <p>Contact us for janitorial, maintenance, technical, or security workforce requirements.</p>
               <div className="platform-hero-actions">
-                <a href="/contact" className="btn-primary">Contact Marajo</a>
+                <a href={WORKFORCE_TENANT_PORTAL_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">Log In</a>
               </div>
             </div>
             <div className="platform-preview">

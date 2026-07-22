@@ -15,6 +15,8 @@ const CATEGORIES = [
   { key: "hospitality", label: "Hospitality" },
 ] as const;
 
+const FEATURED_PROPERTIES = ALL_PROPERTIES.filter((property) => property.hasDetailPage).slice(0, 4);
+
 function getLocationTag(location: string) {
   const value = location.toLowerCase();
   if (value.includes("bgc") || value.includes("bonifacio")) return "BGC";
@@ -36,6 +38,13 @@ function PropertiesContent({ initialQuery }: { initialQuery: string }) {
   const [category, setCategory] = useState<string>("all");
   const [query, setQuery] = useState(initialQuery);
   const [sort, setSort] = useState("newest");
+  const [activeFeature, setActiveFeature] = useState(0);
+
+  const activeProperty = FEATURED_PROPERTIES[activeFeature];
+  const propertyPreviews = FEATURED_PROPERTIES.slice(1).map((_, offset) => {
+    const index = (activeFeature + offset + 1) % FEATURED_PROPERTIES.length;
+    return { property: FEATURED_PROPERTIES[index], index };
+  });
 
   const filtered = useMemo(() => {
     let list = ALL_PROPERTIES.filter((p) => category === "all" || p.category === category);
@@ -56,20 +65,65 @@ function PropertiesContent({ initialQuery }: { initialQuery: string }) {
 
   return (
     <main className="properties-listing-page">
-      <section className="hero about-hero page-hero--simple reveal-on-scroll">
-        <div className="container about-hero-grid page-hero-grid--simple">
-          <div className="about-hero-copy reveal-on-scroll">
-            <h1 className="hero-title">Premium properties. Built to last.</h1>
-            <p className="hero-copy">
-              Explore residential, office, mixed-use, hospitality, and commercial properties across key Philippine districts.
-            </p>
-            <div className="hero-actions">
-              <Link href="#properties-list" className="btn-primary">
-                Browse Properties
+      <section className="properties-showcase" aria-labelledby="featured-property-title">
+        <div className="properties-showcase-background" aria-hidden="true">
+          {FEATURED_PROPERTIES.map((property, index) => (
+            <Image
+              key={property.slug}
+              src={property.image}
+              alt=""
+              fill
+              priority={index === 0}
+              sizes="100vw"
+              className={index === activeFeature ? "is-active" : ""}
+            />
+          ))}
+        </div>
+        <div className="properties-showcase-overlay" aria-hidden="true" />
+
+        <div className="container properties-showcase-inner">
+          <div className="properties-showcase-copy" aria-live="polite">
+            <span className="properties-showcase-kicker">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
+                <circle cx="12" cy="10" r="2.5" />
+              </svg>
+              {activeProperty.location}
+            </span>
+            <p className="properties-showcase-type">{activeProperty.categoryLabel} Property</p>
+            <h1 id="featured-property-title">{activeProperty.name}</h1>
+            <p>{activeProperty.cardDescription}</p>
+            <div className="properties-showcase-actions">
+              <Link href={`/properties/${activeProperty.slug}`} className="btn-primary">
+                View Property
               </Link>
-              <Link href="/contact" className="btn-secondary">
-                Inquire Now
+              <Link href="#properties-list" className="btn-secondary">
+                Browse All
               </Link>
+            </div>
+          </div>
+
+          <div className="properties-showcase-browser">
+            <div className="properties-showcase-count" aria-hidden="true">
+              <span>{String(activeFeature + 1).padStart(2, "0")}</span>
+              <i />
+              <span>{String(FEATURED_PROPERTIES.length).padStart(2, "0")}</span>
+            </div>
+            <div className="properties-showcase-previews" aria-label="Choose a featured property">
+              {propertyPreviews.map(({ property, index }) => (
+                <button
+                  key={property.slug}
+                  type="button"
+                  className="properties-showcase-preview"
+                  aria-label={`Show ${property.name}`}
+                  onClick={() => setActiveFeature(index)}
+                >
+                  <Image src={property.image} alt="" fill sizes="(max-width: 700px) 42vw, 180px" />
+                  <span aria-hidden="true" />
+                  <small>{getLocationTag(property.location)}</small>
+                  <strong>{property.name}</strong>
+                </button>
+              ))}
             </div>
           </div>
         </div>

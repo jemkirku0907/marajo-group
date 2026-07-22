@@ -115,6 +115,22 @@ select {
 }
 
 /* Properties showcase: image-led property browser inspired by the client reference. */
+.properties-index-heading {
+  max-width: 760px;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+.properties-index-heading h2 {
+  margin-bottom: 0.75rem;
+}
+
+.properties-index-heading p {
+  max-width: 680px;
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
 .properties-showcase {
   position: relative;
   isolation: isolate;
@@ -398,6 +414,14 @@ select {
 }
 
 @media (max-width: 520px) {
+  .properties-page.section {
+    padding-top: 3rem;
+  }
+
+  .properties-index-heading {
+    margin-bottom: 1.75rem;
+  }
+
   .properties-showcase {
     min-height: calc(100svh - var(--header-height, 68px));
   }

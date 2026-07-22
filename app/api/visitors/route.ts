@@ -58,7 +58,8 @@ export async function POST(req: NextRequest) {
       `INSERT INTO visitor_presence (session_id, path, user_agent, last_seen)
        VALUES (?, ?, ?, NOW())
        ON CONFLICT (session_id)
-       DO UPDATE SET path = EXCLUDED.path, user_agent = EXCLUDED.user_agent, last_seen = NOW()`,
+       DO UPDATE SET path = EXCLUDED.path, user_agent = EXCLUDED.user_agent, last_seen = NOW()
+       RETURNING session_id`,
       [sessionId, path, req.headers.get("user-agent")?.slice(0, 240) || ""]
     );
 

@@ -13,7 +13,6 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith("/admin");
   const isContact = pathname === "/contact";
-  const isHome = pathname === "/";
 
   useEffect(() => {
     document.body.classList.toggle("is-admin-route", Boolean(isAdmin));
@@ -38,7 +37,7 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
             </Button>
           )}
           <Footer />
-          {!isHome && <VisitorCounter />}
+          <VisitorCounter />
           {/* <AuthModal /> */}
           <ScrollPolish />
         </>

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
-import VisitorCounter from "@/components/VisitorCounter";
 import { PARKING_BOOKING_URL } from "@/lib/externalBooking";
 
 export const metadata = {
@@ -37,7 +36,6 @@ export default function HomePage() {
                 Our Story
               </Button>
             </div>
-            <VisitorCounter variant="inline" />
           </div>
         </div>
       </section>

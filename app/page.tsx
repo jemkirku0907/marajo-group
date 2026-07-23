@@ -14,7 +14,7 @@ export default function HomePage() {
     <main className="home-page">
       <section id="home" className="hero home-hero home-hero--simple reveal-on-scroll">
         <Image
-          src="/assets/marajo-tower.jpg"
+          src="/assets/Marajo-Share-Social.jpg"
           alt=""
           fill
           priority

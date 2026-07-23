@@ -2627,10 +2627,10 @@ body.mobile-open.has-property-hero-header .site-header.site-header--property {
     linear-gradient(90deg, rgba(4, 14, 7, 0.48) 0%, rgba(4, 14, 7, 0.14) 48%, rgba(4, 14, 7, 0.24) 100%);
 }
 
-/* Desktop Home crop: feature the tower crown and upper architecture. */
+/* Keep the full portfolio collage centered in the Home hero. */
 @media (min-width: 901px) {
   .home-page .home-hero--simple .about-hero-bg {
-    object-position: center top;
+    object-position: center 54%;
   }
 }
 

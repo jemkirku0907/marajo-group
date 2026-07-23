@@ -134,7 +134,7 @@ select {
 .properties-showcase {
   position: relative;
   isolation: isolate;
-  min-height: clamp(560px, calc(100svh - var(--header-height, 88px)), 760px);
+  min-height: 100svh;
   overflow: hidden;
   color: #fff;
   background: #07150c;
@@ -366,7 +366,7 @@ select {
 
 @media (max-width: 800px) {
   .properties-showcase {
-    min-height: calc(100svh - var(--header-height, 72px));
+    min-height: 100svh;
   }
 
   .properties-showcase-inner {
@@ -423,7 +423,7 @@ select {
   }
 
   .properties-showcase {
-    min-height: calc(100svh - var(--header-height, 68px));
+    min-height: 100svh;
   }
 
   .properties-showcase-inner {

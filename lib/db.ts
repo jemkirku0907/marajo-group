@@ -57,13 +57,20 @@ function createConnection(client: PoolClient): DbConnection {
 export function getPool(): Pool {
   if (!global._marajoPool) {
     const production = process.env.NODE_ENV === "production";
+    const databaseCa = process.env.DATABASE_CA_CERT_BASE64
+      ? Buffer.from(process.env.DATABASE_CA_CERT_BASE64, "base64").toString("utf8").trim()
+      : process.env.DATABASE_CA_CERT?.replace(/\\n/g, "\n").trim();
+    if (production && !databaseCa) {
+      throw new Error("DATABASE_CA_CERT_BASE64 is required in production.");
+    }
+
     global._marajoPool = new Pool({
       connectionString: process.env.DATABASE_URL || "",
       ssl: production
-        ? { rejectUnauthorized: true }
+        ? { ca: databaseCa, rejectUnauthorized: true }
         : process.env.DATABASE_SSL === "disable"
           ? false
-          : { rejectUnauthorized: true },
+          : { ca: databaseCa || undefined, rejectUnauthorized: true },
       max: 10,
     });
   }

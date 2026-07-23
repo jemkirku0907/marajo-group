@@ -8,21 +8,23 @@ Marajo Group website: public inquiries plus inquiry-focused administration.
 1. Rotate every database, JWT, SMTP, and Turnstile credential that ever appeared
    in `.env.local` Git history. Removing the file from the current branch does not
    invalidate credentials from older commits.
-2. Set independent high-entropy `STAFF_JWT_SECRET` and `PUBLIC_JWT_SECRET` values.
-   `PUBLIC_JWT_SECRET` is only needed when public authentication is intentionally
+2. Set independent high-entropy `STAFF_JWT_SECRET` and `USER_JWT_SECRET` values.
+   `USER_JWT_SECRET` is only needed when public authentication is intentionally
    enabled.
 3. Set `APP_ORIGIN=https://marajogroup.vercel.app` and
    `TURNSTILE_EXPECTED_HOSTNAME=marajogroup.vercel.app` in production.
-4. Run `scripts/security-schema.sql` once with a migration-capable database role.
+4. Set `DATABASE_CA_CERT_BASE64` to the base64-encoded trusted database root CA.
+   Production database connections fail closed when this value is absent.
+5. Run `scripts/security-schema.sql` once with a migration-capable database role.
    The normal application database role should not have `CREATE` or `ALTER`
    privileges.
-5. Keep `ENABLE_PUBLIC_AUTH`, `ENABLE_LEGACY_ADMIN_API`, and
+6. Keep `ENABLE_PUBLIC_AUTH`, `ENABLE_LEGACY_ADMIN_API`, and
    `ENABLE_LEGACY_BOOKING_API` unset unless those retired features are deliberately
    restored and receive a fresh security review.
-6. Add a distributed Vercel Firewall or shared-store rate limit for
+7. Add a distributed Vercel Firewall or shared-store rate limit for
    `/api/inquiries` and `/api/visitors`. The code-level limiter remains useful as
    defense in depth but is per serverless instance.
-7. Enable GitHub secret scanning and push protection on every repository remote.
+8. Enable GitHub secret scanning and push protection on every repository remote.
 
 ## Operational practices
 

@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { NextRequest } from "next/server";
 import { db } from "./db";
 
-const JWT_SECRET = process.env.PUBLIC_JWT_SECRET || process.env.JWT_SECRET || "";
+const JWT_SECRET = process.env.USER_JWT_SECRET || process.env.JWT_SECRET || "";
 const JWT_ISSUER = "marajo-group";
 const JWT_AUDIENCE = "marajo-public";
 

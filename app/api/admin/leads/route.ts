@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/staffAuth";
 import { db } from "@/lib/db";
 import { sendInquiryAcceptedNotice } from "@/lib/mail";
+import { noStoreHeaders, readJsonBody, RequestBodyError } from "@/lib/security";
 
 function unauthorized() {
   return NextResponse.json({ success: false, message: "Unauthorized. Please log in." }, { status: 401 });
@@ -48,12 +49,16 @@ export async function GET(req: NextRequest) {
 
   if (action === "list") {
     const rows = await db.query(
-      `SELECT i.*, s.name AS staff_name
+      `SELECT i.id, i.name, i.email, i.phone, i.project, i.unit_name, i.message,
+              i.status, i.assigned_staff_id, i.created_at, s.name AS staff_name
        FROM inquiries i
        LEFT JOIN staff s ON i.assigned_staff_id = s.id
        ORDER BY i.created_at DESC`
     );
-    return NextResponse.json({ success: true, leads: rows, count: rows.length, statuses: STATUS_OPTIONS });
+    return NextResponse.json(
+      { success: true, leads: rows, count: rows.length, statuses: STATUS_OPTIONS },
+      { headers: noStoreHeaders },
+    );
   }
 
   if (action === "timeline") {
@@ -63,7 +68,9 @@ export async function GET(req: NextRequest) {
     }
 
     const lead = await db.queryOne(
-      `SELECT i.*, s.name AS agent_name, s.role AS agent_role
+      `SELECT i.id, i.name, i.email, i.phone, i.project, i.unit_name, i.unit_type,
+              i.message, i.status, i.visit_date, i.visit_time, i.created_at,
+              i.assigned_staff_id, s.name AS agent_name, s.role AS agent_role
        FROM inquiries i
        LEFT JOIN staff s ON i.assigned_staff_id = s.id
        WHERE i.id = ? LIMIT 1`,
@@ -91,9 +98,11 @@ export async function GET(req: NextRequest) {
       timestamp: row.created_at,
     }));
 
-    const agents = await db.query("SELECT id, name, role FROM staff ORDER BY name ASC");
+    const agents = await db.query(
+      "SELECT id, name, role FROM staff WHERE is_active = 1 AND role_code IN ('super_admin', 'admin', 'property_manager') ORDER BY name ASC"
+    );
 
-    return NextResponse.json({ success: true, lead, timeline, agents });
+    return NextResponse.json({ success: true, lead, timeline, agents }, { headers: noStoreHeaders });
   }
 
   return NextResponse.json({ success: false, message: `Admin leads endpoint not found: ${action}` }, { status: 404 });
@@ -109,12 +118,21 @@ export async function POST(req: NextRequest) {
   if (!staff) return unauthorized();
 
   const action = req.nextUrl.searchParams.get("action") ?? "";
-  const data = await req.json().catch(() => ({}));
+  let data: Record<string, any>;
+  try {
+    data = await readJsonBody<Record<string, any>>(req, 16_384);
+  } catch (error) {
+    const status = error instanceof RequestBodyError ? error.status : 400;
+    return NextResponse.json({ success: false, message: "Invalid request body." }, { status });
+  }
 
   if (action === "update-status") {
     const id = Number(data.id ?? 0);
     const status = String(data.status ?? "").trim();
     const note = String(data.note ?? "").trim();
+    if (note.length > 2_000) {
+      return NextResponse.json({ success: false, message: "Note is too long." }, { status: 400 });
+    }
 
     if (!id || !STATUS_OPTIONS.includes(status)) {
       return NextResponse.json({ success: false, message: `Invalid inquiry status update. Status: ${status}` }, { status: 400 });
@@ -158,7 +176,8 @@ export async function POST(req: NextRequest) {
     } catch (e: any) {
       await conn.rollback();
       conn.release();
-      return NextResponse.json({ success: false, message: "Unable to update status. " + e.message }, { status: 500 });
+      console.error("Unable to update inquiry status.", { inquiryId: id, code: e?.code });
+      return NextResponse.json({ success: false, message: "Unable to update status." }, { status: 500 });
     }
   }
 
@@ -189,6 +208,7 @@ export async function POST(req: NextRequest) {
       const unit = inquiry.unit_name;
 
       let details = String(data.details ?? "").trim();
+      if (details.length > 2_000) throw new Error("Activity details are too long.");
 
       if (activityType === "transfer") {
         const targetStaffId = Number(data.target_staff_id ?? 0);
@@ -246,7 +266,8 @@ export async function POST(req: NextRequest) {
     } catch (e: any) {
       await conn.rollback();
       conn.release();
-      return NextResponse.json({ success: false, message: e.message || "Failed to log activity." }, { status: 500 });
+      console.error("Unable to log inquiry activity.", { inquiryId, code: e?.code });
+      return NextResponse.json({ success: false, message: "Failed to log activity." }, { status: 500 });
     }
   }
 

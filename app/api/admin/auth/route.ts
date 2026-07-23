@@ -8,10 +8,8 @@ import {
   STAFF_COOKIE,
 } from "@/lib/staffAuth";
 import { turnstileEnabled, turnstileSiteKey, verifyTurnstileToken } from "@/lib/turnstile";
-
-function getClientIp(req: NextRequest): string {
-  return req.headers.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
-}
+import { getClientIp } from "@/lib/rateLimit";
+import { noStoreHeaders, readJsonBody, RequestBodyError } from "@/lib/security";
 
 export async function GET(req: NextRequest) {
   const action = req.nextUrl.searchParams.get("action") ?? "me";
@@ -21,10 +19,13 @@ export async function GET(req: NextRequest) {
     if (!staff) {
       return NextResponse.json({ success: false, message: "Not logged in" }, { status: 401 });
     }
-    return NextResponse.json({
-      success: true,
-      staff: { id: staff.staff_id, name: staff.name, role: staff.role, role_code: staff.role_code, company_code: staff.company_code },
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        staff: { id: staff.staff_id, name: staff.name, role: staff.role, role_code: staff.role_code, company_code: staff.company_code },
+      },
+      { headers: noStoreHeaders },
+    );
   }
 
   if (action === "turnstile-site-key" || action === "security-config") {
@@ -43,16 +44,22 @@ export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
 
   if (action === "login") {
-    if (!checkStaffRateLimit(ip)) {
+    if (!(await checkStaffRateLimit(ip))) {
       return NextResponse.json(
         { success: false, message: "Too many login attempts. Please wait 5 minutes before trying again." },
         { status: 429 }
       );
     }
 
-    const data = await req.json().catch(() => ({}));
-    const email = (data.email ?? "").trim();
-    const password = data.password ?? "";
+    let data: Record<string, any>;
+    try {
+      data = await readJsonBody<Record<string, any>>(req, 16_384);
+    } catch (error) {
+      const status = error instanceof RequestBodyError ? error.status : 400;
+      return NextResponse.json({ success: false, message: "Invalid login request." }, { status });
+    }
+    const email = String(data.email ?? "").trim();
+    const password = String(data.password ?? "");
 
     if (!email || !password) {
       return NextResponse.json({ success: false, message: "Please enter both email and password." }, { status: 400 });
@@ -67,26 +74,35 @@ export async function POST(req: NextRequest) {
 
     const result = await loginStaff(email, password);
     if (!result.success || !result.token) {
-      recordStaffLoginFailure(ip);
+      await recordStaffLoginFailure(ip);
       return NextResponse.json({ success: false, message: result.message }, { status: 401 });
     }
 
-    clearStaffLoginFailures(ip);
+    await clearStaffLoginFailures(ip);
 
-    const res = NextResponse.json({ success: true, message: result.message, staff: result.staff });
+    const res = NextResponse.json(
+      { success: true, message: result.message, staff: result.staff },
+      { headers: noStoreHeaders },
+    );
     res.cookies.set(STAFF_COOKIE, result.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 12 * 60 * 60,
+      maxAge: 4 * 60 * 60,
     });
     return res;
   }
 
   if (action === "logout") {
-    const res = NextResponse.json({ success: true, message: "Logged out" });
-    res.cookies.set(STAFF_COOKIE, "", { httpOnly: true, path: "/", maxAge: 0 });
+    const res = NextResponse.json({ success: true, message: "Logged out" }, { headers: noStoreHeaders });
+    res.cookies.set(STAFF_COOKIE, "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 0,
+    });
     return res;
   }
 

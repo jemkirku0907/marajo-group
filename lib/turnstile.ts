@@ -11,7 +11,8 @@ export function turnstileEnabled(): boolean {
 }
 
 export async function verifyTurnstileToken(token: string | undefined | null, remoteIp?: string): Promise<boolean> {
-  if (!turnstileEnabled()) return true;
+  // Production must never silently disable bot protection because of a missing key.
+  if (!turnstileEnabled()) return process.env.NODE_ENV !== "production";
 
   const trimmed = (token || "").trim();
   if (trimmed === "") return false;
@@ -32,7 +33,12 @@ export async function verifyTurnstileToken(token: string | undefined | null, rem
 
     if (!res.ok) return false;
     const data = await res.json();
-    return Boolean(data?.success);
+    if (!data?.success) return false;
+
+    const expectedHostname = process.env.TURNSTILE_EXPECTED_HOSTNAME?.trim();
+    if (expectedHostname && data.hostname !== expectedHostname) return false;
+
+    return true;
   } catch (err) {
     console.error("Turnstile verification failed:", err);
     return false;

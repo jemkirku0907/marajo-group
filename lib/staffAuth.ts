@@ -3,12 +3,14 @@ import bcrypt from "bcryptjs";
 import { NextRequest } from "next/server";
 import { db } from "./db";
 
-const JWT_SECRET = process.env.JWT_SECRET || "";
-export const STAFF_COOKIE = "staff_token";
+const JWT_SECRET = process.env.STAFF_JWT_SECRET || process.env.JWT_SECRET || "";
+const JWT_ISSUER = "marajo-group";
+const JWT_AUDIENCE = "marajo-admin";
+export const STAFF_COOKIE = process.env.NODE_ENV === "production" ? "__Host-marajo_staff" : "staff_token";
 
 export type StaffRole = "super_admin" | "admin" | "property_manager" | "staff";
 export type StaffCompany = "marajo_group" | "officium_inc";
-export const ADMIN_ROLES: StaffRole[] = ["super_admin", "admin", "property_manager", "staff"];
+export const ADMIN_ROLES: StaffRole[] = ["super_admin", "admin", "property_manager"];
 export const ADMIN_COMPANY: StaffCompany = "marajo_group";
 
 export type StaffUser = {
@@ -32,15 +34,6 @@ type DbStaff = {
   is_active: number;
 };
 
-let staffCompanyColumnReady = false;
-
-async function ensureStaffCompanyColumn() {
-  if (staffCompanyColumnReady) return;
-  await db.execute("ALTER TABLE staff ADD COLUMN IF NOT EXISTS company_code TEXT NOT NULL DEFAULT 'marajo_group'");
-  await db.execute("UPDATE staff SET company_code = 'marajo_group' WHERE company_code IS NULL OR company_code = ''");
-  staffCompanyColumnReady = true;
-}
-
 function requireSecret(): string {
   if (!JWT_SECRET) {
     throw new Error("JWT_SECRET is not set. Add it to .env.local before going live.");
@@ -48,13 +41,22 @@ function requireSecret(): string {
   return JWT_SECRET;
 }
 
-export function generateStaffToken(payload: Omit<StaffUser, "iat" | "exp">, expiryHours = 12): string {
-  return jwt.sign(payload, requireSecret(), { expiresIn: `${expiryHours}h` });
+export function generateStaffToken(payload: Omit<StaffUser, "iat" | "exp">, expiryHours = 4): string {
+  return jwt.sign(payload, requireSecret(), {
+    algorithm: "HS256",
+    audience: JWT_AUDIENCE,
+    issuer: JWT_ISSUER,
+    expiresIn: `${expiryHours}h`,
+  });
 }
 
 export function verifyStaffToken(token: string): StaffUser | null {
   try {
-    const decoded = jwt.verify(token, requireSecret()) as StaffUser;
+    const decoded = jwt.verify(token, requireSecret(), {
+      algorithms: ["HS256"],
+      audience: JWT_AUDIENCE,
+      issuer: JWT_ISSUER,
+    }) as StaffUser;
     if (decoded.type !== "staff") return null;
     decoded.company_code = decoded.company_code || ADMIN_COMPANY;
     return decoded;
@@ -79,31 +81,68 @@ export function requireAdmin(req: NextRequest): StaffUser | null {
   return staff;
 }
 
-/** Mirrors login.php's brute-force window check, but in-memory (per-process) since there's no PHP session). */
-const loginAttempts = new Map<string, number[]>();
 const MAX_ATTEMPTS = 10;
-const WINDOW_MS = 5 * 60 * 1000;
+const FALLBACK_WINDOW_MS = 5 * 60 * 1000;
+const fallbackLoginAttempts = new Map<string, number[]>();
 
-export function checkStaffRateLimit(ip: string): boolean {
+function checkFallbackRateLimit(ip: string): boolean {
   const now = Date.now();
-  const attempts = (loginAttempts.get(ip) || []).filter((t) => now - t < WINDOW_MS);
-  loginAttempts.set(ip, attempts);
+  const attempts = (fallbackLoginAttempts.get(ip) || []).filter((time) => now - time < FALLBACK_WINDOW_MS);
+  fallbackLoginAttempts.set(ip, attempts);
   return attempts.length < MAX_ATTEMPTS;
 }
 
-export function recordStaffLoginFailure(ip: string) {
-  const now = Date.now();
-  const attempts = loginAttempts.get(ip) || [];
-  attempts.push(now);
-  loginAttempts.set(ip, attempts);
+export async function checkStaffRateLimit(ip: string): Promise<boolean> {
+  try {
+    const key = `admin-login:${ip}`;
+    const row = await db.queryOne<{ attempts: number }>(
+      `SELECT attempts FROM security_rate_limits
+       WHERE key = ? AND window_started_at > NOW() - INTERVAL '5 minutes'
+       LIMIT 1`,
+      [key],
+    );
+    return Number(row?.attempts || 0) < MAX_ATTEMPTS;
+  } catch {
+    console.warn("Shared login rate limit unavailable; using per-instance fallback.");
+    return checkFallbackRateLimit(ip);
+  }
 }
 
-export function clearStaffLoginFailures(ip: string) {
-  loginAttempts.delete(ip);
+export async function recordStaffLoginFailure(ip: string) {
+  try {
+    const key = `admin-login:${ip}`;
+    await db.execute(
+      `INSERT INTO security_rate_limits (key, attempts, window_started_at, updated_at)
+       VALUES (?, 1, NOW(), NOW())
+       ON CONFLICT (key) DO UPDATE SET
+         attempts = CASE
+           WHEN security_rate_limits.window_started_at <= NOW() - INTERVAL '5 minutes' THEN 1
+           ELSE security_rate_limits.attempts + 1
+         END,
+         window_started_at = CASE
+           WHEN security_rate_limits.window_started_at <= NOW() - INTERVAL '5 minutes' THEN NOW()
+           ELSE security_rate_limits.window_started_at
+         END,
+         updated_at = NOW()`,
+      [key],
+    );
+  } catch {
+    const attempts = fallbackLoginAttempts.get(ip) || [];
+    attempts.push(Date.now());
+    fallbackLoginAttempts.set(ip, attempts);
+  }
+}
+
+export async function clearStaffLoginFailures(ip: string) {
+  fallbackLoginAttempts.delete(ip);
+  try {
+    await db.execute("DELETE FROM security_rate_limits WHERE key = ?", [`admin-login:${ip}`]);
+  } catch {
+    // The migration may not have been applied yet; fallback state is already clear.
+  }
 }
 
 export async function loginStaff(email: string, password: string) {
-  await ensureStaffCompanyColumn();
   const staff = await db.queryOne<DbStaff>(
     "SELECT id, name, role, role_code, company_code, password_hash, is_active FROM staff WHERE email = ? LIMIT 1",
     [email]

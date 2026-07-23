@@ -56,9 +56,14 @@ function createConnection(client: PoolClient): DbConnection {
 
 export function getPool(): Pool {
   if (!global._marajoPool) {
+    const production = process.env.NODE_ENV === "production";
     global._marajoPool = new Pool({
       connectionString: process.env.DATABASE_URL || "",
-      ssl: { rejectUnauthorized: false },
+      ssl: production
+        ? { rejectUnauthorized: true }
+        : process.env.DATABASE_SSL === "disable"
+          ? false
+          : { rejectUnauthorized: true },
       max: 10,
     });
   }

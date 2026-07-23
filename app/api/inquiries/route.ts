@@ -4,7 +4,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { requireActiveTenant } from "@/lib/tenantMembership";
 import { turnstileEnabled, turnstileSiteKey, verifyTurnstileToken } from "@/lib/turnstile";
-import { getClientIp } from "@/lib/rateLimit";
+import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
+import { readJsonBody, RequestBodyError } from "@/lib/security";
 
 const CONTACT_TO = "admin@marajogroup.com";
 
@@ -155,7 +156,23 @@ async function sendContactEmail(input: {
 }
 
 export async function POST(req: NextRequest) {
-  const data = await req.json().catch(() => ({}));
+  const ip = getClientIp(req);
+  if (!checkRateLimit(`inquiry:${ip}`, 6, 600)) {
+    return NextResponse.json(
+      { success: false, message: "Too many inquiries. Please wait before trying again." },
+      { status: 429 },
+    );
+  }
+
+  let data: Record<string, any>;
+  try {
+    data = await readJsonBody<Record<string, any>>(req, 32_768);
+  } catch (error) {
+    if (error instanceof RequestBodyError) {
+      return NextResponse.json({ success: false, message: error.message }, { status: error.status });
+    }
+    return NextResponse.json({ success: false, message: "Invalid request body." }, { status: 400 });
+  }
 
   const name = val(data, ["name", "customer_name"]);
   const email = val(data, ["email", "customer_email"]);
@@ -171,16 +188,12 @@ export async function POST(req: NextRequest) {
   const sourcePageUrl = val(data, ["source_page_url", "source_url"], req.headers.get("referer") || "");
   const leadSource = val(data, ["lead_source"], "Website");
   const action = val(data, ["action", "inquiry_type"]).toLowerCase();
-  const inquiryContext = val(data, ["inquiry_context"]).toLowerCase();
-
-  if (inquiryContext === "contact") {
-    const verified = await verifyTurnstileToken(data.turnstile_token, getClientIp(req));
-    if (!verified) {
-      return NextResponse.json(
-        { success: false, message: "Please complete the security check before sending your inquiry." },
-        { status: 400 },
-      );
-    }
+  const verified = await verifyTurnstileToken(data.turnstile_token, ip);
+  if (!verified) {
+    return NextResponse.json(
+      { success: false, message: "Please complete the security check before sending your inquiry." },
+      { status: 400 },
+    );
   }
 
   if (leadSource === "Facilities Booking") {
@@ -209,6 +222,26 @@ export async function POST(req: NextRequest) {
 
   const returnVisitsRaw = val(data, ["return_visits_count", "return_visits"]);
   const returnVisitsCount = /^\d+$/.test(returnVisitsRaw) ? Number(returnVisitsRaw) : 0;
+
+  const limitedFields: Array<[string, string, number]> = [
+    ["name", name, 120],
+    ["email", email, 254],
+    ["phone", phone, 40],
+    ["property", property, 160],
+    ["unit", unitName || unitType, 160],
+    ["subject", subjectLine, 180],
+    ["message", message, 4_000],
+    ["source URL", sourcePageUrl, 500],
+    ["lead source", leadSource, 80],
+    ["action", action, 60],
+  ];
+  const oversizedField = limitedFields.find(([, value, max]) => value.length > max);
+  if (oversizedField) {
+    return NextResponse.json(
+      { success: false, message: `${oversizedField[0]} is too long.` },
+      { status: 400 },
+    );
+  }
 
   if (!name) {
     return NextResponse.json({ success: false, message: "Full name is required." }, { status: 400 });
@@ -443,7 +476,7 @@ export async function POST(req: NextRequest) {
   } catch (e: any) {
     await conn.rollback();
     conn.release();
-    logInquiryError("transaction", e, { name, email, phone, property, unitName, propertyIdRaw, action });
+    logInquiryError("transaction", e, { propertyIdRaw, action });
     return NextResponse.json(
       {
         success: false,

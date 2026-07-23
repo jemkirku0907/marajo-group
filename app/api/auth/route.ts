@@ -4,7 +4,17 @@ import { upsertTenantMembership } from "@/lib/tenantMembership";
 import { turnstileEnabled, turnstileSiteKey, verifyTurnstileToken } from "@/lib/turnstile";
 import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 
+const PUBLIC_AUTH_ENABLED = process.env.ENABLE_PUBLIC_AUTH === "true";
+
+function publicAuthDisabled() {
+  return NextResponse.json(
+    { success: false, message: "Public account access is currently disabled." },
+    { status: 410 },
+  );
+}
+
 export async function GET(req: NextRequest) {
+  if (!PUBLIC_AUTH_ENABLED) return publicAuthDisabled();
   const action = req.nextUrl.searchParams.get("action");
 
   if (action === "turnstile-site-key" || action === "security-config") {
@@ -27,6 +37,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  if (!PUBLIC_AUTH_ENABLED) return publicAuthDisabled();
   const action = req.nextUrl.searchParams.get("action");
   const ip = getClientIp(req);
   const data = await req.json().catch(() => ({}));

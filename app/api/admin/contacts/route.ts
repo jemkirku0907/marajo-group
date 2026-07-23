@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/staffAuth";
 import { db } from "@/lib/db";
+import { noStoreHeaders } from "@/lib/security";
 
 function unauthorized() {
   return NextResponse.json({ success: false, message: "Unauthorized. Please log in." }, { status: 401 });
@@ -18,9 +19,13 @@ export async function GET(req: NextRequest) {
 
   if (action === "list") {
     const rows = await db.query(
-      `SELECT * FROM contacts ORDER BY last_inquiry_at DESC, created_at DESC`
+      `SELECT id, name, email, phone, property_interest, unit_interest, last_inquiry_at, created_at
+       FROM contacts ORDER BY last_inquiry_at DESC, created_at DESC`
     );
-    return NextResponse.json({ success: true, contacts: rows, count: rows.length });
+    return NextResponse.json(
+      { success: true, contacts: rows, count: rows.length },
+      { headers: noStoreHeaders },
+    );
   }
 
   return NextResponse.json({ success: false, message: `Admin contacts endpoint not found: ${action}` }, { status: 404 });
@@ -63,7 +68,8 @@ export async function POST(req: NextRequest) {
       if (String(e.message).includes("Duplicate entry")) {
         return NextResponse.json({ success: false, message: "A contact with this email already exists." }, { status: 409 });
       }
-      return NextResponse.json({ success: false, message: "Unable to create contact. " + e.message }, { status: 500 });
+      console.error("Unable to create contact.", { code: e?.code });
+      return NextResponse.json({ success: false, message: "Unable to create contact." }, { status: 500 });
     }
   }
 
@@ -96,6 +102,9 @@ export async function POST(req: NextRequest) {
   }
 
   if (action === "delete") {
+    if (!['super_admin', 'admin'].includes(staff.role_code)) {
+      return NextResponse.json({ success: false, message: "Insufficient permissions." }, { status: 403 });
+    }
     const id = Number(data.id ?? 0);
     if (!id) {
       return NextResponse.json({ success: false, message: "Invalid contact ID." }, { status: 400 });

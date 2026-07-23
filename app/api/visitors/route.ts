@@ -1,29 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
-
-let presenceTableReady = false;
-
-async function ensurePresenceTable() {
-  if (presenceTableReady) return;
-
-  await db.execute(`
-    CREATE TABLE IF NOT EXISTS visitor_presence (
-      session_id TEXT PRIMARY KEY,
-      path TEXT,
-      user_agent TEXT,
-      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-      last_seen TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    )
-  `);
-  await db.execute(`
-    CREATE INDEX IF NOT EXISTS idx_visitor_presence_last_seen
-    ON visitor_presence (last_seen)
-  `);
-
-  presenceTableReady = true;
-}
 
 async function getActiveCount() {
   const row = await db.queryOne<{ count: string }>(
@@ -34,7 +13,6 @@ async function getActiveCount() {
 
 export async function GET() {
   try {
-    await ensurePresenceTable();
     return NextResponse.json({ success: true, count: await getActiveCount() });
   } catch (error) {
     console.error("[visitors:get]", error);
@@ -44,7 +22,10 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    await ensurePresenceTable();
+    const ip = getClientIp(req);
+    if (!checkRateLimit(`visitor:${ip}`, 40, 60)) {
+      return NextResponse.json({ success: false, message: "Too many updates." }, { status: 429 });
+    }
 
     const data = await req.json().catch(() => ({}));
     const sessionId = String(data.sessionId || "").trim().slice(0, 96);
@@ -62,8 +43,6 @@ export async function POST(req: NextRequest) {
        RETURNING session_id`,
       [sessionId, path, req.headers.get("user-agent")?.slice(0, 240) || ""]
     );
-
-    await db.execute("DELETE FROM visitor_presence WHERE last_seen < NOW() - INTERVAL '1 day'");
 
     return NextResponse.json({ success: true, count: await getActiveCount() });
   } catch (error) {

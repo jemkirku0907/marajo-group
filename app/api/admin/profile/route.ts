@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/staffAuth";
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
+import { noStoreHeaders, readJsonBody, RequestBodyError } from "@/lib/security";
 
 function unauthorized() {
   return NextResponse.json({ success: false, message: "Unauthorized. Please log in." }, { status: 401 });
@@ -25,7 +26,7 @@ export async function GET(req: NextRequest) {
     if (!row) {
       return NextResponse.json({ success: false, message: "Profile not found." }, { status: 404 });
     }
-    return NextResponse.json({ success: true, profile: row });
+    return NextResponse.json({ success: true, profile: row }, { headers: noStoreHeaders });
   }
 
   return NextResponse.json({ success: false, message: `Admin profile endpoint not found: ${action}` }, { status: 404 });
@@ -41,13 +42,22 @@ export async function POST(req: NextRequest) {
   if (!staff) return unauthorized();
 
   const action = req.nextUrl.searchParams.get("action") ?? "";
-  const data = await req.json().catch(() => ({}));
+  let data: Record<string, any>;
+  try {
+    data = await readJsonBody<Record<string, any>>(req, 16_384);
+  } catch (error) {
+    const status = error instanceof RequestBodyError ? error.status : 400;
+    return NextResponse.json({ success: false, message: "Invalid request body." }, { status });
+  }
 
   if (action === "update") {
     const name = String(data.name ?? "").trim();
     const email = String(data.email ?? "").trim();
     if (!name) {
       return NextResponse.json({ success: false, message: "Name is required." }, { status: 400 });
+    }
+    if (name.length > 120 || email.length > 254) {
+      return NextResponse.json({ success: false, message: "Profile details are too long." }, { status: 400 });
     }
     await db.execute("UPDATE staff SET name = ?, email = ? WHERE id = ?", [name, email || null, staff.staff_id]);
     return NextResponse.json({ success: true, message: "Profile updated." });
@@ -59,8 +69,8 @@ export async function POST(req: NextRequest) {
     if (!currentPassword || !newPassword) {
       return NextResponse.json({ success: false, message: "Current and new password are required." }, { status: 400 });
     }
-    if (newPassword.length < 8) {
-      return NextResponse.json({ success: false, message: "New password must be at least 8 characters." }, { status: 400 });
+    if (newPassword.length < 12 || newPassword.length > 128) {
+      return NextResponse.json({ success: false, message: "New password must be 12 to 128 characters." }, { status: 400 });
     }
 
     const row = await db.queryOne<{ password_hash: string | null }>(

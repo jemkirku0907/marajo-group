@@ -3,7 +3,9 @@ import bcrypt from "bcryptjs";
 import { NextRequest } from "next/server";
 import { db } from "./db";
 
-const JWT_SECRET = process.env.JWT_SECRET || "";
+const JWT_SECRET = process.env.PUBLIC_JWT_SECRET || process.env.JWT_SECRET || "";
+const JWT_ISSUER = "marajo-group";
+const JWT_AUDIENCE = "marajo-public";
 
 export type AuthUser = {
   user_id: number;
@@ -22,12 +24,21 @@ function requireSecret(): string {
 }
 
 export function generateToken(payload: Omit<AuthUser, "iat" | "exp">, expiryHours = 24): string {
-  return jwt.sign(payload, requireSecret(), { expiresIn: `${expiryHours}h` });
+  return jwt.sign(payload, requireSecret(), {
+    algorithm: "HS256",
+    audience: JWT_AUDIENCE,
+    issuer: JWT_ISSUER,
+    expiresIn: `${expiryHours}h`,
+  });
 }
 
 export function verifyTokenString(token: string): AuthUser | null {
   try {
-    return jwt.verify(token, requireSecret()) as AuthUser;
+    return jwt.verify(token, requireSecret(), {
+      algorithms: ["HS256"],
+      audience: JWT_AUDIENCE,
+      issuer: JWT_ISSUER,
+    }) as AuthUser;
   } catch {
     return null;
   }

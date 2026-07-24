@@ -103,6 +103,7 @@ const hightownQuartersBurgosImages = [
 ];
 
 const muroSiargaoImages = [
+  "/images/properties/muro-siargao/00-muro-siargao-seaside.jpg",
   "/images/properties/muro-siargao/01-main-photo.jpg",
   "/images/properties/muro-siargao/03-muro-siargao-1.jpg",
   "/images/properties/muro-siargao/05-muro-siargao-2.jpg",

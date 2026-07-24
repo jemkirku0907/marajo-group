@@ -10,7 +10,7 @@ export default function CafeteriaPage() {
             <span className="platform-eyebrow">Marajo Cafeteria</span>
             <h1>Meals, snacks, and tenant convenience in one place.</h1>
             <p>
-              Preview the cafeteria space today. Online ordering will connect to Enstack once the store link is ready.
+              Explore the cafeteria space and order meals and snacks online through Enstack.
             </p>
             <div className="platform-hero-actions">
               <a href="https://enstack.ph/marajo-simply-7" target="_blank" rel="noopener noreferrer" className="btn-primary">
@@ -69,10 +69,10 @@ export default function CafeteriaPage() {
               <div className="booking-card-body cafeteria-order-body">
                 <p className="form-section-label">Ordering Status</p>
                 <p>
-                  For now, this page is a visual preview of the cafeteria. The ordering button is ready as the future entry point for Enstack.
+                  Online ordering is now available. Continue to Enstack to browse the menu and place your order.
                 </p>
                 <div className="cafeteria-order-actions">
-                  <a className="btn-primary" href="https://enstack.ph/marajo-simply-7" target="_blank" rel="noopener noreferrer" aria-disabled="true">
+                  <a className="btn-primary" href="https://enstack.ph/marajo-simply-7" target="_blank" rel="noopener noreferrer">
                     Order Here
                   </a>
                   <Link className="btn-secondary" href="/contact">
@@ -113,7 +113,7 @@ export default function CafeteriaPage() {
                 </div>
                 <div className="summary-row">
                   <span className="summary-row-label">Payment</span>
-                  <span className="summary-row-value">Coming Soon</span>
+                  <span className="summary-row-value">Via Enstack</span>
                 </div>
               </div>
             </aside>

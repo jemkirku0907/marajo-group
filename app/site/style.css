@@ -5505,6 +5505,14 @@ table td {
   border-radius: 0;
 }
 
+.properties-listing-page .property-listing-card .property-image--full-building {
+  aspect-ratio: 4 / 5;
+}
+
+.properties-listing-page .property-listing-card .property-image--full-building img {
+  object-position: center top;
+}
+
 .properties-listing-page .property-listing-card .property-details {
   display: grid;
   gap: 0.95rem;

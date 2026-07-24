@@ -111,8 +111,20 @@ function PropertiesContent() {
             {ALL_PROPERTIES.map((p) => (
               <article key={p.slug} className="property-card property-listing-card in-view">
                 <Link href={`/properties/${p.slug}`} className="property-card-hitbox" aria-label={`View details for ${p.name}`} />
-                <div className="property-image">
-                  <Image src={p.image} alt={p.name} width={700} height={500} />
+                <div
+                  className={`property-image${
+                    p.slug === "salcedo-towers" || p.slug === "hightown-quarters-burgos"
+                      ? " property-image--full-building"
+                      : ""
+                  }`}
+                >
+                  <Image
+                    src={p.image}
+                    alt={`${p.name} building exterior`}
+                    width={700}
+                    height={875}
+                    sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+                  />
                   <button
                     className="favorite-btn"
                     type="button"

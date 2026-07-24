@@ -214,16 +214,15 @@ export default function AboutPage() {
       <section className="section reveal-on-scroll">
         <div className="container">
           <div className="section-title">
-            <span>Our Place - Tagaytay</span>
-            <h2>A rest and recreation facility</h2>
+            <span>Our Places — Tagaytay &amp; Siargao</span>
+            <h2>Rest and recreation destinations</h2>
           </div>
           <div className="feature-split">
             <div className="feature-copy">
-              <h3>Space to pause, recharge, and build stronger relationships.</h3>
+              <h3>Spaces to pause, recharge, and build stronger relationships.</h3>
               <p>
-                Our Place - Tagaytay serves as Marajo Group&apos;s rest and recreation facility for employees,
-                partners, and stakeholders. Set within Tagaytay&apos;s cooler landscape, it gives the organization a
-                dedicated setting for retreats, planning sessions, quiet recovery, and shared moments away from the
+                Marajo Group&apos;s destinations in Tagaytay and Siargao give employees, partners, and stakeholders
+                dedicated settings for retreats, planning sessions, quiet recovery, and shared moments away from the
                 pace of the city.
               </p>
               <p>
@@ -231,10 +230,9 @@ export default function AboutPage() {
                 belongs in the environments where people restore energy, exchange ideas, and strengthen trust.
               </p>
             </div>
-            <div className="photo-grid" aria-label="Our Place Tagaytay photo gallery">
-              <Image src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=900&h=680&fit=crop&auto=format" alt="Tagaytay rest and recreation facility exterior" width={900} height={680} unoptimized />
-              <Image src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&h=680&fit=crop&auto=format" alt="Comfortable retreat house interior" width={900} height={680} unoptimized />
-              <Image src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=900&h=680&fit=crop&auto=format" alt="Green landscape near Tagaytay" width={900} height={680} unoptimized />
+            <div className="photo-grid destination-photo-grid" aria-label="Tagaytay and Siargao destination gallery">
+              <Image src="/images/about/tagaytay.jpg" alt="Marajo Group rest and recreation cottages in Tagaytay" width={768} height={512} />
+              <Image src="/images/about/siargao.jpg" alt="Marajo Group seaside cottages in Siargao" width={1080} height={792} />
             </div>
           </div>
         </div>

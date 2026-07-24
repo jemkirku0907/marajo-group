@@ -2957,6 +2957,17 @@ body.mobile-open .nav-toggle .hamb::after { transform: rotate(-45deg) translate(
   grid-row: 1 / 3;
 }
 
+.destination-photo-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: minmax(320px, 1fr);
+}
+
+.destination-photo-grid img,
+.destination-photo-grid img:first-child {
+  grid-row: auto;
+  min-height: 320px;
+}
+
 .csr-section {
   background: linear-gradient(180deg, rgba(199,220,46,0.08), var(--bg-base));
   padding: 3rem 0 4rem;

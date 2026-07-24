@@ -88,6 +88,7 @@ const mrjCenterImages = [
 ];
 
 const ceoFlatsImages = [
+  "/images/properties/ceo-flats/00-ceo-flats-exterior.jpg",
   "/images/properties/ceo-flats/01-ceo-flats-1.jpg",
   "/images/properties/ceo-flats/03-ceo-flats-2.jpg",
   "/images/properties/ceo-flats/05-ceo-flats-6.jpg",
@@ -137,11 +138,13 @@ const spaceSolutionsImages = [
 ];
 
 const hightownQuartersAlfonsoImages = [
+  "/images/properties/hightown-quarters-alfonso/00-hightown-quarters-alfonso-exterior.jpg",
   "/images/properties/hightown-quarters-alfonso/01-hightown-quarters-alfonso-1.jpg",
   "/images/properties/hightown-quarters-alfonso/03-hightown-quarters-alfonso-2.jpg",
 ];
 
 const hightownQuartersAlbertImages = [
+  "/images/properties/hightown-quarters-albert/00-hightown-quarters-albert-exterior.jpg",
   "/images/properties/hightown-quarters-albert/01-hightown-quarters-albert-1.jpg",
   "/images/properties/hightown-quarters-albert/03-hightown-quarters-albert-2.jpg",
   "/images/properties/hightown-quarters-albert/05-hightown-quarters-albert-3.jpg",
